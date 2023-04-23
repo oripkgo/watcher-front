@@ -1,17 +1,18 @@
+import $ from 'jquery';
 
 //문서 탭 2013
-function document_tab(param,btn,obj,img,event){
-	var param = $(param);
-	var btn = param.find(btn);
-	var obj = $(obj);
+let document_tab = function(param,btn,obj,img,event){
+	param = $(param);
+	btn = param.find(btn);
+	obj = $(obj);
 	var elem = 0;
 	
-	var lcv = location.href;
-		lcv = lcv.split("?ttab=");
-
-	if(lcv[1]){
-		elem = lcv[1];
-	}
+	// var lcv = location.href;
+	// 	lcv = lcv.split("?ttab=");
+	//
+	// if(lcv[1]){
+	// 	elem = lcv[1];
+	// }
 	
 	obj.hide().eq(elem).show();
 	
@@ -34,7 +35,7 @@ function document_tab(param,btn,obj,img,event){
 				for(var i=0;i<obj.size();i++){
 					var res = btn.eq(i).find("img");
 					res.attr("src",res.attr("src").replace("_ov.gif",".gif"));
-				};
+				}
 				
 				timg.attr("src",timg.attr("src").replace(".gif","_ov.gif"));
 			}
@@ -52,7 +53,7 @@ function document_tab(param,btn,obj,img,event){
 	var m;
 
 	param.find("a[rel=all]").click(function(){
-		var t = $(this);
+		// var t = $(this);
 		var n = 0;
 		
 		obj.stop(true,true).hide();
@@ -72,19 +73,19 @@ function document_tab(param,btn,obj,img,event){
 }
 
 
-function document_group(param,btn,obj,img,event){
-	var param = $(param);
-	var btn = param.find(btn);
-	var obj = param.find(obj);
+let document_group = function(param,btn,obj,img,event){
+	param = $(param);
+	btn = param.find(btn);
+	obj = param.find(obj);
 	var elem1 = 0;
 	var elem2 = 0;
 	
-	var lcv = location.href;
-		lcv = lcv.split("?ttab=");
+	// var lcv = location.href;
+	// 	lcv = lcv.split("?ttab=");
 
-	if(lcv[1]){
-		elem = lcv[1];
-	}
+	// if(lcv[1]){
+	// 	elem = lcv[1];
+	// }
 	
 	obj.hide().eq(elem2).show();
 	btn.removeClass("tab_ov");
@@ -126,3 +127,6 @@ $(function(){
 		}
 	});
 });
+
+window.document_tab = document_tab;
+window.document_group = document_group;

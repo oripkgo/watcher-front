@@ -1,3 +1,5 @@
+import $ from 'jquery';
+import "./globalVar"
 
 let comm = function(){
     const kakaoKey = '16039b88287b9f46f214f7449158dfde';
@@ -30,9 +32,9 @@ let comm = function(){
     let loginProcessEventHtml = '';
 
     loginProcessEventHtml += '<div class="member_app logOut" style="display: none;">';
-    loginProcessEventHtml += '    <a href="/'+memberId+'/myStory" id="myStory">내 스토리</a>';
+    loginProcessEventHtml += '    <a href="/'+window.memberId+'/myStory" id="myStory">내 스토리</a>';
     loginProcessEventHtml += '    <a href="/management/main" id="management">관리</a>';
-    loginProcessEventHtml += '    <a href="'+storyUrlWrite+'" id="writing">글쓰기</a>';
+    loginProcessEventHtml += '    <a href="'+window.storyUrlWrite+'" id="writing">글쓰기</a>';
     loginProcessEventHtml += '    <a href="javascript:;" id="logout">로그아웃</a>';
     loginProcessEventHtml += '</div>';
 
@@ -182,7 +184,7 @@ let comm = function(){
                                 $(".delete_line"     , comment_obj ).hide();
                                 $(".delete"          , comment_obj ).hide();
 
-                                if( loginId == resp.comment.regId ){
+                                if( window.loginId == resp.comment.regId ){
                                     $(".update_line"     , comment_obj ).show();
                                     $(".update"          , comment_obj ).show();
                                     $(".delete_line"     , comment_obj ).show();
@@ -238,7 +240,7 @@ let comm = function(){
                         $(".delete_line"     , comment_obj ).hide();
                         $(".delete"          , comment_obj ).hide();
 
-                        if( loginId == listObj.REG_ID ){
+                        if( window.loginId == listObj.REG_ID ){
                             $(".update_line"     , comment_obj ).show();
                             $(".update"          , comment_obj ).show();
                             $(".delete_line"     , comment_obj ).show();
@@ -413,9 +415,9 @@ let comm = function(){
                     // 댓글 목록 세팅 e
 
                     // 댓글 등록 세팅 s
-                    if( option && option.commentInsertBtn ){
-
-                    }
+                    // if( option && option.commentInsertBtn ){
+                    //
+                    // }
                     // 댓글 등록 세팅 e
 
                     callback(call_resp_obj);
@@ -463,7 +465,9 @@ let comm = function(){
                 let year = date.getFullYear(); // 년도
                 let month = date.getMonth() + 1;  // 월
                 let dt = date.getDate();  // 날짜
-                let day = date.getDay();  // 요일
+                let day = date.getDay();  // eslint-disable-line no-unused-vars
+                // 요일
+
 
                 month = ( "00"+month )
                 month = month.substring(month.length-2,month.length);
@@ -527,11 +531,11 @@ let comm = function(){
                 $(document).on("ready",function(){
                     $("#kakao-login-btn").on("click",function(){
                         kakaoObj.Auth.login({
-                            success: function(authObj) {
+                            success: function(authObj) { // eslint-disable-line no-unused-vars
                                 kakaoObj.API.request({
                                     url: '/v2/user/me',
                                     success: function(res) {
-                                        login_success_callback(Object.assign(res,{"type":"kakao"}));
+                                        window.login_success_callback(Object.assign(res,{"type":"kakao"}));
                                     },
                                     fail: function(error) {
                                         comm.message.alert(
@@ -614,7 +618,7 @@ let comm = function(){
                 comm.request({
                     url: "/login/loginSuccess/callback",
                     data : JSON.stringify(param)
-                },function(res){
+                },function(res){ // eslint-disable-line no-unused-vars
                     // 로그인 성공
 
                     //팝업 닫기
@@ -649,8 +653,8 @@ let comm = function(){
                     loginHtml += '	<a href="javascript:;" class="btn_close"></a>';
                     loginHtml += '	<div class="pop_tit">로그인</div>';
                     loginHtml += '	<div class="btn_pop">';
-                    loginHtml += '		<a href="javascript:;" id="kakao-login-btn"><img src="/resources/img/login_kakao.png"></a>';
-                    loginHtml += '		<a href="javascript:;" id="naver_id_login"><img src="/resources/img/login_naver.png"></a>';
+                    loginHtml += '		<a href="javascript:;" id="kakao-login-btn"><img src="'+window.LOGIN_BTN_IMG_KAKAO+'"></a>';
+                    loginHtml += '		<a href="javascript:;" id="naver_id_login"><img src="'+window.LOGIN_BTN_IMG_NAVER+'"></a>';
                     loginHtml += '	</div>';
                     loginHtml += '</div>';
 
@@ -717,7 +721,7 @@ let comm = function(){
                 type:opt.method || 'POST',
                 data : opt.data || null,
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", 'Bearer '+apiToken);
+                    xhr.setRequestHeader("Authorization", 'Bearer '+ window.apiToken);
 
                     if( opt.headers ){
                         $.map(opt.headers,function(val,key){
@@ -730,7 +734,7 @@ let comm = function(){
                     }
                 },
                 success : function(result){
-                    if( result.code = '0000' ){
+                    if( result.code == '0000' ){
                         if( succCall ){
                             succCall(result);
                         }
@@ -747,7 +751,7 @@ let comm = function(){
                         errCall(result);
                     }else{
                         if( result.responseJSON ){
-                            let status = result.responseJSON.status;
+                            let status = result.responseJSON.status; // eslint-disable-line no-unused-vars
                             let msg = result.responseJSON.message;
 
                             comm.message.alert(msg);
@@ -759,12 +763,12 @@ let comm = function(){
                 }
             }
 
-            if( opt.hasOwnProperty("processData") ){
+            if( Object.hasOwnProperty.call(opt, "processData") ){
                 ajaxOpt['processData'] = opt['processData'];
             }
 
 
-            if( opt.hasOwnProperty("contentType") ){
+            if( Object.hasOwnProperty.call(opt, "contentType") ){
                 ajaxOpt['contentType'] = opt['contentType'];
             }
 
@@ -882,7 +886,7 @@ let comm = function(){
 
                 var pageObj = data.vo;
 
-                var firstPage = 1;
+                var firstPage = 1; // eslint-disable-line no-unused-vars
                 var lastPage = Math.ceil((pageObj.totalCnt*1)/(pageObj.listNo*1));
 
                 if( pageObj.pageNo == 1 ){
@@ -1028,4 +1032,5 @@ let comm = function(){
     return publicObj
 }()
 
-
+window.comm = comm;
+export default comm;

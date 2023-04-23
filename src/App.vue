@@ -1,41 +1,108 @@
 <template>
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <headerPage/>
+  <mainPage/>
+
+  <div class="section bg_grey3">
+    <div class="ani-in layout">
+
+      <div class="footer_wrap">
+        <div class="footer_left">
+          <div class="footer_logo">WATCHER</div>
+          <span>COPYRIGHT ©ALAND ALL RIGHTS RESERVED</span>
+        </div>
+        <div class="footer_right">
+          <a href="/terms/use">이용약관</a><br>
+          <a href="/terms/privacy">개인정보처리방침</a><br>
+        </div>
+
+        <div class="footer_right">
+          <a href="/terms/copyright">저작권 및 지적재산권</a><br>
+          <a href="/terms/advertisement">광고 정책</a><br>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="backbg"></div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+  import $ from 'jquery';
+  import headerPage from '@/components/common/include/header';
+  import mainPage from '@/components/views/main/index';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  },
-  metaInfo:{
-    title: 'MY스토리',
-    meta: [
-      { httpEquiv : 'Content-Type', content:'text/html; charset=utf-8'},
-      { httpEquiv : 'Expires', content:'0'},
-      { httpEquiv : 'Imagetoolbar', content:'no'},
-      { httpEquiv : 'Cache-Control', content:'no-cache'},
-      { httpEquiv : 'Pragma', content:'no-cache'},
-      { httpEquiv : 'X-UA-Compatible', content:'IE=edge'},
-      { name: 'viewport', content: 'user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width' },
-      { name: 'description', content: '' },
-      { name: 'keywords', content: '' },
-      { property:'og:type',content:'website'},
-      { property:'og:title',content:'MY스토리'},
-      { property:'og:description',content:''},
-      { property:'og:keywords',content:''},
-      { property:'og:image',content:'./resources/img/main_visual01.png'},
-      { property:'og:url',content:''},
-    ],
-  },
-}
+  let animateQueue = new Array();
+  let ready = true;
+
+  export default {
+    name: 'App',
+    components: {
+      mainPage,
+      headerPage,
+    },
+
+    mounted() {
+      let $this = this;
+
+      $.fn.anchorAnimate = function (settings) {
+        settings = $.extend({
+          speed: 1000
+        }, settings);
+        return this.each(function () {
+          var caller = this
+          $(caller).click(function (event) {
+            event.preventDefault()
+            // var locationHref = window.location.href
+            var elementClick = $(caller).attr("href")
+
+            var destination = $(elementClick).offset().top - 0;
+            $("html:not(:animated),body:not(:animated)").animate({scrollTop: destination}, settings.speed, function () {
+              // window.location.hash = elementClick
+            });
+            return false;
+          })
+        })
+      }
+
+      //스크롤 페이드인
+      $(document).ready(function () {
+
+        $this.triggerJqueryFadeIn()
+        $(window).scroll($this.triggerJqueryFadeIn);
+
+        $("#to_top").on("click", function () {
+          $("html, body").animate({scrollTop: 0}, '500');
+          return false;
+        });
+      });
+    },
+
+    methods: {
+      triggerJqueryFadeIn : function(){
+        $('.ani-in').each(function () {
+          var object_top = $(this).offset().top;
+          var window_bottom = $(window).scrollTop() + $(window).height() - 200;
+          if (window_bottom > object_top) {
+            $(this).addClass('action');
+          }
+        });
+        this.triggerJqueryFadeInQueue();
+      },
+
+      triggerJqueryFadeInQueue : function(){
+        if (animateQueue.length != 0 && ready) {
+          ready = false;
+          // $this = animateQueue.shift();
+          // $($this).addClass('action');
+        }
+      },
+    }
+  }
+
 </script>
 
-<style src="./resources/css/style.css"></style>
-<style src="./resources/css/swiper.css"></style>
-
-
-
-
+<style>
+  @import "resources/css/style.css";
+  @import "resources/css/swiper.css";
+</style>
