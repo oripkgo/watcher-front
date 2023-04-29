@@ -6,6 +6,7 @@ import Use from "@/components/views/terms/Use"
 import Advertisement from "@/components/views/terms/Advertisement"
 import Copyright from "@/components/views/terms/Copyright"
 import Privacy from "@/components/views/terms/Privacy"
+import NaverLoginSuccess from "@/components/views/login/NaverLoginSuccess"
 
 const router = createRouter({
     history : createWebHistory(),
@@ -16,6 +17,7 @@ const router = createRouter({
         { path : "/terms/advertisement",    name : "advertisement",     component : Advertisement },
         { path : "/terms/copyright",        name : "copyright",         component : Copyright },
         { path : "/terms/privacy",          name : "privacy",           component : Privacy },
+        { path : "/login/loginSuccess",     name : "naverLoginSuccess", component : NaverLoginSuccess },
 
 
         /*{

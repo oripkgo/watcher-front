@@ -626,6 +626,12 @@ let comm = function(){
                     //
                     // $(".member_set.logOut").show();
                     // $(".loginStart").hide();
+                    sessionStorage.setItem("loginId",res.loginId);
+                    sessionStorage.setItem("loginType",res.loginType);
+                    sessionStorage.setItem("memberId",res.memberId);
+                    sessionStorage.setItem("sessionId",res.sessionId);
+                    sessionStorage.setItem("apiToken",res.apiToken);
+
 
                     window.location.reload();
                 })
@@ -664,7 +670,7 @@ let comm = function(){
 
                     $("body").append(loginHtml);
 
-                    $(".btn_start").click(function () {
+                    $(".btn_start").on("click", function () {
                         $("#backbg").fadeIn("slow");
                         $(".pop_wrap").show();
                     });
@@ -717,7 +723,7 @@ let comm = function(){
             }
 
             let ajaxOpt = {
-                url: opt.url,
+                url: "http://localhost:8081"+opt.url,
                 type:opt.method || 'POST',
                 data : opt.data || null,
                 beforeSend: function (xhr) {

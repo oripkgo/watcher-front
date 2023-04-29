@@ -1,3 +1,4 @@
+
 const naverLoginSuccess = {
     init : function(naverObj, token, callbackUrl){
         const naver_id_login = new naverObj(token, callbackUrl);
@@ -8,16 +9,17 @@ const naverLoginSuccess = {
     },
 
     callbackNaverLogin : function(){
-        if (window.opener) {
-            window.opener = window.opener;
-        } else {   //IE11
+        if (!window.opener) {
             window.opener = window.open('', 'parentWindow');
         }
 
         if( window.opener.login_success_callback ){
-            window.opener.login_success_callback($.extend(window['inner_profileParams'],{"type":"naver"}));
+            window.opener.login_success_callback( Object.assign(window['inner_profileParams'], {"type":"naver"}));
         }
 
         window.close();
     },
 }
+
+window.naverLoginSuccess = naverLoginSuccess;
+export default naverLoginSuccess;
