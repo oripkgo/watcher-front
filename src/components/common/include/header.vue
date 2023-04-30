@@ -8,8 +8,11 @@
       <a href="/notice/list">NOTICE</a>
     </div>
     <div class="top_navi">
-<!--      <a href="javascript:;" class="member_set logOut"><img src="@/resources/img/member_ico_b.png"></a>-->
-      <a href="javascript:;" class="btn_start loginStart" >시작하기</a>
+      <a v-if="loginInfo.isLogin" href="javascript:;" class="member_set logOut">
+        <img v-if="loginInfo.memProfileImg" :src="loginInfo.memProfileImg">
+        <img v-else src="@/resources/img/member_ico_b.png">
+      </a>
+      <a v-else href="javascript:;" class="btn_start loginStart" >시작하기</a>
     </div>
 
   </div>
@@ -32,6 +35,17 @@
     name: 'headerPage',
     props: {
       msg: String
+    },
+    data() {
+      return {
+        loginInfo: {
+          loginId: window.loginId,
+          isLogin: window.loginYn,
+          loginType: window.loginType,
+          memProfileImg: window.memProfileImg,
+          memberId: window.memberId,
+        },
+      }
     },
     mounted() {
       comm.loginObj.init(window.loginType);

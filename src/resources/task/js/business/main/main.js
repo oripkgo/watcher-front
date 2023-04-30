@@ -1,3 +1,8 @@
+import $ from 'jquery';
+import Swiper from 'swiper';
+
+import comm from "@/resources/task/js/common/comm.js";
+
 const keywordListUrl = '/keyword/popular';
 const keywordSearchUrl = '/keyword/search';
 const categoryListUrl = '/story/list/data';
@@ -11,7 +16,7 @@ const mainObj = {
             this.getPopularList();
         },
 
-        search : function(obj){
+        search : function(/*obj*/){
             if( event.type == 'keypress' && event.keyCode != 13 ){
                 return;
             }
@@ -44,12 +49,12 @@ const mainObj = {
         render: function (list) {
             let $node = $('<a href="javascript:;"></a>');
             $("#popularKeywordList").empty();
-            list.forEach(function (obj, idx) {
+            list.forEach(function (obj/*, idx*/) {
                 let $nodeCopy = $($node).clone(true);
                 let nodeHtml = '';
 
                 if (obj['CATEGORY_IMG_PATH']) {
-                    nodeHtml += '<img src="' + obj['CATEGORY_IMG_PATH'] + '">';
+                    nodeHtml += '<img src="' + window.apiHost + obj['CATEGORY_IMG_PATH'] + '">';
                 }
 
                 nodeHtml += '<div>';
@@ -57,7 +62,7 @@ const mainObj = {
                 nodeHtml += '	<span>#' + obj['TAGS'] + '</span>';
                 nodeHtml += '</div>';
 
-                $($nodeCopy).attr("href", getStoryListUrl(obj['CATEGORY_ID'], obj['TAGS']))
+                $($nodeCopy).attr("href", window.getStoryListUrl(obj['CATEGORY_ID'], obj['TAGS']))
 
                 $($nodeCopy).data(obj);
                 $($nodeCopy).html(nodeHtml);
@@ -105,13 +110,13 @@ const mainObj = {
                 for (let i = 0; i < data.list.length; i++) {
                     let obj = data.list[i];
                     let listHtml = '';
-                    let listNum = ((data.vo.pageNo - 1) * data.vo.listNo) + (i + 1);
+                    // let listNum = ((data.vo.pageNo - 1) * data.vo.listNo) + (i + 1);
 
                     listHtml += '<li>';
-                    listHtml += '    <a href="' + getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '">';
+                    listHtml += '    <a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '">';
 
                     if( obj.THUMBNAIL_IMG_PATH ){
-                        listHtml += '<div><img src="'+obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g,'/')+'"></div>';
+                        listHtml += '<div><img src="' + window.apiHost + obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/') + '"></div>';
                     }
 
                     listHtml += '        <strong>'+obj.TITLE+'</strong>';
@@ -134,7 +139,7 @@ const mainObj = {
                     if( obj.TAGS ){
                         let tag_arr = obj.TAGS.split(',');
 
-                        tag_arr.forEach(function(tag,index){
+                        tag_arr.forEach(function(tag/*,index*/){
                             listHtml += '        <a href="javascript:;">#'+tag.trim()+'</a>';
                         })
                     }
@@ -194,7 +199,7 @@ const mainObj = {
                 var obj = "#tab_box .obj";
                 var img = false;
                 var event = "click";
-                document_tab(param,btn,obj,img,event);
+                window.document_tab(param,btn,obj,img,event);
             },
         },
     },
@@ -275,10 +280,10 @@ const mainObj = {
                         return;
                     }
 
-                    data.list.forEach(function (obj, idx) {
+                    data.list.forEach(function (obj/*, idx*/) {
                         let copyNode = $(node).clone(true);
                         $(copyNode).text(obj['TITLE']);
-                        $(copyNode).attr("href", getNoticeViewUrl(obj['ID']));
+                        $(copyNode).attr("href", window.getNoticeViewUrl(obj['ID']));
 
                         $(copyNode).data(obj)
 
@@ -323,7 +328,7 @@ const mainObj = {
                         let storyHtml = '';
 
                         if( obj.THUMBNAIL_IMG_PATH ){
-                            storyHtml += '<img width="1000" height="500" src="'+obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g,'/')+'">';
+                            storyHtml += '<img width="1000" height="500" src="' + window.apiHost + obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/') + '">';
                         }else{
                             return;
                         }
@@ -333,15 +338,13 @@ const mainObj = {
                         storyHtml += '<strong>'+obj.TITLE+'</strong>';
 
                         let summary = obj.SUMMARY || '';
-                        if( summary.length < 100 ){
-                            summary = summary;
-                        }else{
+                        if( !(summary.length < 100) ){
                             summary = summary.substring(0,100)+' ...';
                         }
 
                         storyHtml += '<span>'+summary+'</span>';
                         storyHtml += '<em>by ' + obj.NICKNAME + '</em>';
-                        storyHtml += '<a href="' + getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '"><img src="/resources/img/btn_more.png"></a>';
+                        storyHtml += '<a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '"><img src="' + window.apiHost + '/resources/img/btn_more.png"></a>';
                         storyHtml += '</div>';
 
                         $(story).html(storyHtml)
@@ -361,3 +364,5 @@ const mainObj = {
     },
 
 }
+
+export default mainObj;

@@ -63,9 +63,9 @@
       <div class="keyword_wrap ani_y delay2">
         <div class="keyword_tit">keyword</div>
         <div class="keyword_search">
-          <input type="text" onkeypress="mainObj.keyword.search(this);" name="keyword" id="keyword"
+          <input type="text" v-on:keypress="mainObj.keyword.search(this);" name="keyword" id="keyword"
                  placeholder="나의 감성을 더해줄 이야기를 찾아보세요.">
-          <a href="javascript:;" onclick="mainObj.keyword.search(this);"><img
+          <a href="javascript:;" v-on:click="mainObj.keyword.search(this);"><img
               src="@/resources/img/btn_search_b.png"></a>
         </div>
         <div class="keyword_box_wrap" id="popularKeywordList"></div>
@@ -75,6 +75,11 @@
 </template>
 
 <script>
+import mainObj from "@/resources/task/js/business/main/main.js";
+import comm from "@/resources/task/js/common/comm.js";
+
+const categoryApiUrl = '/comm/category/list';
+
   export default {
     name: 'mainPage',
     props: {
@@ -83,11 +88,23 @@
 
     data() {
       return {
-
+        mainObj:mainObj,
       };
     },
 
     mounted() {
+
+      comm.request({url: categoryApiUrl, method: "GET"}, function (resp) {
+        // 수정 성공
+        if (resp.code == '0000') {
+          mainObj.category.init(resp.category_list);
+        }
+      })
+
+      mainObj.swiper.init();
+      mainObj.notice.init();
+      mainObj.story.init();
+      mainObj.keyword.init();
 
     },
   }

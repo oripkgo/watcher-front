@@ -563,7 +563,7 @@ let comm = function(){
                 naver_id_login.setPopup();
                 naver_id_login.is_callback = true;
                 naver_id_login.init_naver_id_login_callback = function(){
-                    $("img","#naver_id_login").attr("src","/resources/img/login_naver.png");
+                    $("img","#naver_id_login").attr("src",window.LOGIN_BTN_IMG_NAVER);
                     $("img","#naver_id_login").css({
                         width: 'auto',height: 'auto'
                     })
@@ -626,9 +626,11 @@ let comm = function(){
                     //
                     // $(".member_set.logOut").show();
                     // $(".loginStart").hide();
+                    sessionStorage.clear();
                     sessionStorage.setItem("loginId",res.loginId);
                     sessionStorage.setItem("loginType",res.loginType);
                     sessionStorage.setItem("memberId",res.memberId);
+                    sessionStorage.setItem("memProfileImg",res.memProfileImg);
                     sessionStorage.setItem("sessionId",res.sessionId);
                     sessionStorage.setItem("apiToken",res.apiToken);
 
@@ -659,8 +661,8 @@ let comm = function(){
                     loginHtml += '	<a href="javascript:;" class="btn_close"></a>';
                     loginHtml += '	<div class="pop_tit">로그인</div>';
                     loginHtml += '	<div class="btn_pop">';
-                    loginHtml += '		<a href="javascript:;" id="kakao-login-btn"><img src="'+window.LOGIN_BTN_IMG_KAKAO+'"></a>';
-                    loginHtml += '		<a href="javascript:;" id="naver_id_login"><img src="'+window.LOGIN_BTN_IMG_NAVER+'"></a>';
+                    loginHtml += '		<a href="javascript:;" id="kakao-login-btn"><img src="'+window.LOGIN_BTN_IMG_KAKAO+'"/></a>';
+                    loginHtml += '		<a href="javascript:;" id="naver_id_login"><img src="'+window.LOGIN_BTN_IMG_NAVER+'"/></a>';
                     loginHtml += '	</div>';
                     loginHtml += '</div>';
 
@@ -710,6 +712,8 @@ let comm = function(){
                                 callback(res);
                             }
 
+                            sessionStorage.clear();
+
                             window.location.reload();
                         })
                     }
@@ -723,7 +727,7 @@ let comm = function(){
             }
 
             let ajaxOpt = {
-                url: "http://localhost:8081"+opt.url,
+                url: window.apiHost + opt.url,
                 type:opt.method || 'POST',
                 data : opt.data || null,
                 beforeSend: function (xhr) {

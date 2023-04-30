@@ -1,6 +1,5 @@
 <template>
   <headerPage/>
-<!--  <mainPage/>-->
   <router-view></router-view>
   <footerPage/>
 </template>
@@ -21,6 +20,7 @@
     },
 
     mounted() {
+      console.log(process.env)
       let $this = this;
 
       $.fn.anchorAnimate = function (settings) {
