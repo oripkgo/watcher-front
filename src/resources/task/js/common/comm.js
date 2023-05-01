@@ -782,6 +782,10 @@ let comm = function(){
                 ajaxOpt['contentType'] = opt['contentType'];
             }
 
+            if( Object.hasOwnProperty.call(opt, "async") ){
+                ajaxOpt['async'] = opt['async'];
+            }
+
             $.ajax(ajaxOpt)
         },
 
