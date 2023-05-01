@@ -22,7 +22,7 @@ const globalObj = {
     memProfileImg: sessionStorage.getItem("memProfileImg"),
     memberId: sessionStorage.getItem("memberId"),
     nowStoryMemId: sessionStorage.getItem("memberId"),
-    apiToken: sessionStorage.getItem("apiToken")+"11",
+    apiToken: sessionStorage.getItem("apiToken"),
 
 
     getStoryListUrl: function (categoryId, keyword) {
