@@ -1042,16 +1042,23 @@ let comm = function(){
         },
 
         token: {
-            getNonMember: function(){
-                if( !sessionStorage.getItem("apiToken") ){
-                    comm.request({url: "/comm/token/non-members", method: "GET", async: false}, function (resp) {
-                        // 수정 성공
-                        if (resp.code == '0000') {
-                            window.apiToken = resp.apiToken;
-                            sessionStorage.setItem("apiToken", resp.apiToken);
-                        }
-                    })
+            getNonMember: function () {
+                const param = {
+                    token: (sessionStorage.getItem("apiToken") || "")
                 }
+                comm.request({
+                    url: "/comm/token",
+                    method: "POST",
+                    data: JSON.stringify(param),
+                    async: false
+                }, function (resp) {
+                    // 수정 성공
+                    if (resp.code == '0000') {
+                        debugger;
+                        window.apiToken = resp.apiToken;
+                        sessionStorage.setItem("apiToken", resp.apiToken);
+                    }
+                })
             },
         },
     };
