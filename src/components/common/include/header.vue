@@ -48,6 +48,8 @@
       }
     },
     mounted() {
+      comm.token.getNonMember();
+
       comm.loginObj.init(window.loginType);
       comm.loginObj.kakaoInit(window.Kakao);
       comm.loginObj.naverInit(window.naver_id_login);
