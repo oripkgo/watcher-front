@@ -1054,7 +1054,6 @@ let comm = function(){
                 }, function (resp) {
                     // 수정 성공
                     if (resp.code == '0000') {
-                        debugger;
                         window.apiToken = resp.apiToken;
                         sessionStorage.setItem("apiToken", resp.apiToken);
                     }
