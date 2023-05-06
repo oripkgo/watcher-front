@@ -338,9 +338,9 @@ let comm = function(){
                         });
 
                         if( call_resp_obj.LIKE_YN == 'N' ){
-                            $(option.likeTarget).css({"background":"url('/resources/img/zim_ico.png') no-repeat left center"});
+                            $(option.likeTarget).css({"background":"url('"+require("@/resources/img/zim_ico.png")+"') no-repeat left center"});
                         }else{
-                            $(option.likeTarget).css({"background":"url('/resources/img/icon_heart_on.png') no-repeat left center"});
+                            $(option.likeTarget).css({"background":"url('"+require("@/resources/img/icon_heart_on.png")+"') no-repeat left center"});
                         }
                     }
 
@@ -367,7 +367,7 @@ let comm = function(){
 
                                     delete $($this).data().likeId;
 
-                                    $(option.likeTarget).css({"background":"url('/resources/img/zim_ico.png') no-repeat left center"});
+                                    $(option.likeTarget).css({"background":"url('"+require("@/resources/img/zim_ico.png")+"') no-repeat left center"});
                                 }else{
                                     let likecnt = ($($this).data('likecnt')*1)+1
                                     $($this).text( '공감 ' + likecnt );
@@ -377,7 +377,7 @@ let comm = function(){
 
                                     $($this).data().likeYn = "Y";
 
-                                    $(option.likeTarget).css({"background":"url('/resources/img/icon_heart_on.png') no-repeat left center"});
+                                    $(option.likeTarget).css({"background":"url('"+require("@/resources/img/icon_heart_on.png")+"') no-repeat left center"});
                                 }
                             });
                         }else{
