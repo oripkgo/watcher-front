@@ -9,6 +9,7 @@ import Privacy from "@/components/views/terms/Privacy"
 import NaverLoginSuccess from "@/components/views/login/NaverLoginSuccess"
 import StoryView from "@/components/views/story/StoryView";
 import StoryList from "@/components/views/story/StoryList";
+import StoryWrite from "@/components/views/story/StoryWrite";
 
 const router = createRouter({
     history : createWebHistory(),
@@ -21,6 +22,8 @@ const router = createRouter({
         { path : "/terms/privacy",          name : "privacy",           component : Privacy },
         { path : "/login/loginSuccess",     name : "naverLoginSuccess", component : NaverLoginSuccess },
         { path : "/story/list",             name : "storyList",         component : StoryList },
+        { path : "/story/write",            name : "storyWrite",        component : StoryWrite },
+        { path : "/story/update",           name : "storyUpdate",       component : StoryWrite },
         { path : "/:memId/story/view",      name : "storyView",         component : StoryView },
 
 

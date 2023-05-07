@@ -126,7 +126,7 @@
 
 <form id="story_write_form">
 
-    <input type="hidden" name="id"                  id="id"                 value="${vo.ID}"    >
+    <input type="hidden" name="id"                  id="id"                 :value="vo.ID"      >
     <input type="hidden" name="categoryId"          id="categoryId"                             >
     <input type="hidden" name="memberCategoryId"    id="memberCategoryId"                       >
     <input type="hidden" name="contents"            id="contents"                               >
@@ -135,12 +135,6 @@
         <div class="ani-in manage_layout">
 
             <div class="manage_conts">
-
-                <%--<div class="story_top">
-                    <select id="story_category">
-                        <option value="">카테고리</option>
-                    </select>
-                </div>--%>
 
                 <div class="story_tb">
 
@@ -189,15 +183,10 @@
 
                 </div>
 
-                <%--<div class="story_tag"><input type="text" name="tags" id="tags" placeholder="태그를 입력하세요 (ex:태그1,태그2,태그3)"></div>--%>
-
                 <div class="not_btn">
                     <a href="javascript:;" class="on write_confirm">작성완료</a>
                     <a href="javascript:;" class="write_cancel">작성취소</a>
                 </div>
-
-
-
 
             </div><!-------------//manage_conts------------->
 
