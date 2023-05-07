@@ -263,6 +263,20 @@ let comm = function(){
     };
 
     const publicObj = {
+        category : {
+            categoryApiUrl  : '/comm/category/list',
+            getCategory : function(){
+                let category_list = [];
+                comm.request({url: this.categoryApiUrl, method: "GET", async: false}, function (resp) {
+                    // 수정 성공
+                    if (resp.code == '0000') {
+                        category_list = resp['category_list'];
+                    }
+                })
+
+                return category_list;
+            },
+        },
         validation : function(target){
             let checkVal = false;
             $("input:not([type='hidden']),select,textarea",target).each(function(){

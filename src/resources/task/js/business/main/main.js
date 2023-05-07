@@ -77,7 +77,7 @@ const mainObj = {
         listUrl : storyListUrl,
         data : [],
         init : function(){
-            this.data = JSON.parse(this.getCategory())
+            this.data = JSON.parse(comm.category.getCategory())
             const categoryObj = this;
             categoryObj.data.forEach(function(obj,idx){
                 const id = obj['ID'];
@@ -97,18 +97,6 @@ const mainObj = {
                 // 추천순 목록
                 categoryObj.recommendedList(id);
             })
-        },
-
-        getCategory : function(){
-            let category_list = [];
-            comm.request({url: this.categoryApiUrl, method: "GET", async: false}, function (resp) {
-                // 수정 성공
-                if (resp.code == '0000') {
-                    category_list = resp.category_list;
-                }
-            })
-
-            return category_list;
         },
 
         recommendedList : function(id){
