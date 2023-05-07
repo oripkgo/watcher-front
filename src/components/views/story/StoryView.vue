@@ -20,24 +20,22 @@
     </div>
   </div>
 
-  <div class="section uline2">
-    <div class="ani-in sub_layout rline">
-      <div class="conts_wrap ani_y delay2">
-
-        <div id="storyContents"></div>
-
-        <div class="conts_sns">
-          <a href="javascript:;" class="zimm like" :data-likecnt="vo['LIKE_CNT']">공감 {{ vo['LIKE_CNT'] }}</a>
+  <form id="storyViewForm" name="storyViewForm">
+    <div class="section uline2">
+      <div class="ani-in sub_layout rline">
+        <div class="conts_wrap ani_y delay2">
+          <div id="storyContents"></div>
+          <div class="conts_sns">
+            <a href="javascript:;" class="zimm like" :data-likecnt="vo['LIKE_CNT']">공감 {{ vo['LIKE_CNT'] }}</a>
+          </div>
+          <div class="conts_tag">
+            <strong class="conts_tit">태그</strong>
+          </div>
+          <div class="conts_review"></div>
         </div>
-
-        <div class="conts_tag">
-          <strong class="conts_tit">태그</strong>
-        </div>
-
-        <div class="conts_review"></div>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>

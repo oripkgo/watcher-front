@@ -6,29 +6,6 @@ let comm = function(){
     const naverKey = 'ThouS3nsCEwGnhkMwI1I';
     const comment_delete_msg = "해당 댓글을 삭제하시겠습니까?";
 
-    let comment_li = '';
-
-    comment_li += '<li>';
-    comment_li += '    <div class="member_re"><img class="profile" src="/resources/img/member_ico.png"></div>';
-    comment_li += '    <div class="review_info">';
-    comment_li += '        <em class="writer"></em>';
-    comment_li += '        <img src="/resources/img/line.png">';
-    comment_li += '            <span class="writer_time"></span>';
-    comment_li += '            <img src="/resources/img/line.png" class="declaration_line">';
-    comment_li += '                <span class="accuse declaration">신고</span>';
-    comment_li += '            <img src="/resources/img/line.png" class="update_line">';
-    comment_li += '                 <span class="accuse update">수정</span>';
-    comment_li += '            <img src="/resources/img/line.png" class="delete_line">';
-    comment_li += '                 <span class="accuse delete">삭제</span>';
-    comment_li += '                <strong class="contents"></strong>';
-    comment_li += '                <div class="write_wrap" style="display: none;">';
-    comment_li += '                     <textarea placeholder="입력" name="coment_modify"></textarea><a href="javascript:;" id="coment_modify">확인</a></div>';
-    comment_li += '                </div>';
-// comment_li += '                <a href="javascript:;" class="see_replies">답글보기</a>';
-// comment_li += '                <a href="javascript:;" class="Write_a_reply">답글달기</a>';
-    comment_li += '    </div>';
-    comment_li += '</li>';
-
     let loginProcessEventHtml = '';
 
     loginProcessEventHtml += '<div class="member_app logOut" style="display: none;">';
@@ -41,6 +18,33 @@ let comm = function(){
     const privateObj = {
         comment : {
             getRegId : {},
+
+            getComentLi : function(){
+                let comment_li = '';
+
+                comment_li += '<li>';
+                comment_li += '    <div class="member_re"><img class="profile" src="'+require("@/resources/img/member_ico.png")+'"></div>';
+                comment_li += '    <div class="review_info">';
+                comment_li += '        <em class="writer"></em>';
+                comment_li += '        <img src="'+require("@/resources/img/line.png")+'">';
+                comment_li += '            <span class="writer_time"></span>';
+                comment_li += '            <img src="'+require("@/resources/img/line.png")+'" class="declaration_line">';
+                comment_li += '                <span class="accuse declaration">신고</span>';
+                comment_li += '            <img src="'+require("@/resources/img/line.png")+'" class="update_line">';
+                comment_li += '                 <span class="accuse update">수정</span>';
+                comment_li += '            <img src="'+require("@/resources/img/line.png")+'" class="delete_line">';
+                comment_li += '                 <span class="accuse delete">삭제</span>';
+                comment_li += '                <strong class="contents"></strong>';
+                comment_li += '                <div class="write_wrap" style="display: none;">';
+                comment_li += '                     <textarea placeholder="입력" name="coment_modify"></textarea><a href="javascript:;" id="coment_modify">확인</a></div>';
+                comment_li += '                </div>';
+                // comment_li += '                <a href="javascript:;" class="see_replies">답글보기</a>';
+                // comment_li += '                <a href="javascript:;" class="Write_a_reply">답글달기</a>';
+                comment_li += '    </div>';
+                comment_li += '</li>';
+
+                return comment_li;
+            },
             getComment : function(commentObj){
                 return  $(commentObj).val().replace(/[\n]/g,'<br>');
             },
@@ -86,7 +90,7 @@ let comm = function(){
                                 const thisObj = $(this);
                                 const comment = privateObj.comment.getComment($($(thisObj).parents('.write_wrap')).find("textarea"));
                                 param.coment = comment;
-                                comm.request({url:"/board/update/comment", data : JSON.stringify(param)},function(resp){
+                                comm.request({url:"/board/comment/update", data : JSON.stringify(param)},function(resp){
                                     // 수정 성공
                                     if( resp.code == '0000'){
                                         const review_info = $(thisObj).parents(".review_info");
@@ -127,6 +131,7 @@ let comm = function(){
                 })
             },
             setting: function(contents_type, contents_id, target, cnt, list, login_yn){
+                const $this = this;
                 let $conts_review = $('<div class="conts_review" id="conts_review"></div>');
 
                 $($conts_review).html('<strong class="conts_tit comment_cnt" data-cnt="'+cnt+'">댓글<em>'+cnt+'</em></strong>');
@@ -164,7 +169,7 @@ let comm = function(){
 
                             // 등록성공
                             if( resp.code == '0000'){
-                                let comment_obj = $(comment_li);
+                                let comment_obj = $($this.getComentLi());
 
                                 $(".profile"                , comment_obj).attr("src",profile_img);
                                 $(".writer"                 , comment_obj).html(resp.comment['nickName']);
@@ -214,7 +219,7 @@ let comm = function(){
                 if( list && list.length > 0 ){
                     for(let i=0;i<list.length;i++){
                         let listObj = list[i];
-                        let comment_obj = $(comment_li);
+                        let comment_obj = $(this.getComentLi());
 
                         let profile_img_arr = "/resources/img/member_ico.png";
 
@@ -399,7 +404,6 @@ let comm = function(){
 
                         //function(form,url,callback,pageNo,totalCnt,sPageNo,ePageNo,listNo,pagigRange){
                         comm.list(_pageForm, "/board/comment/select", function(comment_resp){
-
                             privateObj.comment.setting(
                                 param.contentsType,
                                 param.contentsId,
@@ -940,10 +944,14 @@ let comm = function(){
 
                     var pageHtml = '';
                     if( pageObj.startPageNo <= 1 ){
-                        pageHtml += '<a href="javascript:;"><img src="/resources/img/prev_arrow.png"></a>';
+                        pageHtml += '<a href="javascript:;">';
+                        pageHtml += '<img src="'+require("@/resources/img/prev_arrow.png")+'">';
+                        pageHtml += '</a>';
                     }else{
                         //pageHtml += '<a href="#none" class="first" title="처음" onclick="'+listFunc.replace("[pageNo]",1)+'"><span> << 처음</span></a>';
-                        pageHtml += '<a href="javascript:;" onclick="'+listFunc.replace("[pageNo]",pageObj.startPageNo-1)+'"><img src="/resources/img/prev_arrow.png"></a>';
+                        pageHtml += '<a href="javascript:;" onclick="'+listFunc.replace("[pageNo]",pageObj.startPageNo-1)+'">';
+                        pageHtml += '<img src="'+require("@/resources/img/prev_arrow.png")+'">';
+                        pageHtml += '</a>';
                     }
 
                     for(var i =pageObj.startPageNo;i<=pageObj.endPageNo;i++){
@@ -955,10 +963,13 @@ let comm = function(){
                     }
 
                     if( pageObj.endPageNo >= lastPage ){
-                        pageHtml += '<a href="javascript:;"><img src="/resources/img/next_arrow.png"></a>';
-                        pageHtml += '';
+                        pageHtml += '<a href="javascript:;">';
+                        pageHtml += '<img src="'+require("@/resources/img/next_arrow.png")+'">';
+                        pageHtml += '</a>';
                     }else{
-                        pageHtml += '<a href="javascript:;" onclick="'+listFunc.replace("[pageNo]",pageObj.endPageNo+1)+'"><img src="/resources/img/next_arrow.png"></a>';
+                        pageHtml += '<a href="javascript:;" onclick="'+listFunc.replace("[pageNo]",pageObj.endPageNo+1)+'">';
+                        pageHtml += '<img src="'+require("@/resources/img/next_arrow.png")+'">';
+                        pageHtml += '</a>';
                         //pageHtml += '<a href="#none" class="last" title="마지막" onclick="'+listFunc.replace("[pageNo]",lastPage)+'"><span>마지막 >> </span></a>';
                     }
 
