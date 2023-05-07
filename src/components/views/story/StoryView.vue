@@ -57,53 +57,73 @@
 
     mounted() {
       const $this = this;
-      comm.request({url: "/" + $this.memId + "/story/view?id=" + $this.id, method: "GET", async: false}, function (resp) {
-        // 삭제 성공
-        if (resp.code == '0000') {
-          $this.isModifyAuthorityYn = resp['modify_authority_yn'];
-          $this.vo = resp['view'];
-          $this.regDate = resp['view']['REG_DATE'];
 
-          $("#storyContents").replaceWith($this.vo['CONTENTS'])
-        }
-      })
+      this.setStoryInfo($this);
 
-      // 지난 시간 세팅
-      $("#last_time").html(comm.last_time_cal($this.regDate));
+      this.pastDate($this);
 
-      comm.board_view_init(
-          $this.type,
-          $this.id,
-          function () {},
-          {"likeTarget": ".like", "tagsTarget": ".conts_tag", "commentTarget": ".conts_review"}
-      );
+      this.setTagAndComment($this);
 
-      // 수정
-      $("#story_update").on("click", function () {
-        location.href = "/story/update?id=" + $this.id;
-      });
+      this.setEvent($this);
+    },
 
-      // 삭제
-      $("#story_delete").on("click", function () {
-        comm.message.confirm("스토리를 삭제하시겠습니까?", function (status) {
-          if (status) {
-            comm.request({
-              url: "/story/delete",
-              data: JSON.stringify({id: $this.id})
-            }, function (resp) {
-              if (resp.code == '0000') {
-                comm.message.alert('삭제가 완료되었습니다.', function () {
-                  location.href = '/story/list';
-                });
-              }
-            });
+    methods: {
+      setStoryInfo($this) {
+        comm.request({url: "/" + $this.memId + "/story/view?id=" + $this.id, method: "GET", async: false}, function (resp) {
+          // 삭제 성공
+          if (resp.code == '0000') {
+            $this.isModifyAuthorityYn = resp['modify_authority_yn'];
+            $this.vo = resp['view'];
+            $this.regDate = resp['view']['REG_DATE'];
+
+            $("#storyContents").replaceWith($this.vo['CONTENTS'])
           }
         })
-      });
+      },
 
-      $(".sns_btn").click(function () {
-        $(".sns_view").slideToggle("fast");
-      });
+      pastDate : function($this){
+        // 지난 시간 세팅
+        $("#last_time").html(comm.last_time_cal($this.regDate));
+      },
+
+      setTagAndComment : function($this){
+        comm.initBoardView(
+            $this.type,
+            $this.id,
+            function () {},
+            {"likeTarget": ".like", "tagsTarget": ".conts_tag", "commentTarget": ".conts_review"}
+        );
+      },
+
+      setEvent : function($this){
+        // 수정
+        $("#story_update").on("click", function () {
+          location.href = "/story/update?id=" + $this.id;
+        });
+
+        // 삭제
+        $("#story_delete").on("click", function () {
+          comm.message.confirm("스토리를 삭제하시겠습니까?", function (status) {
+            if (status) {
+              comm.request({
+                url: "/story/delete",
+                data: JSON.stringify({id: $this.id})
+              }, function (resp) {
+                if (resp.code == '0000') {
+                  comm.message.alert('삭제가 완료되었습니다.', function () {
+                    location.href = '/story/list';
+                  });
+                }
+              });
+            }
+          })
+        });
+
+        $(".sns_btn").click(function () {
+          $(".sns_view").slideToggle("fast");
+        });
+      },
+
     },
   };
 </script>
