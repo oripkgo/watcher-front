@@ -314,7 +314,7 @@ let comm = function(){
             return checkVal;
         },
 
-        board_view_init : function(viewType, viewId, callback, option){
+        initBoardView : function(viewType, viewId, callback, option){
             let param = {
                 "contentsType"  : viewType,
                 "contentsId"    : viewId,

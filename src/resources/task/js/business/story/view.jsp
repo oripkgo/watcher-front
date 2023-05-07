@@ -16,7 +16,7 @@
         // 지난 시간 세팅
         $("#last_time").html( comm.last_time_cal(regDate) );
 
-        comm.board_view_init(type, id, function(resp){},{"likeTarget":".like", "tagsTarget":".conts_tag", "commentTarget":".conts_review"});
+        comm.initBoardView(type, id, function(resp){},{"likeTarget":".like", "tagsTarget":".conts_tag", "commentTarget":".conts_review"});
 
         // 수정
         $("#story_update").on("click",function(){
