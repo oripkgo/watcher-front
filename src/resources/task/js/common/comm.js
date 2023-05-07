@@ -6,15 +6,6 @@ let comm = function(){
     const naverKey = 'ThouS3nsCEwGnhkMwI1I';
     const comment_delete_msg = "해당 댓글을 삭제하시겠습니까?";
 
-    let loginProcessEventHtml = '';
-
-    loginProcessEventHtml += '<div class="member_app logOut" style="display: none;">';
-    loginProcessEventHtml += '    <a href="/'+window.memberId+'/myStory" id="myStory">내 스토리</a>';
-    loginProcessEventHtml += '    <a href="/management/main" id="management">관리</a>';
-    loginProcessEventHtml += '    <a href="'+window.storyUrlWrite+'" id="writing">글쓰기</a>';
-    loginProcessEventHtml += '    <a href="javascript:;" id="logout">로그아웃</a>';
-    loginProcessEventHtml += '</div>';
-
     const privateObj = {
         comment : {
             getRegId : {},
@@ -528,6 +519,20 @@ let comm = function(){
                 window['login_success_callback'] = this.login_success_callback;
             },
 
+            getLoginProcessEventHtml : function(){
+                let loginProcessEventHtml = '';
+
+                loginProcessEventHtml += '<div class="member_app logOut" style="display: none;">';
+                loginProcessEventHtml += '    <a href="/'+window.memberId+'/myStory" id="myStory">내 스토리</a>';
+                loginProcessEventHtml += '    <a href="/management/main" id="management">관리</a>';
+                loginProcessEventHtml += '    <a href="'+window.storyUrlWrite+'" id="writing">글쓰기</a>';
+                loginProcessEventHtml += '    <a href="javascript:;" id="logout">로그아웃</a>';
+                loginProcessEventHtml += '</div>';
+
+                return loginProcessEventHtml;
+
+            },
+
             kakaoInit : function(kakaoObj){
                 kakaoObj.init(kakaoKey);
                 kakaoObj.isInitialized();
@@ -644,9 +649,10 @@ let comm = function(){
             },
 
             loginProcessEvent : function(type){
+                const $this = this;
                 $(document).on("ready",function(){
 
-                    $('.member_set.logOut').after(loginProcessEventHtml)
+                    $('.member_set.logOut').after($this.getLoginProcessEventHtml())
 
                     $(".member_set").on("click",function(){
                         $(".member_app").slideToggle("fast");
