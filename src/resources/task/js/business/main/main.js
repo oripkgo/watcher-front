@@ -5,9 +5,9 @@ import comm from "@/resources/task/js/common/comm.js";
 
 const keywordListUrl = '/keyword/popular';
 const keywordSearchUrl = '/keyword/search';
-const categoryListUrl = '/story/list/data';
+const storyListUrl = '/story/list/data';
 const noticeListUrl = '/notice/list/data';
-const storyListUrl = '/story/popular';
+const popularStoryListUrl = '/story/popular';
 
 const mainObj = {
     keyword : {
@@ -73,10 +73,11 @@ const mainObj = {
     },
 
     category : {
-        listUrl : categoryListUrl,
+        categoryApiUrl  : '/comm/category/list',
+        listUrl : storyListUrl,
         data : [],
-        init : function(categoryList){
-            this.data = JSON.parse(categoryList)
+        init : function(){
+            this.data = JSON.parse(this.getCategory())
             const categoryObj = this;
             categoryObj.data.forEach(function(obj,idx){
                 const id = obj['ID'];
@@ -96,6 +97,18 @@ const mainObj = {
                 // 추천순 목록
                 categoryObj.recommendedList(id);
             })
+        },
+
+        getCategory : function(){
+            let category_list = [];
+            comm.request({url: this.categoryApiUrl, method: "GET", async: false}, function (resp) {
+                // 수정 성공
+                if (resp.code == '0000') {
+                    category_list = resp.category_list;
+                }
+            })
+
+            return category_list;
         },
 
         recommendedList : function(id){
@@ -317,7 +330,7 @@ const mainObj = {
         },
         getPopularList : function(){
             comm.request({
-                url: storyListUrl,
+                url: popularStoryListUrl,
                 method : "GET",
                 headers : {"Content-type":"application/x-www-form-urlencoded"},
             },function(data){

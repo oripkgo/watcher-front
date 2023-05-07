@@ -76,9 +76,6 @@
 
 <script>
 import mainObj from "@/resources/task/js/business/main/main.js";
-import comm from "@/resources/task/js/common/comm.js";
-
-const categoryApiUrl = '/comm/category/list';
 
   export default {
     name: 'mainPage',
@@ -93,19 +90,11 @@ const categoryApiUrl = '/comm/category/list';
     },
 
     mounted() {
-
-      comm.request({url: categoryApiUrl, method: "GET"}, function (resp) {
-        // 수정 성공
-        if (resp.code == '0000') {
-          mainObj.category.init(resp.category_list);
-        }
-      })
-
       mainObj.swiper.init();
       mainObj.notice.init();
       mainObj.story.init();
       mainObj.keyword.init();
-
+      mainObj.category.init();
     },
   }
 </script>
