@@ -11,9 +11,9 @@
           <span id="last_time"></span>
 
           <div class="btn_basic" v-if="isModifyAuthorityYn === 'Y'">
-            <a href="javascript:;" id="story_update">수정</a>
+            <a href="javascript:;" v-on:click="this.updateStory()">수정</a>
             <img src="@/resources/img/line.png">
-            <a href="javascript:;" id="story_delete">삭제</a>
+            <a href="javascript:;" v-on:click="this.deleteStory()">삭제</a>
           </div>
         </div>
       </div>
@@ -68,7 +68,7 @@
     },
 
     methods: {
-      setStoryInfo($this) {
+      setStoryInfo : function($this) {
         comm.request({url: "/" + $this.memId + "/story/view?id=" + $this.id, method: "GET", async: false}, function (resp) {
           // 삭제 성공
           if (resp.code == '0000') {
@@ -95,30 +95,30 @@
         );
       },
 
-      setEvent : function($this){
-        // 수정
-        $("#story_update").on("click", function () {
-          location.href = "/story/update?id=" + $this.id;
-        });
+      updateStory : function(){
+        const $this = this;
+        location.href = "/story/update?id=" + $this.id;
+      },
 
-        // 삭제
-        $("#story_delete").on("click", function () {
-          comm.message.confirm("스토리를 삭제하시겠습니까?", function (status) {
-            if (status) {
-              comm.request({
-                url: "/story/delete",
-                data: JSON.stringify({id: $this.id})
-              }, function (resp) {
-                if (resp.code == '0000') {
-                  comm.message.alert('삭제가 완료되었습니다.', function () {
-                    location.href = '/story/list';
-                  });
-                }
-              });
-            }
-          })
-        });
+      deleteStory : function(){
+        const $this = this;
+        comm.message.confirm("스토리를 삭제하시겠습니까?", function (status) {
+          if (status) {
+            comm.request({
+              url: "/story/delete",
+              data: JSON.stringify({id: $this.id})
+            }, function (resp) {
+              if (resp.code == '0000') {
+                comm.message.alert('삭제가 완료되었습니다.', function () {
+                  location.href = '/story/list';
+                });
+              }
+            });
+          }
+        })
+      },
 
+      setEvent : function(){
         $(".sns_btn").click(function () {
           $(".sns_view").slideToggle("fast");
         });
