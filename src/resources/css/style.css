@@ -63,7 +63,7 @@ img {max-width:100%;}
 .head_tip {clear:both;height:100px;}
 
 .logo a {display:inline-block;position:absolute;top:20px;left:5%;font-size:26px;color:#fff;font-weight:700;padding:10px 10px 10px 36px;background:url('../img/ico_home.png') no-repeat left center;}
-.menu_wrap {display:inline-block;padding:33px 10px;}
+.menu_wrap {display:inline-block;padding:33px 10px;margin-left:75px;}
 .menu_wrap a {display:inline-block;vertical-align:top;font-size:24px;color:#fff;font-weight:700;text-transform:uppercase;padding:0px;border-bottom:2px solid transparent;margin:0px 30px;transition:all 0.2s ease-out; -webkit-transition:all 0.2s ease-out;}
 .menu_wrap a.on, .menu_wrap a:hover {border-bottom:2px solid #fff;}
 
