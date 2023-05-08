@@ -36,23 +36,23 @@
               </tr>
               <tr>
                 <th>제목</th>
-                <td><input type="text" name="title" id="title" placeholder="제목을 입력하세요" value="${vo.TITLE}"></td>
+                <td><input type="text" name="title" id="title" placeholder="제목을 입력하세요" :value="vo['TITLE']"></td>
               </tr>
               <tr>
                 <td colspan="2">
-                  <div id="editor" class="editor">${vo.CONTENTS}</div>
+                  <div id="editor" class="editor" v-html="vo['CONTENTS']"></div>
                 </td>
               </tr>
               <tr>
                 <th class="non">태그</th>
-                <td class="non"><input type="text" name="tags" id="tags" placeholder="태그를 입력하세요 (ex:태그1,태그2,태그3)" value="${vo.TAGS}"></td>
+                <td class="non"><input type="text" name="tags" id="tags" placeholder="태그를 입력하세요 (ex:태그1,태그2,태그3)" :value="vo['TAGS']"></td>
               </tr>
               <tr>
                 <th class="non">첨부파일1</th>
                 <td class="non story_thumbnailImg">
                   <label for="thumbnailImgPathParam" class="input-file-button">썸네일 이미지</label>
                   <input type="file" name="thumbnailImgPathParam" id="thumbnailImgPathParam" accept="image/gif, image/jpeg, image/png">
-                  <input type="text" disabled name="thumbnailImgPathParam_text" id="thumbnailImgPathParam_text" placeholder="썸네일 이미지를 선택하세요" value="${vo.REAL_FILE_NAME}">
+                  <input type="text" disabled name="thumbnailImgPathParam_text" id="thumbnailImgPathParam_text" placeholder="썸네일 이미지를 선택하세요" :value="vo['REAL_FILE_NAME']">
                 </td>
               </tr>
               </tbody></table>
@@ -70,9 +70,6 @@
     </div>
   </form>
 </template>
-
-
-<!--<c:set var="vo" value="${view}"/>-->
 
 <script>
 import $ from 'jquery';
@@ -104,13 +101,19 @@ export default {
   data() {
     const $this = this;
     const vo = $this.getStoryInfo();
-    return {
+    const result = {
       category_list : JSON.parse(comm.category.getCategory()),
-      vo: vo,
-      id: vo['ID'],
-      categoryId : vo['CATEGORY_ID'],
-      memberCategoryId : vo['MEMBER_CATEGORY_ID'],
+      vo : {},
+    };
+
+    if( vo ){
+      result['vo'] = vo;
+      result['id'] = vo['ID'];
+      result['categoryId'] = vo['CATEGORY_ID'];
+      result['memberCategoryId'] = vo['MEMBER_CATEGORY_ID'];
     }
+
+    return result;
   },
 
   mounted() {
@@ -194,6 +197,15 @@ export default {
     console.log(quill);
 
     $this.valueSetting($this);
+
+    if( this.vo ){
+      $("#story_category").val(this.vo['CATEGORY_ID']);
+      $("#secretYn").val(this.vo['SECRET_YN'] || "N");
+      $("#title").val(this.vo['TITLE']);
+      $("#editor").val(this.vo['CONTENTS']);
+      $("#tags").val(this.vo['TAGS']);
+      $("#thumbnailImgPathParam_text").val(this.vo['REAL_FILE_NAME']);
+    }
   },
 
   methods : {
