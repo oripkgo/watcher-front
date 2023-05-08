@@ -20,9 +20,6 @@
     })
 </script>
 
-
-
-
 <div class="section">
     <div class="ani-in sub_layout">
 
@@ -33,17 +30,6 @@
                 <em>by ${vo.NICKNAME}</em>
                 <img src="/resources/img/line.png">
                 <span id="last_time"></span>
-
-                <%--
-                <c:if test="${result.modify_authority_yn eq 'Y'}">
-                    <div class="btn_basic">
-                        <a href="javascript:;" id="story_update">수정</a>
-                        <img src="/resources/img/line.png">
-                        <a href="javascript:;" id="story_delete">삭제</a>
-                    </div>
-                </c:if>
-                --%>
-
             </div>
         </div>
 
@@ -53,20 +39,7 @@
 
 <form id="noticeForm" name="noticeForm" method="get">
     <div class="section uline2">
-       <%-- <div class="black_line"></div>--%>
-
-        <div class="ani-in sub_layout rline <%--uline--%>">
-
-           <%--
-           <div class="ad_banner_left">
-                <span>AD</span>
-            </div>
-
-            <div class="ad_banner_right">
-                <span>AD</span>
-            </div>
-            --%>
-
+        <div class="ani-in sub_layout rline">
             <div class="conts_wrap ani_y delay2">
 
                 ${vo.CONTENTS}
@@ -74,25 +47,6 @@
                 <div class="conts_sns">
                     <a href="javascript:;" class="zimm like" data-likecnt="${vo.LIKE_CNT}">공감 ${vo.LIKE_CNT}</a>
 
-                    <%--
-                    <a href="javascript:;" class="sns_btn"></a>
-                    <a href="javascript:;" class="read_btn">구독하기</a>
-                    --%>
-                    <%--
-                    <div class="sns_view">
-                        <div class="uptip"></div>
-                        <span>해당 글 SNS에 공유하기</span>
-                        <p>
-                            <a href="javascript:;"><img src="/resources/img/sns01.png"></a>
-                            <a href="javascript:;"><img src="/resources/img/sns02.png"></a>
-                            <a href="javascript:;"><img src="/resources/img/sns03.png"></a>
-                            <a href="javascript:;"><img src="/resources/img/sns04.png"></a>
-                            <a href="javascript:;"><img src="/resources/img/sns05.png"></a>
-                            <a href="javascript:;"><img src="/resources/img/sns06.png"></a>
-                        </p>
-                        <a href="javascript:;" class="btn_url">url 복사</a>
-                    </div>
-                    --%>
                 </div>
                 <script>
                     $(".sns_btn").click(function () {
@@ -102,60 +56,11 @@
 
                 <div class="conts_tag" style="display: none;">
                     <strong class="conts_tit">태그</strong>
-                    <%--
-                    <a href="javascript:;">#컬처</a>
-                    <a href="javascript:;">#영화</a>
-                    <a href="javascript:;">#영화컬처</a>
-                    --%>
                 </div>
 
-
-                <div class="conts_review">
-                    <%--<strong class="conts_tit">댓글<em>2</em></strong>
-                    <ul>
-                        <li>
-                            <div class="member_re"><img src="/resources/img/member_ico.png"></div>
-                            <div class="review_info">
-                                <em>gauni1229</em>
-                                <img src="/resources/img/line.png">
-                                <span>1시간</span>
-                                <img src="/resources/img/line.png">
-                                <span class="accuse">신고</span>
-                                <strong>자신에게서 해답이 있겠지요.화이팅</strong>
-                                <a href="javascript:;">답글달기</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="member_re"><img src="/resources/img/member_ico.png"></div>
-                            <div class="review_info">
-                                <em>gauni1229</em>
-                                <img src="/resources/img/line.png">
-                                <span>1시간</span>
-                                <img src="/resources/img/line.png">
-                                <span class="accuse">신고</span>
-                                <strong>자신에게서 해답이 있겠지요.화이팅</strong>
-                                <a href="javascript:;">답글달기</a>
-                            </div>
-                        </li>
-                    </ul>--%>
-                </div>
-
-                <%--
-                <div class="write_wrap">
-                    <textarea placeholder="로그인하고 댓글을 입력해보세요!"></textarea>
-                    <a href="javascript:;">확인</a>
-                </div>
-                --%>
-
-             <%--
-                <div class="ad_banner">
-                    <span>AD</span>
-                </div>
-               --%>
+                <div class="conts_review"></div>
 
             </div>
-
         </div>
     </div>
-
 </form>

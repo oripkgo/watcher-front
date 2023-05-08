@@ -11,6 +11,7 @@ import StoryView from "@/components/views/story/StoryView";
 import StoryList from "@/components/views/story/StoryList";
 import StoryWrite from "@/components/views/story/StoryWrite";
 import NoticeList from "@/components/views/notice/NoticeList";
+import NoticeView from "@/components/views/notice/NoticeView";
 
 const router = createRouter({
     history : createWebHistory(),
@@ -27,6 +28,7 @@ const router = createRouter({
         { path : "/story/update",           name : "storyUpdate",       component : StoryWrite },
         { path : "/:memId/story/view",      name : "storyView",         component : StoryView },
         { path : "/notice/list",            name : "noticeList",        component : NoticeList },
+        { path : "/notice/view",            name : "noticeView",        component : NoticeView },
 
 
         /*{

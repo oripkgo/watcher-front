@@ -1,4 +1,3 @@
-
 <template>
   <form id="noticeForm" name="noticeForm" method="get">
     <div class="section uline2">
@@ -53,103 +52,103 @@
 </template>
 
 <script>
-  import $ from 'jquery';
-  import comm from "@/resources/task/js/common/comm.js";
+import $ from 'jquery';
+import comm from "@/resources/task/js/common/comm.js";
 
-  export default {
-    data() {
-      const $this = this;
+export default {
+  data() {
+    const $this = this;
 
-      const data = $this.getNoticeInfo();
-      const result = {
-        noticeListUrl: data['noticeListUrl'],
-        listNo: data['vo']['listNo'],
-        pageNoRange: data['vo']['pagigRange'],
-        searchMemId: null,
-      }
+    const data = $this.getNoticeInfo();
+    const result = {
+      noticeListUrl: data['noticeListUrl'],
+      listNo: data['vo']['listNo'],
+      pageNoRange: data['vo']['pagigRange'],
+      searchMemId: null,
+    }
 
-      if (data['vo'] && data['vo']['search_memId']) {
-        result['searchMemId'] = data['vo']['search_memId'];
-      }
+    if (data['vo'] && data['vo']['search_memId']) {
+      result['searchMemId'] = data['vo']['search_memId'];
+    }
 
-      return result;
-    },
+    return result;
+  },
 
-    mounted() {
-      const $this = this;
-      $("#search").on("click", function () {
-        $this.search($this);
-      });
-
-      $("#search_keyword").on("keypress", function (e) {
-        if (e.keyCode == 13) {
-          $this.search($this);
-          return false;
-        }
-      });
-
-      $(".manage_btn").click(function () {
-        $(".manage_menu").toggleClass("on");
-      });
-
+  mounted() {
+    const $this = this;
+    $("#search").on("click", function () {
       $this.search($this);
-    },
+    });
 
-    methods: {
-      getNoticeInfo : function(){
-        const $this = this;
-        let data = {};
-        let path = $this.$route['fullPath'];
+    $("#search_keyword").on("keypress", function (e) {
+      if (e.keyCode == 13) {
+        $this.search($this);
+        return false;
+      }
+    });
 
-        comm.request({
-          url: path,
-          method: "GET",
-          async: false
-        }, function (resp) {
-          // 삭제 성공
-          if (resp.code == '0000') {
-            data = {
-              noticeListUrl : resp['noticeListUrl'],
-              vo : resp['vo'],
-            };
-          }
-        })
+    $(".manage_btn").click(function () {
+      $(".manage_menu").toggleClass("on");
+    });
 
-        return data;
+    $this.search($this);
+  },
 
-      },
+  methods: {
+    getNoticeInfo: function () {
+      const $this = this;
+      let data = {};
+      let path = $this.$route['fullPath'];
 
-      search : function($this){
-        comm.list('#noticeForm', $this.noticeListUrl, $this.listCallback, 1, $this.listNo, $this.pageNoRange);
-      },
-
-      listCallback(data) {
-        const $this = this;
-        $("#dataList").empty();
-
-        for (let i = 0; i < data.list.length; i++) {
-          let obj = data.list[i];
-          let listHtml = '';
-          let listNum = ((data.vo.pageNo - 1) * data.vo.listNo) + (i + 1);
-
-          listHtml += '<tr>                                                                               ';
-          // listHtml += '    <td><input type="checkbox"></td>                                            ';
-          listHtml += '    <td>' + listNum + '</td>                                                         ';
-          listHtml += '    <td>                                                                           ';
-          listHtml += '        <a href="' + window.getNoticeViewUrl(obj.ID, $this.searchMemId) + '" class="subject_link">' + obj.TITLE + '</a>';
-          listHtml += '    </td>                                                                          ';
-          listHtml += '    <td>' + obj.NICKNAME + '</td>';
-          listHtml += '    <td>' + obj.REG_DATE.substring(2) + '</td>';
-          listHtml += '    <td>' + obj.VIEW_CNT + '</td>';
-          listHtml += '</tr>                                                                           ';
-          listHtml = $(listHtml);
-
-          $(listHtml).data(obj);
-
-          $("#dataList").append(listHtml);
+      comm.request({
+        url: path,
+        method: "GET",
+        async: false
+      }, function (resp) {
+        // 삭제 성공
+        if (resp.code == '0000') {
+          data = {
+            noticeListUrl: resp['noticeListUrl'],
+            vo: resp['vo'],
+          };
         }
-      },
+      })
+
+      return data;
+
     },
-  }
+
+    search: function ($this) {
+      comm.list('#noticeForm', $this.noticeListUrl, $this.listCallback, 1, $this.listNo, $this.pageNoRange);
+    },
+
+    listCallback(data) {
+      const $this = this;
+      $("#dataList").empty();
+
+      for (let i = 0; i < data.list.length; i++) {
+        let obj = data.list[i];
+        let listHtml = '';
+        let listNum = ((data.vo.pageNo - 1) * data.vo.listNo) + (i + 1);
+
+        listHtml += '<tr>                                                                               ';
+        // listHtml += '    <td><input type="checkbox"></td>                                            ';
+        listHtml += '    <td>' + listNum + '</td>                                                         ';
+        listHtml += '    <td>                                                                           ';
+        listHtml += '        <a href="' + window.getNoticeViewUrl(obj.ID, $this.searchMemId) + '" class="subject_link">' + obj.TITLE + '</a>';
+        listHtml += '    </td>                                                                          ';
+        listHtml += '    <td>' + obj.NICKNAME + '</td>';
+        listHtml += '    <td>' + obj.REG_DATE.substring(2) + '</td>';
+        listHtml += '    <td>' + obj.VIEW_CNT + '</td>';
+        listHtml += '</tr>                                                                           ';
+        listHtml = $(listHtml);
+
+        $(listHtml).data(obj);
+
+        $("#dataList").append(listHtml);
+      }
+    },
+  },
+}
 </script>
 
