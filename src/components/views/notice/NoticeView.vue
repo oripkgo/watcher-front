@@ -73,7 +73,7 @@ import comm from "@/resources/task/js/common/comm.js";
         // 지난 시간 세팅
         $("#last_time").html( comm.last_time_cal($this.regDate) );
 
-        $("#noticeContents").replaceWith($this.vo['CONTENTS'])
+        $("#noticeContents").replaceWith($this.vo['CONTENTS'].replace(/\/resources/g, window.apiHost +"/resources"))
 
         comm.initBoardView($this.type, $this.id, function(){},{"likeTarget":".like", "tagsTarget":".conts_tag", "commentTarget":".conts_review"});
 
