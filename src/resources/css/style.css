@@ -391,7 +391,7 @@ a.hover_line:hover {
 .search_right_box input[type=text] {margin-left:10px;margin-right:10px;flex:3;display:inline-block;vertical-align:top;border:none;height:30px;font-size:14px;font-weight:400;color:#000;padding-left:0px;width:55%;}
 .search_right_box a {display:inline-block;vertical-align:top;background:url('../img/btn_search_b.png') no-repeat center;width:30px;height:30px;background-size:60% auto;}
 .search_right_box img {height:18px;}
-.search_right_box select {flex:1;display:inline-block;vertical-align:top;border:none;height:30px;font-size:14px;font-weight:400;color:#000;}
+.search_right_box select {display:inline-block;vertical-align:top;border:none;height:30px;font-size:14px;font-weight:400;color:#000;}
 
 .board_basic {}
 .board_basic table {width:100%;}
