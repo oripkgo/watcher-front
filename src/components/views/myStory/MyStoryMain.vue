@@ -53,7 +53,7 @@ import comm from "@/resources/task/js/common/comm.js";
     data() {
       const $this = this;
       const data = $this.getMyStoryInfo();
-      const vo = {}
+      const vo = data['vo'];
 
       const result = {
         notice_show_cnt: 4,
@@ -76,6 +76,10 @@ import comm from "@/resources/task/js/common/comm.js";
         result['boardTitle'] = (vo['category_nm'] || '전체글')
       }
 
+      if( data.categoryListYn ){
+        result['categoryListYn'] = data.categoryListYn;
+      }
+
       return result
     },
 
@@ -86,7 +90,7 @@ import comm from "@/resources/task/js/common/comm.js";
       $this.initCategory($this.member_category_list, $this);
 
       // 공지사항 세팅
-      $this.initNotice($this.myStory_search_memberId);
+      $this.initNotice($this.myStory_search_memberId, $this);
 
       // 나의 스토리 세팅
       $this.initMyStory($this.myStory_search_memberId, $this.categoryId, $this);
@@ -106,6 +110,7 @@ import comm from "@/resources/task/js/common/comm.js";
           // 삭제 성공
           if (resp.code == '0000') {
             data = {
+              categoryListYn: resp['categoryListYn'],
               member_category_list: resp['member_category_list'],
               memId: resp['memId'],
               vo: resp['vo'],
@@ -128,10 +133,8 @@ import comm from "@/resources/task/js/common/comm.js";
       },
 
       initMyStory : function(uid, categId, $this){
-
         comm.appendInput('#myStoryForm', "search_memId"         , uid       );
         comm.appendInput('#myStoryForm', "search_category_id"   , categId   );
-
 
         comm.list('#myStoryForm', $this.myStorylistDataUrl,function(data){
 
@@ -160,7 +163,7 @@ import comm from "@/resources/task/js/common/comm.js";
             listHtml += '</span>';
 
             if( obj.THUMBNAIL_IMG_PATH ){
-              listHtml += '        <img src="'+obj.THUMBNAIL_IMG_PATH+'">';
+              listHtml += '        <img src="' + window.apiHost + obj.THUMBNAIL_IMG_PATH + '">';
             }
 
             listHtml += '    </a>';
@@ -191,9 +194,7 @@ import comm from "@/resources/task/js/common/comm.js";
             $(listHtml).data(obj);
 
             $("#myStoryList").append(listHtml);
-
           }
-
 
         }, $this.pageNo, $this.listNo, $this.pagigRange);
       },
@@ -204,7 +205,6 @@ import comm from "@/resources/task/js/common/comm.js";
           , method: "GET"
           , headers: {"Content-type": "application/x-www-form-urlencoded"}
         }, function (data) {
-
           if( data.code == '0000' && ( data.list && data.list.length > 0 ) ){
 
             $(".notice_list").empty();
@@ -221,9 +221,7 @@ import comm from "@/resources/task/js/common/comm.js";
               li.append('<em>'+(obj['UPT_DATE'] || obj['REG_DATE'])+'</em>');
               $(".notice_list").append(li);
             }
-
           }
-
         });
 
         $("#notice_more").on("click", function(){
