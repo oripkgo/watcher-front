@@ -6,8 +6,8 @@
 
 <script>
   import $ from 'jquery';
-  import headerPage from '@/components/common/include/header';
-  import footerPage from '@/components/common/include/footer';
+  import headerPage from '@/components/common/include/Header';
+  import footerPage from '@/components/common/include/Footer';
 
   let animateQueue = new Array();
   let ready = true;
