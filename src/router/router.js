@@ -13,6 +13,7 @@ import StoryWrite from "@/components/views/story/StoryWrite";
 import NoticeList from "@/components/views/notice/NoticeList";
 import NoticeView from "@/components/views/notice/NoticeView";
 import MyStoryMain from "@/components/views/myStory/MyStoryMain";
+import ManagementMain from "@/components/views/management/ManagementMain";
 
 const router = createRouter({
     history : createWebHistory(),
@@ -34,6 +35,7 @@ const router = createRouter({
         { path : "/:memId/notice/view",             name : "noticeViewMember",      component : NoticeView },
         { path : "/:memId/myStory",                 name : "myStoryMain",           component : MyStoryMain },
         { path : "/:memId/myStory/:categoryId",     name : "myStoryMainCategory",   component : MyStoryMain },
+        { path : "/management/main",                name : "managementMain",        component : ManagementMain },
 
         /*{
             path : "/:pathMatch(.*)",

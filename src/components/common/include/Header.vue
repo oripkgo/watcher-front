@@ -48,7 +48,7 @@
       }
     },
     mounted() {
-      comm.token.getNonMember();
+      comm.token.get();
 
       comm.loginObj.init(window.loginType);
       comm.loginObj.kakaoInit(window.Kakao);
