@@ -743,6 +743,10 @@ let comm = function(){
         },
 
         request: function (opt, succCall, errCall) {
+            if( window['requestDissabled'] ){
+                return;
+            }
+
             if( opt.form ){
                 opt.data = comm.serializeJson($(opt.form).serializeArray());
             }
@@ -1070,10 +1074,22 @@ let comm = function(){
         },
 
         token: {
-            getNonMember: function () {
+            get: function () {
                 const param = {
                     token: (sessionStorage.getItem("apiToken") || "")
                 }
+
+                const removeSession = function(){
+                    sessionStorage.clear();
+                    delete window.loginId;
+                    delete window.loginYn;
+                    delete window.loginType;
+                    delete window.memProfileImg;
+                    delete window.memberId;
+                    delete window.nowStoryMemId;
+                    delete window.apiToken;
+                }
+
                 comm.request({
                     url: "/comm/token",
                     method: "POST",
@@ -1084,7 +1100,16 @@ let comm = function(){
                     if (resp.code == '0000') {
                         window.apiToken = resp.apiToken;
                         sessionStorage.setItem("apiToken", resp.apiToken);
+
+                        if( window.loginYn && resp.loginYn == 'N' ){
+                            removeSession();
+                            window['requestDissabled'] = true;
+                            comm.message.alert("세션유지 시간 초과");
+                            window.location.reload();
+                        }
                     }
+                },function (){
+                    removeSession();
                 })
             },
         },
