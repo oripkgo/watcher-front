@@ -1,3 +1,6 @@
+import $ from 'jquery';
+import comm from "@/resources/task/js/common/comm.js";
+
 const storyPublicUrl = '/management/board/storys/public';
 const storyPrivateUrl = '/management/board/storys/private';
 const storyDeleteUrl = '/management/board/storys';
@@ -13,7 +16,7 @@ const boardObj = {
     },
 
     goWritingPage : function(){
-        window.location.href = getStoryWriteUrl();
+        window.location.href = window.getStoryWriteUrl();
     },
 
     confirmCheckBox : function(){
@@ -133,7 +136,7 @@ const boardObj = {
         $(selObj).empty();
         $(selObj).append('<option value="">카테고리</option>')
 
-        category_list.forEach(function(obj,idx){
+        category_list.forEach(function(obj){
             const id = obj['ID'];
             const nm = obj['CATEGORY_NM'];
 
@@ -170,39 +173,39 @@ const boardObj = {
         for (let i = 0; i < data.list.length; i++) {
             let obj = data.list[i];
             let listHtml = '';
-            let listNum = ((data.vo.pageNo - 1) * data.vo.listNo) + (i + 1);
-            let secretStatus = obj.SECRET_YN == 'Y' ? "비공개" : "공개";
+            // let listNum = ((data.vo.pageNo - 1) * data.vo.listNo) + (i + 1);
+            let secretStatus = obj['SECRET_YN'] == 'Y' ? "비공개" : "공개";
 
             listHtml += '<td><input type="checkbox" class="check"></td>                                                         ';
             listHtml += '<td>'+secretStatus+'</td>                                                                              ';
-            listHtml += '<td><a href="' + getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="kind_link">'+obj.CATEGORY_NM+'</a></td>           ';
+            listHtml += '<td><a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="kind_link">'+obj['CATEGORY_NM']+'</a></td>           ';
             listHtml += '<td>                                                                                                   ';
-            listHtml += '    <a href="' + getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="subject_link">                                    ';
-            listHtml += '        <strong>'+obj.TITLE+'</strong>                                                                 ';
-            listHtml += '        <span>'+obj.SUMMARY+'</span>                                                                   ';
+            listHtml += '    <a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="subject_link">                                    ';
+            listHtml += '        <strong>'+obj['TITLE']+'</strong>                                                                 ';
+            listHtml += '        <span>'+obj['SUMMARY']+'</span>                                                                   ';
             listHtml += '    </a>                                                                                               ';
             listHtml += '    <div class="story_key">                                                                            ';
 
-            if( obj.TAGS ){
+            if( obj['TAGS'] ){
                 let tag_arr = obj.TAGS.split(',');
 
-                tag_arr.forEach(function(tag,index){
+                tag_arr.forEach(function(tag){
                     listHtml += '        <a href="javascript:;">#'+tag.trim()+'</a>';
                 })
             }
 
             listHtml += '    </div>                                                                                        ';
             listHtml += '    <div class="story_key">                                                                       ';
-            listHtml += '        <span>'+comm.last_time_cal(obj.REG_DATE)+'</span>                                         ';
-            listHtml += '        <span>공감 ' + obj.LIKE_CNT + '</span>                                                      ';
-            listHtml += '        <span>댓글 ' + obj.COMMENT_CNT + '</span>                                                   ';
+            listHtml += '        <span>'+comm.last_time_cal(obj['REG_DATE'])+'</span>                                         ';
+            listHtml += '        <span>공감 ' + obj['LIKE_CNT'] + '</span>                                                      ';
+            listHtml += '        <span>댓글 ' + obj['COMMENT_CNT'] + '</span>                                                   ';
             listHtml += '    </div>                                                                                        ';
             listHtml += '</td>                                                                                             ';
             listHtml += '<td>                                                                                              ';
-            listHtml += '    <a href="' + getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="pic_link">                                   ';
+            listHtml += '    <a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="pic_link">                                   ';
 
-            if( obj.THUMBNAIL_IMG_PATH ){
-                listHtml += '<img src="'+obj.THUMBNAIL_IMG_PATH+'">';
+            if( obj['THUMBNAIL_IMG_PATH'] ){
+                listHtml += '<img src="'+obj['THUMBNAIL_IMG_PATH']+'">';
             }else{
                 listHtml += '<img src="">';
             }
@@ -224,3 +227,5 @@ const boardObj = {
         comm.list("#managementBoardForm", storyListUrl, thisObj.listCallback, 1, 10, 10);
     },
 };
+
+export default boardObj;
