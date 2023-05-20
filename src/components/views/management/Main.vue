@@ -5,7 +5,7 @@
         <commMenu/>
         <div class="manage_box_wrap">
           <commVisitorInfo/>
-          <div  class="graph_wrap">
+          <div class="graph_wrap">
             <commCharts/>
           </div>
           <commPopularArticles/>
@@ -22,6 +22,7 @@ import commCharts from "@/components/views/management/include/CommCharts";
 import commPopularArticles from "@/components/views/management/include/CommPopularArticles";
 
 export default {
+  name: "managementMain",
   components: {
     commMenu,
     commVisitorInfo,

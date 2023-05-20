@@ -50,6 +50,8 @@ import $ from 'jquery';
 import comm from "@/resources/task/js/common/comm.js";
 
   export default {
+    name:"myStoryMain",
+
     data() {
       const $this = this;
       const data = $this.getMyStoryInfo();
