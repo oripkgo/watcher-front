@@ -187,7 +187,7 @@ const boardObj = {
             listHtml += '    <div class="story_key">                                                                            ';
 
             if( obj['TAGS'] ){
-                let tag_arr = obj.TAGS.split(',');
+                let tag_arr = obj['TAGS'].split(',');
 
                 tag_arr.forEach(function(tag){
                     listHtml += '        <a href="javascript:;">#'+tag.trim()+'</a>';
@@ -205,7 +205,7 @@ const boardObj = {
             listHtml += '    <a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="pic_link">                                   ';
 
             if( obj['THUMBNAIL_IMG_PATH'] ){
-                listHtml += '<img src="'+obj['THUMBNAIL_IMG_PATH']+'">';
+                listHtml += '<img src="'+ window.getServerImg(obj['THUMBNAIL_IMG_PATH']) +'">';
             }else{
                 listHtml += '<img src="">';
             }
@@ -229,3 +229,4 @@ const boardObj = {
 };
 
 export default boardObj;
+window['boardObj'] = boardObj;
