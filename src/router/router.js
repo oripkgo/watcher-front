@@ -12,8 +12,8 @@ import StoryList from "@/components/views/story/StoryList";
 import StoryWrite from "@/components/views/story/StoryWrite";
 import NoticeList from "@/components/views/notice/NoticeList";
 import NoticeView from "@/components/views/notice/NoticeView";
-import MyStoryMain from "@/components/views/myStory/MyStoryMain";
-import ManagementMain from "@/components/views/management/ManagementMain";
+import MyStoryMain from "@/components/views/myStory/Main";
+import ManagementMain from "@/components/views/management/Main";
 import ManagementBoard from "@/components/views/management/Board";
 
 const router = createRouter({
