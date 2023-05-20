@@ -1,13 +1,10 @@
+import $ from 'jquery';
+import comm from "@/resources/task/js/common/comm.js";
+
+const categoryInsertUrl = "/management/category/insert";
 const categListSpaceNm = "category_left";
 const categListNm = "category_1st";
 const categSelectNm = "categorySelect";
-const field_names = {
-    title: "categoryNm",
-    topic: "defalutCategId",
-    file: "representativeImage",
-    secret: "showYn",
-    explanation: "categoryComents",
-};
 const formId = '#managementCategoryForm';
 
 let category_list;
@@ -32,7 +29,7 @@ const categoryObj = {
     },
 
     setSelectCategory : function(){
-        category_list.forEach(function(obj,idx){
+        category_list.forEach(function(obj){
             const option = thisObj.getSelectCategoryOptionObj();
 
             $(option).text(obj.CATEGORY_NM);
@@ -44,7 +41,7 @@ const categoryObj = {
     },
 
     setCategoryList : function(){
-        member_category_list.forEach(function(obj,idx){
+        member_category_list.forEach(function(obj){
             const category = thisObj.getCategoryTagObj();
 
             $(category).text(obj.CATEGORY_NM);
@@ -66,7 +63,7 @@ const categoryObj = {
     },
 
     applyCategoryEvents : function(){
-        $("." + categListNm, "." + categListSpaceNm).off("click").on("click", function(e){
+        $("." + categListNm, "." + categListSpaceNm).off("click").on("click", function(){
             if ($("." + categListNm+".on", "." + categListSpaceNm).length > 0 && comm.validation(formId)) {
                 return
             }
@@ -87,7 +84,7 @@ const categoryObj = {
     },
 
     applyEventCategoryInfoFields : function(){
-        $("#categoryNm").on("keyup", function (e) {
+        $("#categoryNm").on("keyup", function () {
             $("." + categListNm+".on", "." + categListSpaceNm).text($(this).val());
         })
 
@@ -185,7 +182,7 @@ const categoryObj = {
                 let param = {};
                 param.paramJson = JSON.stringify(jsonArr);
 
-                comm.request({url:"/management/category/insert", method : "POST", data : JSON.stringify(param)},function(resp){
+                comm.request({url: categoryInsertUrl , method : "POST", data : JSON.stringify(param)},function(resp){
                     // 수정 성공
                     if( resp.code == '0000'){
                         comm.message.alert("카테고리가 저장되었습니다.");
@@ -197,9 +194,9 @@ const categoryObj = {
 
     isCategoryListCheck : function(){
         let checkVal = false;
-        $('.category_1st').each(function(obj){
-            const thisObj = $(this);
-            const data = $(thisObj).data();
+        $('.category_1st').each(function(){
+            const clickTargetObj = $(this);
+            const data = $(clickTargetObj).data();
 
             if( checkVal )
                 return;
@@ -208,7 +205,7 @@ const categoryObj = {
                 checkVal = true;
 
                 $("." + categListNm, "." + categListSpaceNm).removeClass("on")
-                $(thisObj).addClass("on");
+                $(clickTargetObj).addClass("on");
                 thisObj.setCategoryInfoInField($("." + categListNm+".on", "." + categListSpaceNm).data());
 
                 if( !(data['CATEGORY_NM']) ){
@@ -228,3 +225,5 @@ const categoryObj = {
         return checkVal;
     },
 };
+
+export default categoryObj;
