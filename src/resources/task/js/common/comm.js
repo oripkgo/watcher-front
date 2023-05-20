@@ -265,9 +265,21 @@ let comm = function(){
     const publicObj = {
         category : {
             categoryApiUrl  : '/comm/category/list',
+            categoryMemberApiUrl  : '/comm/category/list',
             getCategory : function(){
-                let category_list = [];
+                let category_list = "[]";
                 comm.request({url: this.categoryApiUrl, method: "GET", async: false}, function (resp) {
+                    // 수정 성공
+                    if (resp.code == '0000') {
+                        category_list = resp['category_list'];
+                    }
+                })
+
+                return category_list;
+            },
+            getCategoryMember : function(){
+                let category_list = "[]";
+                comm.request({url: this.categoryMemberApiUrl, method: "GET", async: false}, function (resp) {
                     // 수정 성공
                     if (resp.code == '0000') {
                         category_list = resp['category_list'];
