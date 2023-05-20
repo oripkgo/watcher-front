@@ -163,7 +163,7 @@ import comm from "@/resources/task/js/common/comm.js";
             listHtml += '</span>';
 
             if( obj.THUMBNAIL_IMG_PATH ){
-              listHtml += '        <img src="' + window.apiHost + obj.THUMBNAIL_IMG_PATH + '">';
+              listHtml += '        <img src="' + window.getServerImg(obj['THUMBNAIL_IMG_PATH']) + '">';
             }
 
             listHtml += '    </a>';

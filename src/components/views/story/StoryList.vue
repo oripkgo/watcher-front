@@ -151,7 +151,7 @@ export default {
           listHtml += '    <a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '">';
 
           if( obj.THUMBNAIL_IMG_PATH ){
-            listHtml += '<div><img src="'+ window.apiHost + obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g,'/') +'"></div>';
+            listHtml += '<div><img src="' + window.getServerImg(obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/')) + '"></div>';
           }
 
           listHtml += '        <strong>'+obj.TITLE+'</strong>';
@@ -226,8 +226,8 @@ export default {
 
           listHtml += '</span>';
 
-          if( obj.THUMBNAIL_IMG_PATH ){
-            listHtml += '        <img src="' + window.apiHost + obj.THUMBNAIL_IMG_PATH + '">';
+          if( obj['THUMBNAIL_IMG_PATH'] ){
+            listHtml += '        <img src="' + window.getServerImg(obj['THUMBNAIL_IMG_PATH']) + '">';
           }
 
           listHtml += '    </a>';

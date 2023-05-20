@@ -28,7 +28,7 @@ export default {
           let liObj = $("<li></li>");
           let liHtml = '';
           liHtml += '<a href="'+window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID'])+'">                          ';
-          liHtml += '    <img src="' + obj['THUMBNAIL_IMG_PATH'] + '">                  ';
+          liHtml += '    <img src="' + window.getServerImg(obj['THUMBNAIL_IMG_PATH']) + '">                  ';
           liHtml += '        <strong>[' + obj['CATEGORY_NM'] + '] ' + obj['TITLE'] + '</strong> ';
           liHtml += '        <span>' + obj['SUMMARY'] + '</span>                         ';
           liHtml += '</a>                                                         ';

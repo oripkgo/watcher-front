@@ -54,6 +54,9 @@ const globalObj = {
     getNoticeWriteUrl: function () {
         return this.noticeUrlWrite;
     },
+    getServerImg: function(path){
+        return (path ? this.apiHost + path : "");
+    },
 }
 
 Object.assign(window, globalObj);
