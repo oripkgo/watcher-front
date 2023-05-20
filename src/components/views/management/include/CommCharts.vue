@@ -11,7 +11,7 @@ import comm from "@/resources/task/js/common/comm.js";
     name: 'commCharts',
     mounted() {
       const $this = this;
-      $this.getDailyVisitors();
+      $this.getDailyVisitors($this);
     },
     methods:{
       getDrawTarget : function(){
