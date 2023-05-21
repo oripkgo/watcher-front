@@ -171,7 +171,6 @@ const boardObj = {
         $("#storyList").empty();
         $("#storyList").append(thisObj.getTrHead());
 
-        debugger;
         for (let i = 0; i < data.list.length; i++) {
             let obj = data.list[i];
             let listHtml = '';
