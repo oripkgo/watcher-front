@@ -128,18 +128,17 @@ import comm from "@/resources/task/js/common/comm.js";
           list.forEach(function(obj){
             const a = $('<a></a>');
             $(a).text(obj.CATEGORY_NM);
-            $(a).attr('href', "/"+$this.myStory_search_memberId+"/myStory/"+ obj.DEFALUT_CATEG_ID+"?category_nm="+encodeURIComponent(obj.CATEGORY_NM));
+            $(a).attr('href', "/"+$this.myStory_search_memberId+"/myStory/"+ obj.ID+"?category_nm="+encodeURIComponent(obj.CATEGORY_NM));
             $(".mystory_menu, .mystory_menu_mobile").append(a);
           })
         }
       },
 
       initMyStory : function(uid, categId, $this){
-        comm.appendInput('#myStoryForm', "search_memId"         , uid       );
-        comm.appendInput('#myStoryForm', "search_category_id"   , categId   );
+        comm.appendInput('#myStoryForm', "search_memId"               , uid       );
+        comm.appendInput('#myStoryForm', "search_member_category_id"  , categId   );
 
         comm.list('#myStoryForm', $this.myStorylistDataUrl,function(data){
-
           $("#myStoryList").empty();
 
           for (let i = 0; i < data.list.length; i++) {
