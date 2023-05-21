@@ -266,6 +266,7 @@ let comm = function(){
         category : {
             categoryApiUrl  : '/comm/category/list',
             categoryMemberApiUrl  : '/comm/category/list/member',
+            categoryMemberPublicApiUrl  : '/comm/category/list/member/public',
             getCategory : function(){
                 let category_list = "[]";
                 comm.request({url: this.categoryApiUrl, method: "GET", async: false}, function (resp) {
@@ -288,6 +289,19 @@ let comm = function(){
 
                 return category_list;
             },
+
+            getCategoryMemberPublic : function(){
+                let category_list = "[]";
+                comm.request({url: this.categoryMemberPublicApiUrl, method: "GET", async: false}, function (resp) {
+                    // 수정 성공
+                    if (resp.code == '0000') {
+                        category_list = resp['member_category_list'];
+                    }
+                })
+
+                return category_list;
+            },
+
         },
         validation : function(target){
             let checkVal = false;
