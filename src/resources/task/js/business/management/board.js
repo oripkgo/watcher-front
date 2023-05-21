@@ -154,6 +154,7 @@ const boardObj = {
         _TrHeadStr += '<th><input type="checkbox" class="check all"></th>';
         _TrHeadStr += '<th>공개여부</th>';
         _TrHeadStr += '<th>카테고리</th>';
+        _TrHeadStr += '<th>회원 <br>카테고리</th>';
         _TrHeadStr += '<th colspan="2">';
         _TrHeadStr += '    <div class="btn_tb">';
         _TrHeadStr += '        <a href="javascript:;" onclick="boardObj.deleteStory();"  >삭제</a>';
@@ -170,6 +171,7 @@ const boardObj = {
         $("#storyList").empty();
         $("#storyList").append(thisObj.getTrHead());
 
+        debugger;
         for (let i = 0; i < data.list.length; i++) {
             let obj = data.list[i];
             let listHtml = '';
@@ -179,6 +181,7 @@ const boardObj = {
             listHtml += '<td><input type="checkbox" class="check"></td>                                                         ';
             listHtml += '<td>'+secretStatus+'</td>                                                                              ';
             listHtml += '<td><a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="kind_link">'+obj['CATEGORY_NM']+'</a></td>           ';
+            listHtml += '<td><a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="kind_link">'+obj['MEMBER_CATEGORY_ID']+'</a></td>           ';
             listHtml += '<td>                                                                                                   ';
             listHtml += '    <a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="subject_link">                                    ';
             listHtml += '        <strong>'+obj['TITLE']+'</strong>                                                                 ';
