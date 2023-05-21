@@ -22,7 +22,14 @@
                   <select id="story_category">
                     <option value="">카테고리</option>
                   </select>
-
+                </td>
+              </tr>
+              <tr>
+                <th>회원 카테고리</th>
+                <td class="story_top">
+                  <select id="story_category_member">
+                    <option value="">카테고리</option>
+                  </select>
                 </td>
               </tr>
               <tr>
@@ -103,6 +110,7 @@ export default {
     const vo = $this.getStoryInfo();
     const result = {
       category_list : JSON.parse(comm.category.getCategory()),
+      category_list_member : JSON.parse(comm.category.getCategoryMemberPublic()),
       vo : {},
     };
 
@@ -119,92 +127,20 @@ export default {
   mounted() {
     const $this = this;
 
-    $(".write_confirm").on("click",function(){
-      if($("#story_category").val() == ''){
-        comm.message.alert("카테고리를 선택해주세요.");
-        return;
-      }
-
-      if($("#title").val() == ''){
-        comm.message.alert("제목을 입력해주세요.");
-        return;
-      }
-
-      let category_obj = $("#story_category option:selected").data();
-
-      if( category_obj['CATEGORY_TYPE'] == 'default' ){
-        $("#categoryId").val(category_obj['ID']);
-      }else{
-        $("#categoryId").val(category_obj['DEFALUT_CATEG_ID']);
-        $("#memberCategoryId").val(category_obj['ID']);
-      }
-
-      $("#contents").val($(".ql-editor","#editor").html());
-
-      comm.appendInput('#story_write_form', 'summary' ,String($(".ql-editor","#editor").text()).substring(0,200)  );
-
-      var form = $('#story_write_form')[0]
-      var formData = new FormData(form);
-
-      comm.request({
-        url: "/story/insert",
-        data : formData,
-        // headers : {"Content-type":"application/x-www-form-urlencoded"},
-        processData : false,
-        contentType : false,
-      },function(res){
-        // 성공
-        if( res.code == '0000' ){
-          comm.message.alert('스토리가 '+($this.id?'수정':'등록')+'되었습니다.', function(){
-            location.href = window.getStoryViewUrl(res['storyId'], window.memberId);
-          });
-        }
-      })
-    });
-
-    $(".write_cancel").on("click",function(){
-      history.back();
-    });
-
-
-    $("#thumbnailImgPathParam").on("change",function(){
-      $("#thumbnailImgPathParam_text").val(this.value);
-    });
-
-
-    $this.category_list.forEach(function(obj){
-      let option = $("<option></option>");
-
-      option.attr("value",obj['ID']);
-      option.text(obj['CATEGORY_NM']);
-
-      option.data(obj);
-      $("#story_category").append(option);
-
-    });
-
-
-    $(contents_obj).css({"height":"400px","font-size":"15px"});
-    quill = new window['Quill'](contents_obj, {
-
-      modules: {
-        //toolbar: '#toolbar-container',
-        toolbar: toolbarOptions
-      },
-
-      theme: 'snow'
-    });
-    console.log(quill);
-
+    $this.initEdit($this);
+    $this.setCategoryOptions($this);
     $this.valueSetting($this);
+    $this.regEvents($this);
 
-    if( this.vo ){
-      $("#story_category").val(this.vo['CATEGORY_ID']);
-      $("#secretYn").val(this.vo['SECRET_YN'] || "N");
-      $("#title").val(this.vo['TITLE']);
-      $("#editor").val(this.vo['CONTENTS']);
-      $("#tags").val(this.vo['TAGS']);
-      $("#thumbnailImgPathParam_text").val(this.vo['REAL_FILE_NAME']);
+    if( $this.vo ){
+      $("#story_category").val($this.vo['CATEGORY_ID']);
+      $("#story_category").change();
+      $("#story_category_member").val($this.vo['MEMBER_CATEGORY_ID']);
+      $("#secretYn").val($this.vo['SECRET_YN'] || "N");
+      $("#title").val($this.vo['TITLE']);
+      $("#editor").val($this.vo['CONTENTS']);
+      $("#tags").val($this.vo['TAGS']);
+      $("#thumbnailImgPathParam_text").val($this.vo['REAL_FILE_NAME']);
     }
   },
 
@@ -229,8 +165,107 @@ export default {
       return data;
     },
 
+    insertStory: function($this){
+      if($("#story_category").val() == ''){
+        comm.message.alert("카테고리를 선택해주세요.");
+        return;
+      }
+
+      if($("#title").val() == ''){
+        comm.message.alert("제목을 입력해주세요.");
+        return;
+      }
+
+      $("#categoryId").val($("#story_category").val());
+      $("#memberCategoryId").val($("#story_category_member").val());
+      $("#contents").val($(".ql-editor","#editor").html());
+
+      comm.appendInput('#story_write_form', 'summary' ,String($(".ql-editor","#editor").text()).substring(0,200)  );
+
+      var form = $('#story_write_form')[0]
+      var formData = new FormData(form);
+
+      comm.request({
+        url: "/story/insert",
+        data : formData,
+        // headers : {"Content-type":"application/x-www-form-urlencoded"},
+        processData : false,
+        contentType : false,
+      },function(res){
+        // 성공
+        if( res.code == '0000' ){
+          comm.message.alert('스토리가 '+($this.id?'수정':'등록')+'되었습니다.', function(){
+            location.href = window.getStoryViewUrl(res['storyId'], window.memberId);
+          });
+        }
+      })
+    },
+
+
+    setCategoryOptions : function($this){
+      $this.category_list.forEach(function(obj){
+        let option = $("<option></option>");
+
+        option.attr("value",obj['ID']);
+        option.text(obj['CATEGORY_NM']);
+
+        option.data(obj);
+        $("#story_category").append(option);
+      });
+    },
+
+    setCategoryMemberOptions : function($this, defaultCategoryId){
+      $("#story_category_member").empty();
+      $("#story_category_member").html("<option value=''>선택</option>")
+      $this.category_list_member.forEach(function(obj){
+        if( obj['DEFALUT_CATEG_ID'] != defaultCategoryId ){
+          return;
+        }
+
+        let option = $("<option></option>");
+
+        option.attr("value",obj['ID']);
+        option.text(obj['CATEGORY_NM']);
+
+        option.data(obj);
+        $("#story_category_member").append(option);
+      });
+    },
+
     valueSetting : function($this){
       $("#story_category").val($this.categoryId);
+    },
+
+    initEdit : function(){
+      $(contents_obj).css({"height":"400px","font-size":"15px"});
+      quill = new window['Quill'](contents_obj, {
+
+        modules: {
+          //toolbar: '#toolbar-container',
+          toolbar: toolbarOptions
+        },
+
+        theme: 'snow'
+      });
+      console.log(quill);
+    },
+
+    regEvents : function($this){
+      $(".write_confirm").on("click",function(){
+        $this.insertStory($this);
+      });
+
+      $(".write_cancel").on("click",function(){
+        history.back();
+      });
+
+      $("#thumbnailImgPathParam").on("change",function(){
+        $("#thumbnailImgPathParam_text").val(this.value);
+      });
+
+      $("#story_category").on("change",function(){
+        $this.setCategoryMemberOptions($this,$(this).val());
+      })
     },
   },
 }
