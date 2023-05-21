@@ -3,7 +3,7 @@
   <div class="section">
     <div class="ani-in my_layout">
       <div class="mystory_top ani_y delay1">
-        <div class="mystory_title"><a :href="myStoryMainUrl">태균스토리</a></div>
+        <div class="mystory_title"><a :href="this.myStoryMainUrl">나의 스토리</a></div>
         <div class="storybox_search_wrap">
         </div>
       </div>
@@ -21,11 +21,11 @@
           <div class="board_title">카테고리 전체보기</div>
         </div>
 
-        <div class="board_title" v-if="categoryListYn != 'Y'">
+        <div class="board_title" v-if="this.categoryListYn != 'Y'">
           공지사항
           <a href="javascript:;" id="notice_more">더보기 <img src="@/resources/img/down_arrow.png"></a>
         </div>
-        <ul class="notice_list" v-if="categoryListYn != 'Y'">
+        <ul class="notice_list" v-if="this.categoryListYn != 'Y'">
         </ul>
 
         <div class="board_title">
