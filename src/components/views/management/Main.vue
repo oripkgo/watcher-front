@@ -1,4 +1,5 @@
 <template>
+  <commHeader/>
   <div class="section uline2">
     <div class="ani-in manage_layout">
       <div class="manage_conts">
@@ -16,6 +17,7 @@
 </template>
 
 <script>
+import commHeader from "@/components/views/management/include/CommHeader";
 import commMenu from "@/components/views/management/include/CommMenu";
 import commVisitorInfo from "@/components/views/management/include/CommVisitorInfo";
 import commCharts from "@/components/views/management/include/CommCharts";
@@ -24,6 +26,7 @@ import commPopularArticles from "@/components/views/management/include/CommPopul
 export default {
   name: "managementMain",
   components: {
+    commHeader,
     commMenu,
     commVisitorInfo,
     commCharts,

@@ -1,4 +1,5 @@
 <template>
+  <commHeader/>
   <form id="managementCategoryForm">
     <div class="section uline2">
       <div class="ani-in manage_layout">
@@ -59,12 +60,14 @@
 <script>
 import categoryObj from "@/resources/task/js/business/management/category";
 import comm from "@/resources/task/js/common/comm";
+import commHeader from "@/components/views/management/include/CommHeader";
 import commMenu from "@/components/views/management/include/CommMenu";
 
 export default {
   name : "managementCategory",
 
   components: {
+    commHeader,
     commMenu,
   },
 

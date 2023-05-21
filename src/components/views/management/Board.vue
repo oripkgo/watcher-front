@@ -1,12 +1,11 @@
 <template>
+  <commHeader/>
   <form id="managementBoardForm">
     <div class="section uline2">
       <div class="ani-in manage_layout">
 
         <div class="manage_conts">
-
           <commMenu/>
-
           <div class="manage_box_wrap">
             <div class="sub_title01">
               게시글 관리
@@ -29,6 +28,7 @@
 </template>
 
 <script>
+import commHeader from "@/components/views/management/include/CommHeader";
 import commMenu from "@/components/views/management/include/CommMenu";
 import $ from 'jquery';
 import boardObj from "@/resources/task/js/business/management/board";
@@ -38,6 +38,7 @@ export default {
   name: "managementBoard",
 
   components: {
+    commHeader,
     commMenu,
   },
 
