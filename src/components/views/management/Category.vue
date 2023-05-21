@@ -77,7 +77,6 @@ export default {
   },
   mounted() {
     const $this = this;
-
     categoryObj.init($this.category_list, $this.member_category_list);
   }
 }

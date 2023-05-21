@@ -265,7 +265,7 @@ let comm = function(){
     const publicObj = {
         category : {
             categoryApiUrl  : '/comm/category/list',
-            categoryMemberApiUrl  : '/comm/category/list',
+            categoryMemberApiUrl  : '/comm/category/list/member',
             getCategory : function(){
                 let category_list = "[]";
                 comm.request({url: this.categoryApiUrl, method: "GET", async: false}, function (resp) {
@@ -282,7 +282,7 @@ let comm = function(){
                 comm.request({url: this.categoryMemberApiUrl, method: "GET", async: false}, function (resp) {
                     // 수정 성공
                     if (resp.code == '0000') {
-                        category_list = resp['category_list'];
+                        category_list = resp['member_category_list'];
                     }
                 })
 

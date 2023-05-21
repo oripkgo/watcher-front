@@ -59,7 +59,7 @@ const categoryObj = {
         $("#categoryNm").val(data.CATEGORY_NM);
         $("#categoryComents").val(data.CATEGORY_COMENTS);
         $("#defalutCategId").val(data.DEFALUT_CATEG_ID);
-        $("[name='showYn'][value='"+data.SHOW_YN+"']").prop("checked",true);
+        $("[name='showYn'][value='"+(data.SHOW_YN || "Y")+"']").prop("checked",true);
     },
 
     applyCategoryEvents : function(){
