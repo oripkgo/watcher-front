@@ -7,8 +7,10 @@ const globalObj = {
     storyUrlList: "/story/list",
     storyUrlView: "/story/view",
     storyUrlWrite: "/story/write",
+    noticeUrlList: "/notice/list",
     noticeUrlView: "/notice/view",
     noticeUrlWrite: "/notice/write",
+    noticeUrlUpdate: "/notice/update",
     managementMain: "/management/main",
     managementBoard: "/management/board",
     managementCategory: "/management/category",
@@ -47,12 +49,19 @@ const globalObj = {
         return this.storyUrlWrite;
     },
 
+    getNoticeListUrl: function (memId) {
+        return (memId ? "/" + memId : "") + this.noticeUrlList;
+    },
+
     getNoticeViewUrl: function (id, memId) {
         return (memId ? "/" + memId : "") + this.noticeUrlView + '?id=' + id;
     },
 
     getNoticeWriteUrl: function () {
         return this.noticeUrlWrite;
+    },
+    getNoticeUpdateUrl: function (id) {
+        return this.noticeUrlUpdate+"?id="+id;
     },
     getServerImg: function(path){
         return (path ? this.apiHost + path : "");

@@ -10,6 +10,11 @@
           <em>by {{vo['NICKNAME']}}</em>
           <img src="@/resources/img/line.png">
           <span id="last_time"></span>
+          <div class="btn_basic" v-if="this.modifyAuthorityYn == 'Y'">
+            <a href="javascript:;" id="story_update">수정</a>
+            <img src="@/resources/img/line.png">
+            <a href="javascript:;" id="story_delete">삭제</a>
+          </div>
         </div>
       </div>
 
@@ -45,12 +50,13 @@ import comm from "@/resources/task/js/common/comm.js";
   export default {
       data(){
         const data = this.getNoticeInfo();
-
         const result = {
+          noticeDeleteApiUrl : "/notice/delete",
           type : 'NOTICE',
           id : null,
           regDate : null,
           vo : {},
+          modifyAuthorityYn : data.modifyAuthorityYn,
         };
 
         if( data.view ){
@@ -80,6 +86,25 @@ import comm from "@/resources/task/js/common/comm.js";
         $(".sns_btn").click(function () {
           $(".sns_view").slideToggle("fast");
         });
+
+        $("#story_delete").on("click", function () {
+          comm.message.confirm("공지사항을 삭제하시겠습니까?",function(result){
+            if( result ){
+              const param = JSON.stringify({id:$this.id});
+              comm.request({url:$this.noticeDeleteApiUrl, method : "DELETE", data : param},function(resp){
+                // 수정 성공
+                if( resp.code == '0000'){
+                  location.href = window.getNoticeListUrl(window.memberId);
+                }
+              })
+            }
+          })
+        });
+
+        $("#story_update").on("click", function () {
+          location.href = window.getNoticeUpdateUrl($this.id);
+        });
+
       },
 
       methods : {
