@@ -99,7 +99,7 @@
         return storyIds;
       },
 
-      deleteStory : function($this){
+      deleteNotice : function($this){
         if( !$this.confirmCheckBox($this) ){
           comm.message.alert('공지사항을 선택해주세요.');
           return;
