@@ -1,10 +1,12 @@
+import comm from "@/resources/task/js/common/comm";
+
 const settingUpdateUrl = "/management/setting/update";
 const settingObj = {
     saveSettingInfo: function (formId) {
         comm.request({
             url: settingUpdateUrl,
             method: "PUT",
-            form: $(formId),
+            form: formId,
             headers: {"Content-type": "application/x-www-form-urlencoded"},
         }, function (resp) {
             // 성공
@@ -14,3 +16,5 @@ const settingObj = {
         })
     },
 };
+
+export default settingObj;
