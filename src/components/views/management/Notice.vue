@@ -23,15 +23,6 @@
             <div class="board_notice">
               <table id="noticeList"></table>
               <div class="pagging_wrap"></div>
-
-              <jsp:include page="/WEB-INF/common/include/paging.jsp">
-                <jsp:param name="form" value="#noticeForm"/>
-                <jsp:param name="url" value="/management/board/notices"/>
-                <jsp:param name="listCallback" value="listCallback"/>
-                <jsp:param name="pageNo" value="${vo.pageNo}"/>
-                <jsp:param name="listNo" value="${vo.listNo}"/>
-                <jsp:param name="pagigRange" value="${vo.pagigRange}"/>
-              </jsp:include>
             </div>
           </div><!-------------//manage_box_wrap------------->
         </div>
