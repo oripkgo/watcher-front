@@ -116,7 +116,6 @@ export default {
   mounted() {
     const $this = this;
 
-    debugger;
     $(".write_confirm").on("click",function(){
       if($("#title").val() == ''){
         comm.message.alert("제목을 입력해주세요.");
