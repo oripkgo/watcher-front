@@ -1,3 +1,5 @@
+import comm from "@/resources/task/js/common/comm";
+
 const visitorCntSearchUrl = "/visitor/search/cnt"
 const statisticsObj = {
     getTodayDateAndWeekday : function(){
@@ -17,3 +19,5 @@ const statisticsObj = {
         })
     },
 }
+
+export default statisticsObj;

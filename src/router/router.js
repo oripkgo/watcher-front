@@ -19,6 +19,7 @@ import ManagementBoard from "@/components/views/management/Board";
 import ManagementCategory from "@/components/views/management/Category";
 import ManagementNotice from "@/components/views/management/Notice";
 import ManagementSetting from "@/components/views/management/Setting";
+import ManagementStatistics from "@/components/views/management/Statistics";
 
 const router = createRouter({
     history : createWebHistory(),
@@ -47,6 +48,7 @@ const router = createRouter({
         { path : "/management/category",            name : "managementCategory",    component : ManagementCategory },
         { path : "/management/notice",              name : "managementNotice",      component : ManagementNotice },
         { path : "/management/setting",             name : "managementSetting",     component : ManagementSetting },
+        { path : "/management/statistics",          name : "managementStatistics",  component : ManagementStatistics },
 
         /*{
             path : "/:pathMatch(.*)",

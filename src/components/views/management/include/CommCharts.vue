@@ -12,6 +12,7 @@ import comm from "@/resources/task/js/common/comm.js";
     mounted() {
       const $this = this;
       $this.getDailyVisitors($this);
+      window['commCharts'] = $this;
     },
     methods:{
       getDrawTarget : function(){
