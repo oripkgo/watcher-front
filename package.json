@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --mode develop",
-    "build": "vue-cli-service build --mode develop",
-    "lint": "vue-cli-service lint --mode develop"
+    "serve": "vue-cli-service serve --mode dev",
+    "build": "vue-cli-service build --mode dev",
+    "lint": "vue-cli-service lint --mode dev"
   },
   "dependencies": {
     "core-js": "^3.8.3",
