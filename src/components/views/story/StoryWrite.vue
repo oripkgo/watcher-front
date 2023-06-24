@@ -83,7 +83,6 @@ import $ from 'jquery';
 import comm from "@/resources/task/js/common/comm.js";
 
 const contents_obj = '#editor';
-let quill;
 let toolbarOptions = [
   ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
   ['blockquote', 'code-block'],
@@ -238,7 +237,7 @@ export default {
 
     initEdit : function(){
       $(contents_obj).css({"height":"400px","font-size":"15px"});
-      quill = new window['Quill'](contents_obj, {
+      new window['Quill'](contents_obj, {
 
         modules: {
           //toolbar: '#toolbar-container',
@@ -247,7 +246,6 @@ export default {
 
         theme: 'snow'
       });
-      // console.log(quill);
     },
 
     regEvents : function($this){
