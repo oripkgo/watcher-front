@@ -618,8 +618,6 @@ let comm = function(){
             },
 
             login_success_callback : function(obj){
-                console.log(JSON.stringify(obj));
-
                 let param = {}
 
                 if( obj.type == 'naver' ){
@@ -1092,7 +1090,7 @@ let comm = function(){
                 comm.request({url:"/visitor/insert", method : "POST", data : JSON.stringify(param)},function(resp){
                     // 수정 성공
                     if( resp.code == '0000'){
-                        console.log('방문자 히스토리 저장성공');
+                        // console.log('방문자 히스토리 저장성공');
                     }
                 })
             }

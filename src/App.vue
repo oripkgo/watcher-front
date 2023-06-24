@@ -20,7 +20,6 @@
     },
 
     mounted() {
-      console.log(process.env)
       let $this = this;
 
       $.fn.anchorAnimate = function (settings) {

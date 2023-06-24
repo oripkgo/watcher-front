@@ -247,7 +247,7 @@ export default {
 
         theme: 'snow'
       });
-      console.log(quill);
+      // console.log(quill);
     },
 
     regEvents : function($this){
