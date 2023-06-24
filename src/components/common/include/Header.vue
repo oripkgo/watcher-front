@@ -51,8 +51,8 @@
       comm.token.get();
 
       comm.loginObj.init(window.loginType);
-      comm.loginObj.kakaoInit(window.Kakao);
-      comm.loginObj.naverInit(window.naver_id_login);
+      comm.loginObj.kakaoInit(window['Kakao']);
+      comm.loginObj.naverInit(process.env.VUE_APP_LOGIN_TOKEN_NAVER, window['naver_id_login']);
       comm.visitor.save(window.nowStoryMemId, window.refererUrl);
     }
   }

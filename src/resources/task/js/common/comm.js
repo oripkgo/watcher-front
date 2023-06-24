@@ -3,7 +3,6 @@ import "./globalVar"
 
 let comm = function(){
     const kakaoKey = '16039b88287b9f46f214f7449158dfde';
-    const naverKey = 'ThouS3nsCEwGnhkMwI1I';
     const comment_delete_msg = "해당 댓글을 삭제하시겠습니까?";
 
     const privateObj = {
@@ -599,7 +598,7 @@ let comm = function(){
                 })
             },
 
-            naverInit : function(naverObj){
+            naverInit : function(naverKey, naverObj){
                 window.name = 'parentWindow';
                 const naver_id_login = new naverObj(naverKey, window.location.origin + "/login/loginSuccess");
                 let state = naver_id_login.getUniqState();
