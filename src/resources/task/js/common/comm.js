@@ -1070,6 +1070,24 @@ let comm = function(){
             return $(form).find("input[name='"+name+"']");
         },
 
+        generateUUID : function() {
+            const array = new Uint32Array(4);
+            window.crypto.getRandomValues(array);
+            let uuid = '';
+            array.forEach(function(number, index) {
+                if (index === 2) {
+                    uuid += '4';
+                }
+                else if (index === 3) {
+                    uuid += (number & 0x3 | 0x8).toString(16);
+                }
+                else {
+                    uuid += number.toString(16);
+                }
+            });
+            return uuid;
+        },
+
         mobile : {
             isYn : function(){
                 return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);

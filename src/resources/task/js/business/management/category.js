@@ -114,6 +114,7 @@ const categoryObj = {
         $("[name='showYn'][value='Y']").prop("checked",true);
 
         $("select, input, textarea", "#fieldsObj").prop("disabled", true);
+        $(".category_1st.on").removeClass("on");
     },
 
     enableFields : function(){
@@ -126,6 +127,11 @@ const categoryObj = {
         }
 
         let obj = thisObj.getCategoryTagObj();
+
+        const tagId = comm.generateUUID();
+        $(obj).attr("id", tagId);
+        $(obj).data()['TAG_ID'] = tagId;
+        $(obj).data()['DELETE_YN'] = "N";
         $("#fieldsObj .category_left").append(obj)
         thisObj.applyCategoryEvents();
         $(obj).click();
@@ -152,17 +158,25 @@ const categoryObj = {
                 }else{
                     $(target).data()["DELETE_YN"] = "Y";
                     $(target).hide();
-
                 }
-                $(".category_1st.on" ).removeClass("on");
                 thisObj.disableFields();
-
             }
         });
     },
 
     getIdx : function(obj){
         return $("#fieldsObj .category_left").find(".category_1st").index(obj);
+    },
+
+    setIdToNewCategory : function(newIds){
+        const ids = newIds;
+        const ids_keys = Object.keys(ids);
+
+        for (let i = 0; i < ids_keys.length; i++) {
+            const key = ids_keys[i];
+            const val = ids[ ids_keys[i] ];
+            $("#"+key).data()["ID"] = val;
+        }
     },
 
     saveCategory : function(){
@@ -185,7 +199,11 @@ const categoryObj = {
                 comm.request({url: categoryInsertUrl , method : "POST", data : JSON.stringify(param)},function(resp){
                     // 수정 성공
                     if( resp.code == '0000'){
-                        comm.message.alert("카테고리가 저장되었습니다.");
+                        thisObj.setIdToNewCategory(JSON.parse(resp['insertIds']));
+
+                        comm.message.alert("카테고리가 저장되었습니다.", function(){
+                            thisObj.disableFields();
+                        });
                     }
                 })
             }
