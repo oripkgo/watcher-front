@@ -2,10 +2,11 @@
 <template>
   <form id="story_write_form">
 
-    <input type="hidden"      name="id"                  id="id"                 :value="vo.ID" >
-    <input type="hidden"      name="categoryId"          id="categoryId"                        >
-    <input type="hidden"      name="memberCategoryId"    id="memberCategoryId"                  >
-    <input type="hidden"      name="contents"            id="contents"                          >
+    <input type="hidden"      name="id"                  id="id"                 :value="vo['ID']"      >
+    <input type="hidden"      name="categoryId"          id="categoryId"                                >
+    <input type="hidden"      name="memberCategoryId"    id="memberCategoryId"                          >
+    <input type="hidden"      name="contents"            id="contents"                                  >
+    <input type="hidden"      name="tagsId"              id="tagsId"             :value="vo['TAGS_ID']" >
 
     <div class="section uline2">
       <div class="ani-in manage_layout">
