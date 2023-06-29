@@ -23,9 +23,16 @@ const globalObj = {
     loginType: (sessionStorage.getItem("loginType") == '00' ? "naver" : "kakao"),
     memProfileImg: sessionStorage.getItem("memProfileImg"),
     memberId: sessionStorage.getItem("memberId"),
-    nowStoryMemId: sessionStorage.getItem("memberId"),
+    nowStoryMemId: "",
     apiToken: sessionStorage.getItem("apiToken"),
 
+    getNowStoryMemId : function(){
+        let result;
+        if( window.location.pathname.indexOf("/story/view") > -1 ){
+            result = window.location.pathname.replace("/story/view","").substring(1);
+        }
+        return result;
+    },
 
     getStoryListUrl: function (categoryId, keyword) {
         let listUrl = this.storyUrlList;
@@ -68,4 +75,5 @@ const globalObj = {
     },
 }
 
+globalObj['nowStoryMemId'] = globalObj.getNowStoryMemId();
 Object.assign(window, globalObj);
