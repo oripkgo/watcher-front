@@ -117,7 +117,7 @@ const mainObj = {
                     listHtml += '    <a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '">';
 
                     if( obj.THUMBNAIL_IMG_PATH ){
-                        listHtml += '<div><img src="' + window.apiHost + obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/') + '"></div>';
+                        listHtml += '<div><img src="' + window.getServerImg(obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/')) + '"></div>';
                     }
 
                     listHtml += '        <strong>'+obj.TITLE+'</strong>';
@@ -329,7 +329,7 @@ const mainObj = {
                         let storyHtml = '';
 
                         if( obj.THUMBNAIL_IMG_PATH ){
-                            storyHtml += '<img width="1000" height="500" src="' + window.apiHost + obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/') + '">';
+                            storyHtml += '<img width="1000" height="500" src="' + window.getServerImg(obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/')) + '">';
                         }else{
                             return;
                         }
