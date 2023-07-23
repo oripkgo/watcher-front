@@ -71,7 +71,7 @@ const globalObj = {
         return this.noticeUrlUpdate+"?id="+id;
     },
     getServerImg: function(path){
-        return (path ? this.apiHost + path : "");
+        return (path ? /*this.apiHost + */path : "");
     },
 }
 
