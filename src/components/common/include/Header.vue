@@ -1,11 +1,11 @@
 <template>
   <div class="head_wrap">
     <div class="logo">
-      <a href="/main">WATCHER</a>
+      <router-link to="/main">WATCHER</router-link>
     </div>
     <div class="menu_wrap">
-      <a href="/story/list">STORY</a>
-      <a href="/notice/list">NOTICE</a>
+      <router-link to="/story/list">STORY</router-link>
+      <router-link to="/notice/list">NOTICE</router-link>
     </div>
     <div class="top_navi">
       <a v-if="loginInfo.isLogin" href="javascript:;" class="member_set logOut">

@@ -7,13 +7,13 @@
           <span>COPYRIGHT ©ALAND ALL RIGHTS RESERVED</span>
         </div>
         <div class="footer_right">
-          <a href="/terms/use">이용약관</a><br>
-          <a href="/terms/privacy">개인정보처리방침</a><br>
+          <router-link to="/terms/use">이용약관</router-link>
+          <router-link to="/terms/privacy">개인정보처리방침</router-link>
         </div>
 
         <div class="footer_right">
-          <a href="/terms/copyright">저작권 및 지적재산권</a><br>
-          <a href="/terms/advertisement">광고 정책</a><br>
+          <router-link to="/terms/use">저작권 및 지적재산권</router-link>
+          <router-link to="/terms/use">광고 정책</router-link>
         </div>
       </div>
     </div>
