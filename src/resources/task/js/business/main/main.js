@@ -214,13 +214,19 @@ const mainObj = {
             this.product();
 
         },
+
+        setSwiper : function(target, option){
+            const swp = new Swiper(target, option);
+
+            return swp;
+        },
+
         product : function(){
-            new Swiper('.swiper_product', {
+            this.setSwiper('.swiper_product', {
                 centeredSlides: true,
-                loop: true,
-                autoplay: {
+                    loop: true,
+                    autoplay: {
                     delay: 6000,
-                    disableOnInteraction: false,
                 },
                 pagination: {
                     el: '.swiper-pagination',
@@ -233,14 +239,13 @@ const mainObj = {
             });
         },
         banner : function(){
-            new Swiper('.swiper_banner', {
+            this.setSwiper('.swiper_banner', {
                 slidesPerView: 'auto',
                 speed : 600,
                 spaceBetween: 0,
                 loop: true,
                 autoplay: {
                     delay: 8000,
-                    disableOnInteraction: false,
                 },
                 //initialSlide: 1,
                 //freeMode: true,
