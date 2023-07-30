@@ -54,7 +54,7 @@
     },
     mounted() {
       const $this = this;
-      window.managementNoticeObj = this;
+      window.vueComponent = this;
 
       $("#search").on("click", function () {
         $this.search($this);
@@ -212,9 +212,9 @@
         _TrHeadStr += '<th><input type="checkbox" class="check all"></th>';
         _TrHeadStr += '<th colspan="2">';
         _TrHeadStr += '    <div class="btn_tb">';
-        _TrHeadStr += '        <a href="javascript:;" onclick="managementNoticeObj.deleteStory(managementNoticeObj)">삭제</a>';
-        _TrHeadStr += '        <a href="javascript:;" onclick="managementNoticeObj.updatePublic(managementNoticeObj);">공개</a>';
-        _TrHeadStr += '        <a href="javascript:;" onclick="managementNoticeObj.updatePrivate(managementNotice);">비공개</a>';
+        _TrHeadStr += '        <a href="javascript:;" onclick="vueComponent.deleteStory(vueComponent)">삭제</a>';
+        _TrHeadStr += '        <a href="javascript:;" onclick="vueComponent.updatePublic(vueComponent);">공개</a>';
+        _TrHeadStr += '        <a href="javascript:;" onclick="vueComponent.updatePrivate(vueComponent);">비공개</a>';
         _TrHeadStr += '        <a href="'+window.getNoticeWriteUrl()+'">공지쓰기</a>';
         _TrHeadStr += '    </div>';
         _TrHeadStr += '</th>';

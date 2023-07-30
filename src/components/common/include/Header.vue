@@ -30,6 +30,9 @@
   import "@/resources/task/js/common/globalVar";
   import "@/resources/js/tab"
   import comm from "@/resources/task/js/common/comm.js";
+  import naverLoginSuccess from "@/resources/task/js/business/login/naverLoginSuccess.js";
+  const token = process.env.VUE_APP_LOGIN_TOKEN_NAVER;
+  const callbackUrl = process.env.VUE_APP_LOGIN_CALLBACK_NAVER;
 
   export default {
     name: 'headerPage',
@@ -48,11 +51,15 @@
       }
     },
     mounted() {
+      window.comm = comm;
+      window.naverLoginSuccess = naverLoginSuccess;
+      window.token = token;
+      window.callbackUrl = callbackUrl;
       comm.token.get();
 
       comm.loginObj.init(window.loginType);
       comm.loginObj.kakaoInit(window['Kakao']);
-      comm.loginObj.naverInit(process.env.VUE_APP_LOGIN_TOKEN_NAVER, window['naver_id_login']);
+      comm.loginObj.naverInit(token, window['naver_id_login']);
       comm.visitor.save(window.nowStoryMemId, window.refererUrl);
     }
   }

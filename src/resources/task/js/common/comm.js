@@ -600,12 +600,14 @@ let comm = function(){
 
             naverInit : function(naverKey, naverObj){
                 window.name = 'parentWindow';
-                const naver_id_login = new naverObj(naverKey, window.location.origin + "/login/loginSuccess");
-                let state = naver_id_login.getUniqState();
-                naver_id_login.setButton("white", 2,40);
-                naver_id_login.setDomain(window.location.origin);
-                naver_id_login.setState(state);
-                naver_id_login.setPopup();
+                const naver_id_login = new naverObj(naverKey, window.location.origin + "/index.html");
+                let state = naver_id_login['getUniqState']();
+                localStorage.setItem("naverLoginAuthData", state);
+                naver_id_login['setButton']("white", 2,40);
+                naver_id_login['setDomain'](window.location.origin);
+                naver_id_login['setState'](state);
+                naver_id_login['oauthParams'].state = state;
+                naver_id_login['setPopup']();
                 naver_id_login.is_callback = true;
                 naver_id_login.init_naver_id_login_callback = function(){
                     $("img","#naver_id_login").attr("src",window.LOGIN_BTN_IMG_NAVER);
@@ -757,7 +759,6 @@ let comm = function(){
                             }
 
                             sessionStorage.clear();
-
                             window.location.reload();
                         })
                     }
@@ -1046,6 +1047,18 @@ let comm = function(){
             })
 
             return obj;
+        },
+
+        getParamJson : function(queryStr){
+            const urlParams = new URLSearchParams(queryStr);
+
+            // JSON 형태로 변환
+            const jsonParams = {};
+            for (const [key, value] of urlParams) {
+                jsonParams[key] = value;
+            }
+
+            return jsonParams;
         },
 
         appendForm: function (id, name) {
