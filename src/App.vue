@@ -9,9 +9,6 @@
   import headerPage from '@/components/common/include/Header';
   import footerPage from '@/components/common/include/Footer';
 
-  let animateQueue = new Array();
-  let ready = true;
-
   export default {
     name: 'App',
     components: {
@@ -20,9 +17,8 @@
     },
 
     mounted() {
-      let $this = this;
 
-      $.fn.anchorAnimate = function (settings) {
+      /*$.fn.anchorAnimate = function (settings) {
         settings = $.extend({
           speed: 1000
         }, settings);
@@ -40,39 +36,20 @@
             return false;
           })
         })
-      }
+      }*/
 
-      //스크롤 페이드인
-      $(document).ready(function () {
-        $this.triggerJqueryFadeIn()
-        $(window).scroll($this.triggerJqueryFadeIn);
+      $(window).scroll(function(){
+        window.triggerJqueryFadeIn();
+      });
 
-        $("#to_top").on("click", function () {
-          $("html, body").animate({scrollTop: 0}, '500');
-          return false;
-        });
+      $("#to_top").on("click", function () {
+        $("html, body").animate({scrollTop: 0}, '500');
+        return false;
       });
     },
 
     methods: {
-      triggerJqueryFadeIn : function(){
-        $('.ani-in').each(function () {
-          var object_top = $(this).offset().top;
-          var window_bottom = $(window).scrollTop() + $(window).height() - 200;
-          if (window_bottom > object_top) {
-            $(this).addClass('action');
-          }
-        });
-        this.triggerJqueryFadeInQueue();
-      },
 
-      triggerJqueryFadeInQueue : function(){
-        if (animateQueue.length != 0 && ready) {
-          ready = false;
-          // $this = animateQueue.shift();
-          // $($this).addClass('action');
-        }
-      },
     }
   }
 </script>

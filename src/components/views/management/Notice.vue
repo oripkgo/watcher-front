@@ -53,6 +53,9 @@
       }
     },
     mounted() {
+      //스크롤 페이드인
+      window.triggerJqueryFadeIn();
+
       const $this = this;
       window.vueComponent = this;
 

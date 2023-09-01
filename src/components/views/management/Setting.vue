@@ -67,6 +67,9 @@ import comm from "@/resources/task/js/common/comm";
     },
 
     mounted() {
+      //스크롤 페이드인
+      window.triggerJqueryFadeIn();
+
       const $this = this;
       $("#commentPermStatus").val($this.managementInfo['COMMENT_PERM_STATUS']);
     }

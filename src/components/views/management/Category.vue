@@ -79,6 +79,9 @@ export default {
     }
   },
   mounted() {
+    //스크롤 페이드인
+    window.triggerJqueryFadeIn();
+
     const $this = this;
     categoryObj.init($this.category_list, $this.member_category_list);
   }

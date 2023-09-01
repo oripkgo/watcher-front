@@ -56,6 +56,9 @@
     },
 
     mounted() {
+      //스크롤 페이드인
+      window.triggerJqueryFadeIn();
+
       const $this = this;
 
       this.setStoryInfo($this);

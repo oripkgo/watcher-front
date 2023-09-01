@@ -90,6 +90,9 @@ import mainObj from "@/resources/task/js/business/main/main.js";
     },
 
     mounted() {
+      //스크롤 페이드인
+      window.triggerJqueryFadeIn();
+
       mainObj.swiper.init();
       mainObj.notice.init();
       mainObj.story.init();

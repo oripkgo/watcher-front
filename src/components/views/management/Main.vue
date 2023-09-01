@@ -32,6 +32,11 @@ export default {
     commCharts,
     commPopularArticles,
   },
+
+  mounted() {
+    //스크롤 페이드인
+    window.triggerJqueryFadeIn();
+  },
 }
 
 </script>

@@ -86,6 +86,9 @@ import comm from "@/resources/task/js/common/comm.js";
     },
 
     mounted() {
+      //스크롤 페이드인
+      window.triggerJqueryFadeIn();
+
       const $this = this;
 
       // 회원 카테고리 세팅

@@ -75,6 +75,9 @@ export default {
   },
 
   mounted() {
+    //스크롤 페이드인
+    window.triggerJqueryFadeIn();
+
     $(".manager_statistics_today").text(statisticsObj.getTodayDateAndWeekday());
 
     statisticsObj.setVisitorFromSearch(function(visitInfo){

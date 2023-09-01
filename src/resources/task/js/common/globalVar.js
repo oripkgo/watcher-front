@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 const globalObj = {
     LOGIN_BTN_IMG_NAVER: require("@/resources/img/login_naver.png"),
     LOGIN_BTN_IMG_KAKAO: require("@/resources/img/login_kakao.png"),
@@ -25,6 +27,28 @@ const globalObj = {
     memberId: sessionStorage.getItem("memberId"),
     nowStoryMemId: "",
     apiToken: sessionStorage.getItem("apiToken"),
+    animateQueue :new Array(),
+    ready :true,
+
+    triggerJqueryFadeIn : function(){
+        $('.ani-in').each(function () {
+            var object_top = $(this).offset().top;
+            var window_bottom = $(window).scrollTop() + $(window).height() - 200;
+
+            if (window_bottom > object_top) {
+                $(this).addClass('action');
+            }
+        });
+        window.triggerJqueryFadeInQueue();
+    },
+
+    triggerJqueryFadeInQueue : function(){
+        if (window.animateQueue.length != 0 && window.ready) {
+            window.ready = false;
+            // $this = animateQueue.shift();
+            // $($this).addClass('action');
+        }
+    },
 
     getNowStoryMemId : function(){
         let result;
