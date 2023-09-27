@@ -22,6 +22,9 @@ import ManagementSetting from "@/components/views/management/Setting";
 import ManagementStatistics from "@/components/views/management/Statistics";
 
 const router = createRouter({
+    scrollBehavior() {
+        return {top: 0};
+    },
     history : createWebHistory(),
     routes : [ // path별 component를 추가한다.
         { path : "/",                               name : "home",                  component : Home },
