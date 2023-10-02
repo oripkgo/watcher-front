@@ -54,7 +54,7 @@ const mainObj = {
                 let nodeHtml = '';
 
                 if (obj['CATEGORY_IMG_PATH']) {
-                    nodeHtml += '<img src="' + window.apiHost + obj['CATEGORY_IMG_PATH'] + '">';
+                    nodeHtml += '<img src="' + require('@'+obj['CATEGORY_IMG_PATH']) + '">';
                 }
 
                 nodeHtml += '<div>';
@@ -350,7 +350,7 @@ const mainObj = {
 
                         storyHtml += '<span>'+summary+'</span>';
                         storyHtml += '<em>by ' + obj.NICKNAME + '</em>';
-                        storyHtml += '<a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '"><img src="' + window.apiHost + '/resources/img/btn_more.png"></a>';
+                        storyHtml += '<a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '"><img src="' + require('@/resources/img/btn_more.png') + '"></a>';
                         storyHtml += '</div>';
 
                         $(story).html(storyHtml)
