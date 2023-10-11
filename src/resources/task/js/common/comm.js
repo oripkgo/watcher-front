@@ -671,15 +671,8 @@ let comm = function(){
                     //
                     // $(".member_set.logOut").show();
                     // $(".loginStart").hide();
-                    sessionStorage.clear();
-                    sessionStorage.setItem("loginId",res.loginId);
-                    sessionStorage.setItem("loginType",res.loginType);
-                    sessionStorage.setItem("memberId",res.memberId);
-                    sessionStorage.setItem("memProfileImg",res.memProfileImg);
-                    sessionStorage.setItem("sessionId",res.sessionId);
-                    sessionStorage.setItem("apiToken",res.apiToken);
 
-
+                    comm.session.add(res);
                     window.location.reload();
                 })
             },
@@ -1127,48 +1120,68 @@ let comm = function(){
             }
         },
 
-        token: {
-            get: function () {
-                const param = {
-                    token: (sessionStorage.getItem("apiToken") || "")
-                }
+        session : {
+            add : function(memData){
+                sessionStorage.clear();
+                sessionStorage.setItem("sessionData"    , JSON.stringify({
+                    loginId                     : memData.loginId,
+                    loginYn                     : (memData["loginId"] ? true : false),
+                    loginType                   : (memData["loginType"] == '00' ? "naver" : "kakao"),
+                    memberId                    : memData.memberId,
+                    memProfileImg               : memData.memProfileImg,
+                    sessionId                   : memData.sessionId,
+                    commentPermStatus           : memData.commentPermStatus,
+                    storyRegPermStatus          : memData.storyRegPermStatus,
+                    storyCommentPublicStatus    : memData.storyCommentPublicStatus,
+                    storyTitle                  : memData.storyTitle,
+                }));
+                sessionStorage.setItem("apiToken"       , memData.apiToken);
+            },
 
-                const removeSession = function(){
-                    sessionStorage.clear();
-                    delete window.loginId;
-                    delete window.loginYn;
-                    delete window.loginType;
-                    delete window.memProfileImg;
-                    delete window.memberId;
-                    delete window.nowStoryMemId;
-                    delete window.apiToken;
-                }
+            remove : function(){
+                sessionStorage.clear();
+                delete window.loginId;
+                delete window.loginYn;
+                delete window.loginType;
+                delete window.memProfileImg;
+                delete window.memberId;
+                delete window.nowStoryMemId;
+                delete window.apiToken;
+            },
 
-                comm.request({
-                    url: "/comm/token",
-                    method: "POST",
-                    data: JSON.stringify(param),
-                    async: false
-                }, function (resp) {
-                    // 수정 성공
-                    if (resp.code == '0000') {
-                        window.apiToken = resp.apiToken;
-                        sessionStorage.setItem("apiToken", resp.apiToken);
-
-                        if( window.loginYn && resp.loginYn == 'N' ){
-                            removeSession();
-                            window['requestDissabled'] = true;
-                            comm.message.alert("세션유지 시간 초과");
-                            window.location.reload();
-                        }
+            token: {
+                get: function () {
+                    const param = {
+                        token: (sessionStorage.getItem("apiToken") || "")
                     }
-                },function (){
-                    removeSession();
-                })
+
+                    comm.request({
+                        url: "/comm/token",
+                        method: "POST",
+                        data: JSON.stringify(param),
+                        async: false
+                    }, function (resp) {
+                        // 수정 성공
+                        if (resp.code == '0000') {
+                            window.apiToken = resp.apiToken;
+                            sessionStorage.setItem("apiToken", resp.apiToken);
+
+                            if( window.loginYn && resp.loginYn == 'N' ){
+                                window['requestDissabled'] = true;
+                                comm.message.alert("세션유지 시간 초과");
+
+                                comm.session.remove();
+                                window.location.href = '/main';
+                            }
+                        }
+                    },function (){
+                        comm.session.remove();
+                        window.location.href = '/main';
+                    })
+                },
             },
         },
     };
-
 
     return publicObj
 }()

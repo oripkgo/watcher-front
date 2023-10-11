@@ -55,7 +55,7 @@
       window.naverLoginSuccess = naverLoginSuccess;
       window.token = token;
       window.callbackUrl = callbackUrl;
-      comm.token.get();
+      comm.session.token.get();
 
       comm.loginObj.init(window.loginType);
       comm.loginObj.kakaoInit(window['Kakao']);

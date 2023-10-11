@@ -20,13 +20,7 @@ const globalObj = {
     managementComment: "/management/comment",
     managementSetting: "/management/setting",
     managementStatistics: "/management/statistics",
-    loginId: sessionStorage.getItem("loginId"),
-    loginYn: (sessionStorage.getItem("loginId") ? true : false),
-    loginType: (sessionStorage.getItem("loginType") == '00' ? "naver" : "kakao"),
-    memProfileImg: sessionStorage.getItem("memProfileImg"),
-    memberId: sessionStorage.getItem("memberId"),
     nowStoryMemId: "",
-    apiToken: sessionStorage.getItem("apiToken"),
     animateQueue :new Array(),
     ready :true,
 
@@ -97,7 +91,11 @@ const globalObj = {
     getServerImg: function(path){
         return (path ? /*this.apiHost + */path : "");
     },
+    mergeSessionStorageData : function(){
+        Object.assign(globalObj, JSON.parse( ( sessionStorage.getItem("sessionData") || '{}' ) ));
+    },
 }
 
 globalObj['nowStoryMemId'] = globalObj.getNowStoryMemId();
+globalObj.mergeSessionStorageData();
 Object.assign(window, globalObj);
