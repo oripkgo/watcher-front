@@ -3,7 +3,7 @@
   <div class="section">
     <div class="ani-in my_layout">
       <div class="mystory_top ani_y delay1">
-        <div class="mystory_title"><a :href="this.myStoryMainUrl">나의 스토리</a></div>
+        <div class="mystory_title"><a :href="this.myStoryMainUrl">{{storyTitle}}</a></div>
         <div class="storybox_search_wrap">
         </div>
       </div>
@@ -66,6 +66,8 @@ import comm from "@/resources/task/js/common/comm.js";
         noticeListDataUrl: '/notice/list/data?search_memId=' + data['memId'],
         noticeMoreUrl: "/" + data['memId'] + "/notice/list",
         categoryListYn: 'N',
+        storyTitle : data['policy']['STORY_TITLE'],
+        policy : data['policy'],
         vo: {},
       };
 
@@ -117,6 +119,7 @@ import comm from "@/resources/task/js/common/comm.js";
             data = {
               categoryListYn: resp['categoryListYn'],
               member_category_list: resp['member_category_list'],
+              policy : resp['policy'],
               memId: resp['memId'],
               vo: resp['vo'],
             };
@@ -200,6 +203,7 @@ import comm from "@/resources/task/js/common/comm.js";
             $("#myStoryList").append(listHtml);
           }
 
+          window.scrollTo(0, 0);
         }, $this.pageNo, $this.listNo, $this.pagigRange);
       },
 
