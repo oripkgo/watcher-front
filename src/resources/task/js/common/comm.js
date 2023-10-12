@@ -4,6 +4,7 @@ import "./globalVar"
 let comm = function(){
     const kakaoKey = '16039b88287b9f46f214f7449158dfde';
     const comment_delete_msg = "해당 댓글을 삭제하시겠습니까?";
+    const requiresLoginpageUrls = ['/management'];
 
     const privateObj = {
         comment : {
@@ -751,8 +752,15 @@ let comm = function(){
                                 callback(res);
                             }
 
-                            sessionStorage.clear();
-                            window.location.reload();
+                            comm.session.remove();
+
+                            if( requiresLoginpageUrls.some(function(ele){
+                                return (window.location.pathname.indexOf(ele) > -1)
+                            }) ){
+                                window.location.href= '/main';
+                            }else{
+                                window.location.reload();
+                            }
                         })
                     }
                 });
