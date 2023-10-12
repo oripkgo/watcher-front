@@ -16,10 +16,27 @@
             </div>
 
             <div class="review_write">
+              <span>스토리의 모든 댓글은</span>
+              <select id="storyCommentPublicStatus" name="storyCommentPublicStatus">
+                <option value="01">공개</option>
+                <option value="02">비공개</option>
+              </select>
+              <span>합니다.</span>
+            </div>
+
+            <div class="review_write">
               <span>댓글 작성은</span>
               <select id="commentPermStatus" name="commentPermStatus">
                 <option value="01">모두</option>
                 <option value="02">작성자</option>
+              </select>
+              <span>가능합니다.</span>
+            </div>
+            <div class="review_write">
+              <span>스토리 작성은</span>
+              <select id="storyRegPermStatus" name="storyRegPermStatus">
+                <option value="01">작성자</option>
+                <option value="02">모두</option>
               </select>
               <span>가능합니다.</span>
             </div>
@@ -71,7 +88,9 @@ import comm from "@/resources/task/js/common/comm";
       window.triggerJqueryFadeIn();
 
       const $this = this;
+      $("#storyCommentPublicStatus").val($this.managementInfo['STORY_COMMENT_PUBLIC_STATUS']);
       $("#commentPermStatus").val($this.managementInfo['COMMENT_PERM_STATUS']);
+      $("#storyRegPermStatus").val($this.managementInfo['STORY_REG_PERM_STATUS']);
     }
   }
 </script>
