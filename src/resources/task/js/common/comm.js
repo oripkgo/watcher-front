@@ -560,7 +560,7 @@ let comm = function(){
                 let loginProcessEventHtml = '';
 
                 loginProcessEventHtml += '<div class="member_app logOut" style="display: none;">';
-                loginProcessEventHtml += '    <a href="/'+window.memberId+'/myStory" id="myStory">내 스토리</a>';
+                loginProcessEventHtml += '    <a href="/myStory/'+window.memberId+'" id="myStory">내 스토리</a>';
                 loginProcessEventHtml += '    <a href="/management/main" id="management">관리</a>';
                 loginProcessEventHtml += '    <a href="'+window.storyUrlWrite+'" id="writing">글쓰기</a>';
                 loginProcessEventHtml += '    <a href="javascript:;" id="logout">로그아웃</a>';
@@ -662,7 +662,7 @@ let comm = function(){
                 }
 
                 comm.request({
-                    url: "/login/loginSuccess/callback",
+                    url: "/log/in",
                     data : JSON.stringify(param)
                 },function(res){ // eslint-disable-line no-unused-vars
                     // 로그인 성공
@@ -744,7 +744,7 @@ let comm = function(){
                             logOutParam.type = 'kakao';
                         }
 
-                        comm.request({url:"/login/logout",data:JSON.stringify(logOutParam)},function(res){
+                        comm.request({url:"/log/out",data:JSON.stringify(logOutParam)},function(res){
                             $(".logOut").hide();
                             $(".loginStart").show();
 

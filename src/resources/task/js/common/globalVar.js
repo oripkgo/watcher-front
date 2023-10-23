@@ -67,7 +67,7 @@ const globalObj = {
     },
 
     getStoryViewUrl: function (id, memId) {
-        return '/' + memId + this.storyUrlView + '?id=' + id;
+        return this.storyUrlView + '/' + memId + '?id=' + id;
     },
 
     getStoryWriteUrl: function () {

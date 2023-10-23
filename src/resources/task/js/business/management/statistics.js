@@ -1,6 +1,6 @@
 import comm from "@/resources/task/js/common/comm";
 
-const visitorCntSearchUrl = "/visitor/search/cnt"
+const visitorCntSearchUrl = "/visitor/count/inflow/source"
 const statisticsObj = {
     getTodayDateAndWeekday : function(){
         const d = new Date();

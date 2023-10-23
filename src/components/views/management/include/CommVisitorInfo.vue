@@ -27,7 +27,7 @@ export default {
   name: 'commVisitorInfo',
   data(){
     return {
-      apiUrlVisitorCnt : "/visitor/cnt",
+      apiUrlVisitorCnt : "/visitor/count",
       managementStatistics : window['managementStatistics']
     }
   },

@@ -139,7 +139,7 @@ import comm from "@/resources/task/js/common/comm.js";
       },
 
       getDailyVisitors : function($this){
-        comm.request({url:"/visitor/chart/cnts", method : "GET"},function(resp){
+        comm.request({url:"/visitor/chart/count/daily", method : "GET"},function(resp){
           if( resp.code == '0000'){
             $this.drawChart($this.getDrawTarget(), $this.getChartData(resp['visitInfoList']));
           }
@@ -147,7 +147,7 @@ import comm from "@/resources/task/js/common/comm.js";
       },
 
       getMonthVisitors : function($this){
-        comm.request({url:"/visitor/chart/cnts/month", method : "GET"},function(resp){
+        comm.request({url:"/visitor/chart/count/month", method : "GET"},function(resp){
           if( resp.code == '0000'){
             $this.drawChart($this.getDrawTarget(), $this.getMonthChartData(resp['visitInfoList']), '월별 방문자수');
           }

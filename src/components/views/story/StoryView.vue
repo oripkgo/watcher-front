@@ -51,7 +51,7 @@
         vo: {},
         isModifyAuthorityYn: 'N',
         regDate: null,
-        memStoryUrl: "/"+this.$route.params.memId+"/myStory"
+        memStoryUrl: "/myStory/"+this.$route.params.memId
       }
     },
 
@@ -72,7 +72,7 @@
 
     methods: {
       setStoryInfo : function($this) {
-        comm.request({url: "/" + $this.memId + "/story/view?id=" + $this.id, method: "GET", async: false}, function (resp) {
+        comm.request({url: "/story/view/" + $this.memId + "?id=" + $this.id, method: "GET", async: false}, function (resp) {
           // 삭제 성공
           if (resp.code == '0000') {
             $this.isModifyAuthorityYn = resp['modify_authority_yn'];

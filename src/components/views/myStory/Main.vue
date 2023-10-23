@@ -61,8 +61,8 @@ import comm from "@/resources/task/js/common/comm.js";
         notice_show_cnt: 4,
         myStory_search_memberId: data['memId'],
         member_category_list: JSON.parse(data['member_category_list']),
-        myStoryMainUrl: "/" + data['memId'] + '/myStory',
-        myStorylistDataUrl: '/myStory/list/data',
+        myStoryMainUrl: "/myStory/" + data['memId'],
+        myStorylistDataUrl: '/myStory/list',
         noticeListDataUrl: '/notice/list/data?search_memId=' + data['memId'],
         noticeMoreUrl: "/" + data['memId'] + "/notice/list",
         categoryListYn: 'N',
@@ -134,7 +134,7 @@ import comm from "@/resources/task/js/common/comm.js";
           list.forEach(function(obj){
             const a = $('<a></a>');
             $(a).text(obj.CATEGORY_NM);
-            $(a).attr('href', "/"+$this.myStory_search_memberId+"/myStory/"+ obj.ID+"?category_nm="+encodeURIComponent(obj.CATEGORY_NM));
+            $(a).attr('href', "/myStory/"+$this.myStory_search_memberId+"/"+ obj.ID+"?category_nm="+encodeURIComponent(obj.CATEGORY_NM));
             $(".mystory_menu, .mystory_menu_mobile").append(a);
           })
         }

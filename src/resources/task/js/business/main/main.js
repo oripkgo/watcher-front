@@ -3,15 +3,14 @@ import Swiper from 'swiper';
 
 import comm from "@/resources/task/js/common/comm.js";
 
-const keywordListUrl = '/keyword/popular';
-const keywordSearchUrl = '/keyword/search';
+const keywordApiUrl = '/keyword/popular';
 const storyListUrl = '/story/list/data';
 const noticeListUrl = '/notice/list/data';
 const popularStoryListUrl = '/story/popular';
 
 const mainObj = {
     keyword : {
-        listUrl : keywordListUrl,
+        listUrl : keywordApiUrl,
         init : function(){
             this.getPopularList();
         },
@@ -25,7 +24,7 @@ const mainObj = {
             const param = {};
             param.keyword = $("#keyword").val();
 
-            comm.request({url: keywordSearchUrl, method: "POST", data: JSON.stringify(param)}, function (resp) {
+            comm.request({url: keywordApiUrl, method: "POST", data: JSON.stringify(param)}, function (resp) {
                 // 수정 성공
                 if (resp.code == '0000') {
                     $this.render(resp.list);
