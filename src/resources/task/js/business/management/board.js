@@ -222,6 +222,7 @@ const boardObj = {
 
         }
 
+        window.scrollTo(0, 0);
         thisObj.initCheckBox();
     },
 

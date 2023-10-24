@@ -155,7 +155,7 @@
       },
 
       search : function($this){
-        comm.list('#noticeForm', $this.noticeApiUrl, $this.listCallback, 1, 20);
+        comm.list('#noticeForm', $this.noticeApiUrl, $this.listCallback, 1, 10);
       },
 
       initCheckBox : function(){
@@ -203,6 +203,7 @@
         }
 
         $this.initCheckBox($this);
+        window.scrollTo(0, 0);
       },
 
       getTr : function(){
