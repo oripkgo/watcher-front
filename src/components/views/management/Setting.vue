@@ -54,6 +54,7 @@ import $ from 'jquery';
 import settingObj from "@/resources/task/js/business/management/setting";
 import comm from "@/resources/task/js/common/comm";
 
+  const managementInitUrl = '/management/my/story/info';
   export default {
     name : "managementSetting",
     components: {
@@ -63,19 +64,18 @@ import comm from "@/resources/task/js/common/comm";
     data(){
       const $this = this;
       return {
-        settingObj : settingObj,
         managementInfo : $this.getManagementSetInfo($this),
+        settingObj : settingObj,
       }
     },
 
     methods: {
-      getManagementSetInfo : function($this){
-        let path = $this.$route['fullPath'];
+      getManagementSetInfo : function(){
         let result = {};
-        comm.request({url: path, method: "GET", async: false}, function (resp) {
+        comm.request({url: managementInitUrl, method: "GET", async: false}, function (resp) {
           // 수정 성공
           if (resp.code == '0000') {
-            result = JSON.parse(resp['managementInfo']);
+            result = JSON.parse(resp['info']);
           }
         })
 

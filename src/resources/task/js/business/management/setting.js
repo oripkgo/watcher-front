@@ -1,6 +1,6 @@
 import comm from "@/resources/task/js/common/comm";
 
-const settingUpdateUrl = "/management/setting/update";
+const settingUpdateUrl = "/management/my/story/info";
 const settingObj = {
     saveSettingInfo: function (formId) {
         comm.request({
