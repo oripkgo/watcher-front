@@ -326,9 +326,9 @@ const mainObj = {
                 method : "GET",
                 headers : {"Content-type":"application/x-www-form-urlencoded"},
             },function(data){
-                if( data.code == '0000' && ( data.getPopularStorys && data.getPopularStorys.length > 0 ) ){
+                if( data.code == '0000' && ( data.popularStorys && data.popularStorys.length > 0 ) ){
 
-                    data.getPopularStorys.forEach(function(obj){
+                    data.popularStorys.forEach(function(obj){
                         let story = $('<div class="swiper-slide"></div>')
                         let storyHtml = '';
 

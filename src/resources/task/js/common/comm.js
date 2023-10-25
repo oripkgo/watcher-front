@@ -662,7 +662,7 @@ let comm = function(){
                 }
 
                 comm.request({
-                    url: "/log/in",
+                    url: "/sign/in",
                     data : JSON.stringify(param)
                 },function(res){ // eslint-disable-line no-unused-vars
                     // 로그인 성공
@@ -744,7 +744,7 @@ let comm = function(){
                             logOutParam.type = 'kakao';
                         }
 
-                        comm.request({url:"/log/out",data:JSON.stringify(logOutParam)},function(res){
+                        comm.request({url:"/sign/out",data:JSON.stringify(logOutParam)},function(res){
                             $(".logOut").hide();
                             $(".loginStart").show();
 
