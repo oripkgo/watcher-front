@@ -6,7 +6,7 @@ import comm from "@/resources/task/js/common/comm.js";
 const keywordApiUrl = '/keyword/popular';
 const storyListUrl = '/story/list/data';
 const noticeListUrl = '/notice/list/data';
-const popularStoryListUrl = '/story/popular';
+const popularStoryListUrl = '/story/popular/main';
 
 const mainObj = {
     keyword : {

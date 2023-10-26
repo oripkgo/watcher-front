@@ -54,7 +54,7 @@ import $ from 'jquery';
 import settingObj from "@/resources/task/js/business/management/setting";
 import comm from "@/resources/task/js/common/comm";
 
-  const managementInitUrl = '/management/my/story/info';
+  const managementInitUrl = '/management/myStory/info';
   export default {
     name : "managementSetting",
     components: {

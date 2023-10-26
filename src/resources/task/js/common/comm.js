@@ -948,7 +948,7 @@ let comm = function(){
 
                 }
 
-                var pageObj = data.vo;
+                var pageObj = data.param || data.vo;
 
                 var firstPage = 1; // eslint-disable-line no-unused-vars
                 var lastPage = Math.ceil((pageObj.totalCnt*1)/(pageObj.listNo*1));
