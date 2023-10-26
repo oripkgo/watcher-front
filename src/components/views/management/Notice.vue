@@ -114,6 +114,27 @@
         })
       },
 
+      deleteNotices : function($this){
+        if( !$this.confirmCheckBox($this) ){
+          comm.message.alert('공지사항을 선택해주세요.');
+          return;
+        }
+
+        comm.message.confirm("선택한 공지사항을 삭제하시겠습니까?",function(result){
+          if( result ){
+            const param = JSON.stringify({paramJson:JSON.stringify($this.getNoticeIds($this))});
+            comm.request({url:$this.noticeApiUrl, method : "DELETE", data : param},function(resp){
+              // 수정 성공
+              if( resp.code == '0000'){
+                $($this.getSelCheckBoxObjs($this)).each(function(idx,checkObj){
+                  $(checkObj).parents("tr").remove();
+                })
+              }
+            })
+          }
+        })
+      },
+
       updatePublic : function($this){
         if( !$this.confirmCheckBox($this) ){
           comm.message.alert('공지사항을 선택해주세요.');
@@ -216,7 +237,7 @@
         _TrHeadStr += '<th><input type="checkbox" class="check all"></th>';
         _TrHeadStr += '<th colspan="2">';
         _TrHeadStr += '    <div class="btn_tb">';
-        _TrHeadStr += '        <a href="javascript:;" onclick="vueComponent.deleteStory(vueComponent)">삭제</a>';
+        _TrHeadStr += '        <a href="javascript:;" onclick="vueComponent.deleteNotices(vueComponent)">삭제</a>';
         _TrHeadStr += '        <a href="javascript:;" onclick="vueComponent.updatePublic(vueComponent);">공개</a>';
         _TrHeadStr += '        <a href="javascript:;" onclick="vueComponent.updatePrivate(vueComponent);">비공개</a>';
         _TrHeadStr += '        <a href="'+window.getNoticeWriteUrl()+'">공지쓰기</a>';
