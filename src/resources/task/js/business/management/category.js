@@ -1,19 +1,19 @@
 import $ from 'jquery';
 import comm from "@/resources/task/js/common/comm.js";
 
-const categoryInsertUrl = "/management/category/insert";
+const categoryInsertUrl = "/management/category";
 const categListSpaceNm = "category_left";
 const categListNm = "category_1st";
 const categSelectNm = "categorySelect";
 const formId = '#managementCategoryForm';
 
-let category_list;
-let member_category_list;
+let CATEGORY_LIST;
+let MEMBER_CATEGORY_LIST;
 let thisObj;
 const categoryObj = {
     init : function(categoryList, memberCategoryList){
-        category_list = categoryList;
-        member_category_list = memberCategoryList;
+        CATEGORY_LIST = categoryList;
+        MEMBER_CATEGORY_LIST = memberCategoryList;
         thisObj = this;
 
         thisObj.initCategory();
@@ -29,7 +29,7 @@ const categoryObj = {
     },
 
     setSelectCategory : function(){
-        category_list.forEach(function(obj){
+        CATEGORY_LIST.forEach(function(obj){
             const option = thisObj.getSelectCategoryOptionObj();
 
             $(option).text(obj.CATEGORY_NM);
@@ -41,7 +41,7 @@ const categoryObj = {
     },
 
     setCategoryList : function(){
-        member_category_list.forEach(function(obj){
+        MEMBER_CATEGORY_LIST.forEach(function(obj){
             const category = thisObj.getCategoryTagObj();
 
             $(category).text(obj.CATEGORY_NM);

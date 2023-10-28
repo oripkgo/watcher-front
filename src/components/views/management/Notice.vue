@@ -21,7 +21,23 @@
             </div>
 
             <div class="board_notice">
-              <table id="noticeList"></table>
+              <table>
+                <tbody>
+                  <tr>
+                    <th><input type="checkbox" class="check all"></th>
+                    <th colspan="2">
+                      <div class="btn_tb">
+                        <a href="javascript:;" onclick="vueComponent.deleteNotices(vueComponent)">삭제</a>
+                        <a href="javascript:;" onclick="vueComponent.updatePublic(vueComponent);">공개</a>
+                        <a href="javascript:;" onclick="vueComponent.updatePrivate(vueComponent);">비공개</a>
+                        <router-link :to="noticeWriteUrl">공지쓰기</router-link>
+                      </div>
+                    </th>
+                  </tr>
+                </tbody>
+                <tbody class="noticeList"></tbody>
+
+              </table>
               <div class="pagging_wrap"></div>
             </div>
           </div><!-------------//manage_box_wrap------------->
@@ -47,6 +63,7 @@
 
     data(){
       return {
+        noticeWriteUrl : window.getNoticeWriteUrl(),
         noticeApiUrl : "/management/board/notices",
         noticePublicUrl : "/management/board/notices/public",
         noticePrivateUrl : "/management/board/notices/private",
@@ -176,11 +193,11 @@
       },
 
       search : function($this){
-        comm.list('#noticeForm', $this.noticeApiUrl, $this.listCallback, 1, 10);
+        comm.paging.getList('#noticeForm', $this.noticeApiUrl, $this.listCallback, 1, 10);
       },
 
       initCheckBox : function(){
-        $(".check").on("click",function(){
+        $(".check").off().on("click",function(){
           let $clickTarget = this;
 
           if( $($clickTarget).hasClass("all") ){
@@ -201,50 +218,33 @@
 
       listCallback : function(data){
         const $this = this;
-        $("#noticeList").empty();
-        $("#noticeList").append($this.getTrHead($this));
+
+        comm.paging.emptyList(".noticeList");
 
         for (let i = 0; i < data.list.length; i++) {
           let obj = data.list[i];
-          let listHtml = '';
+          let trHtml = '';
+
           // let listNum = ((data.vo.pageNo - 1) * data.vo.listNo) + (i + 1);
 
-          listHtml += '<td><input type="checkbox" class="check"></td>';
-          listHtml += '<td>';
-          listHtml += '    <a href="' + window.getNoticeViewUrl(obj.ID) + '" class="subject_link">'+obj['TITLE']+'</a>';
-          listHtml += '</td>';
-          listHtml += '<td>';
-          listHtml += obj['REG_DATE'];
-          listHtml += '</td>';
+          trHtml += '<td><input type="checkbox" class="check"></td>';
+          trHtml += '<td>';
+          trHtml += '    <a href="' + window.getNoticeViewUrl(obj.ID) + '" class="subject_link">'+obj['TITLE']+'</a>';
+          trHtml += '</td>';
+          trHtml += '<td>';
+          trHtml += obj['REG_DATE'];
+          trHtml += '</td>';
 
-          listHtml = $($this.getTr()).html(listHtml);
-          $(listHtml).data(obj);
-
-          $("#noticeList").append(listHtml);
+          trHtml = $($this.getTr()).html(trHtml);
+          $(trHtml).data(obj);
+          comm.paging.drawList(".noticeList", trHtml);
         }
 
         $this.initCheckBox($this);
-        window.scrollTo(0, 0);
       },
 
       getTr : function(){
         return $('<tr></tr>').clone(true);
-      },
-
-      getTrHead : function($this){
-        let _TrHeadStr = '';
-
-        _TrHeadStr += '<th><input type="checkbox" class="check all"></th>';
-        _TrHeadStr += '<th colspan="2">';
-        _TrHeadStr += '    <div class="btn_tb">';
-        _TrHeadStr += '        <a href="javascript:;" onclick="vueComponent.deleteNotices(vueComponent)">삭제</a>';
-        _TrHeadStr += '        <a href="javascript:;" onclick="vueComponent.updatePublic(vueComponent);">공개</a>';
-        _TrHeadStr += '        <a href="javascript:;" onclick="vueComponent.updatePrivate(vueComponent);">비공개</a>';
-        _TrHeadStr += '        <a href="'+window.getNoticeWriteUrl()+'">공지쓰기</a>';
-        _TrHeadStr += '    </div>';
-        _TrHeadStr += '</th>';
-
-        return $($this.getTr()).html(_TrHeadStr);
       },
     },
   };

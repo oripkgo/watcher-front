@@ -81,13 +81,13 @@ export default {
     $(".manager_statistics_today").text(statisticsObj.getTodayDateAndWeekday());
 
     statisticsObj.setVisitorFromSearch(function(visitInfo){
-      $(".all",".searchVisitor").text( statisticsObj.getLocaleString(visitInfo['ALL_CNT']));
-      $(".naver",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['NAVER_CNT']));
-      $(".daum",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['DAUM_CNT']));
-      $(".google",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['GOOGLE_CNT']));
-      $(".zoom",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['ZOOM_CNT']));
-      $(".yahoo",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['YAHOO_CNT']));
-      $(".etc",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['ETC_CNT']));
+      $(".all",".searchVisitor").text( statisticsObj.getLocaleString(visitInfo['ALL_CNT']*1));
+      $(".naver",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['NAVER_CNT']*1));
+      $(".daum",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['DAUM_CNT']*1));
+      $(".google",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['GOOGLE_CNT']*1));
+      $(".zoom",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['ZOOM_CNT']*1));
+      $(".yahoo",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['YAHOO_CNT']*1));
+      $(".etc",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['ETC_CNT']*1));
 
     });
 

@@ -283,7 +283,7 @@ let comm = function(){
                 comm.request({url: this.categoryMemberApiUrl, method: "GET", async: false}, function (resp) {
                     // 수정 성공
                     if (resp.code == '0000') {
-                        category_list = resp['member_category_list'];
+                        category_list = resp['memberCategoryList'];
                     }
                 })
 
@@ -295,7 +295,7 @@ let comm = function(){
                 comm.request({url: this.categoryMemberPublicApiUrl, method: "GET", async: false}, function (resp) {
                     // 수정 성공
                     if (resp.code == '0000') {
-                        category_list = resp['member_category_list'];
+                        category_list = resp['memberCategoryList'];
                     }
                 })
 
@@ -433,7 +433,7 @@ let comm = function(){
                     comm.appendInput(_pageForm, "contentsId"    , param.contentsId      );
 
                     //function(form,url,callback,pageNo,totalCnt,sPageNo,ePageNo,listNo,pagigRange){
-                    comm.list(_pageForm, "/board/comment/select", function(comment_resp){
+                    comm.paging.getList(_pageForm, "/board/comment/select", function(comment_resp){
                         privateObj.comment.setting(
                             param.contentsType,
                             param.contentsId,
@@ -858,182 +858,194 @@ let comm = function(){
             }
         },
 
-        list : function(formObj,url,callback,pageNo,listNo,pagigRange,sPageNo,ePageNo,totalCnt,scrollTopYn){
-
-            var form = formObj;
-
-            if( typeof formObj == 'object' ){
-
-                if( $(formObj).attr("id") ){
-                    form = "#" + $(formObj).attr("id");
-                }else{
-                    form = "#" + "commListForm" + $("form").index($(formObj));
+        paging : {
+            emptyList : function(target){
+                if( !comm.mobile.isYn() ){
+                    $(target).empty();
                 }
+            },
 
-            }
+            drawList : function(target, html){
+                $(target).append(html);
+            },
 
-            var _pageNo =1;			// 현재 페이지 번호
-            var _listNo = 20;		// 한 페이지에 보여지는 목록 갯수
-            var _pagigRange = 10;		// 한페이지에 보여지는 페이징처리 범위
-            var _startPageNo;		// 시작 페이지
-            var _endPageNo;			// 끝 페이지
+            getList : function(formObj,url,callback,pageNo,listNo,pagigRange,sPageNo,ePageNo,totalCnt,scrollTopYn){
+                var form = formObj;
 
-            if( $(form).find("[name='viewType']").length == 0 ){
-                $(form).append('<input type="hidden" name="viewType" id="viewType">');
-            }
-            $("[name='viewType']"	,form).val( "ajax" );
+                if( typeof formObj == 'object' ){
 
-
-            if( $(form).find("[name='pageNo']").length == 0 ){
-                $(form).append('<input type="hidden" name="pageNo">');
-            }
-
-            if( $(form).find("[name='listNo']").length == 0 ){
-                $(form).append('<input type="hidden" name="listNo">');
-            }
-
-            if( $(form).find("[name='pagigRange']").length == 0 ){
-                $(form).append('<input type="hidden" name="pagigRange">');
-            }
-
-            if( $(form).find("[name='startPageNo']").length == 0 ){
-                $(form).append('<input type="hidden" name="startPageNo">');
-            }
-
-
-            if( $(form).find("[name='endPageNo']").length == 0 ){
-                $(form).append('<input type="hidden" name="endPageNo">');
-            }
-
-
-            if( pageNo ){
-                _pageNo = pageNo*1;
-            }
-
-            if( listNo ){
-                _listNo = listNo*1;
-            }
-
-            if( pagigRange ){
-                _pagigRange = pagigRange*1;
-            }
-
-            if( sPageNo &&  ePageNo){
-                _startPageNo = sPageNo*1;
-                _endPageNo = ePageNo*1;
-            }
-
-
-            $("[name='pageNo']"		,form).val( _pageNo	 	 );
-            $("[name='listNo']"		,form).val( _listNo  	 );
-            $("[name='pagigRange']"	,form).val( _pagigRange  );
-            $("[name='startPageNo']",form).val( _startPageNo );
-            $("[name='endPageNo']"	,form).val( _endPageNo 	 );
-
-            comm.request({
-                form:form
-                , url:url
-                , method : "GET"
-                , headers : {"Content-type":"application/x-www-form-urlencoded"}
-            },function(data){
-                // result
-
-                if( callback ){
-                    if( $.type(callback) == 'function' ){
-                        window[$(form).attr("id")+'commListCallback'] = callback;
+                    if( $(formObj).attr("id") ){
+                        form = "#" + $(formObj).attr("id");
                     }else{
-                        window[$(form).attr("id")+'commListCallback'] = window[callback];
+                        form = "#" + "commListForm" + $("form").index($(formObj));
                     }
-                    window[$(form).attr("id")+'commListCallback'](data);
-
                 }
 
-                var pageObj = data.param || data.vo;
+                var _pageNo =1;			// 현재 페이지 번호
+                var _listNo = 20;		// 한 페이지에 보여지는 목록 갯수
+                var _pagigRange = 10;		// 한페이지에 보여지는 페이징처리 범위
+                var _startPageNo;		// 시작 페이지
+                var _endPageNo;			// 끝 페이지
 
-                var firstPage = 1; // eslint-disable-line no-unused-vars
-                var lastPage = Math.ceil((pageObj.totalCnt*1)/(pageObj.listNo*1));
+                if( $(form).find("[name='viewType']").length == 0 ){
+                    $(form).append('<input type="hidden" name="viewType" id="viewType">');
+                }
+                $("[name='viewType']"	,form).val( "ajax" );
 
-                if( pageObj.pageNo == 1 ){
-                    pageObj.startPageNo = pageObj.pageNo;
-                }else if(pageObj.pageNo < pageObj.startPageNo){
-                    pageObj.startPageNo = pageObj.startPageNo - pageObj.pagigRange;
-                }else if( pageObj.pageNo > pageObj.endPageNo ){
-                    pageObj.startPageNo = pageObj.pageNo;
+
+                if( $(form).find("[name='pageNo']").length == 0 ){
+                    $(form).append('<input type="hidden" name="pageNo">');
+                }
+
+                if( $(form).find("[name='listNo']").length == 0 ){
+                    $(form).append('<input type="hidden" name="listNo">');
+                }
+
+                if( $(form).find("[name='pagigRange']").length == 0 ){
+                    $(form).append('<input type="hidden" name="pagigRange">');
+                }
+
+                if( $(form).find("[name='startPageNo']").length == 0 ){
+                    $(form).append('<input type="hidden" name="startPageNo">');
                 }
 
 
-                pageObj.endPageNo = (pageObj.startPageNo + pageObj.pagigRange)-1;
-
-                if(pageObj.endPageNo > lastPage) pageObj.endPageNo=(lastPage==0?1:lastPage);
-
-                var listFunc = "comm.list('"+form+"','"+url+"','"+$(form).attr("id")+"commListCallback'"+
-                    ",'[pageNo]','"+pageObj.listNo+"','"+pageObj.pagigRange+"','"+pageObj.startPageNo+"','"+pageObj.endPageNo+"','"+totalCnt+"','"+scrollTopYn+"')";
+                if( $(form).find("[name='endPageNo']").length == 0 ){
+                    $(form).append('<input type="hidden" name="endPageNo">');
+                }
 
 
-                if( comm.mobile.isYn() ){
-                    // 모바일
-                    var pagination_mobile = $(".pagging_wrap",form);
+                if( pageNo ){
+                    _pageNo = pageNo*1;
+                }
 
-                    if( $(pagination_mobile).length == 0 ){
-                        pagination_mobile = $(".pagging_wrap");
-                    }
+                if( listNo ){
+                    _listNo = listNo*1;
+                }
 
-                    if( pageObj.pageNo >= lastPage ){
-                        $(pagination_mobile).hide();
-                    }else{
-                        $(pagination_mobile).replaceWith('<a href="javascript:;" class="btn_story2" onclick="'+listFunc.replace("[pageNo]",((pageObj.pageNo*1)+1))+'">더보기</a>');
-                        // $(pagination_mobile).html('<button type="button" class="more" onclick="'+listFunc.replace("[pageNo]",((pageObj.pageNo*1)+1))+'">+ 더보기</button>');
-                    }
+                if( pagigRange ){
+                    _pagigRange = pagigRange*1;
+                }
 
-                }else{
-                    // pc
+                if( sPageNo &&  ePageNo){
+                    _startPageNo = sPageNo*1;
+                    _endPageNo = ePageNo*1;
+                }
 
-                    var pageHtml = '';
-                    if( pageObj.startPageNo <= 1 ){
-                        pageHtml += '<a href="javascript:;">';
-                        pageHtml += '<img src="'+require("@/resources/img/prev_arrow.png")+'">';
-                        pageHtml += '</a>';
-                    }else{
-                        //pageHtml += '<a href="#none" class="first" title="처음" onclick="'+listFunc.replace("[pageNo]",1)+'"><span> << 처음</span></a>';
-                        pageHtml += '<a href="javascript:;" onclick="'+listFunc.replace("[pageNo]",pageObj.startPageNo-1)+'">';
-                        pageHtml += '<img src="'+require("@/resources/img/prev_arrow.png")+'">';
-                        pageHtml += '</a>';
-                    }
 
-                    for(var i =pageObj.startPageNo;i<=pageObj.endPageNo;i++){
-                        if( i == pageNo ){
-                            pageHtml += '<a href="javascript:;" class="on">'+(i)+'</a>';
+                $("[name='pageNo']"		,form).val( _pageNo	 	 );
+                $("[name='listNo']"		,form).val( _listNo  	 );
+                $("[name='pagigRange']"	,form).val( _pagigRange  );
+                $("[name='startPageNo']",form).val( _startPageNo );
+                $("[name='endPageNo']"	,form).val( _endPageNo 	 );
+
+                comm.request({
+                    form:form
+                    , url:url
+                    , method : "GET"
+                    , headers : {"Content-type":"application/x-www-form-urlencoded"}
+                },function(data){
+                    // result
+
+                    if( callback ){
+                        if( $.type(callback) == 'function' ){
+                            window[$(form).attr("id")+'commListCallback'] = callback;
                         }else{
-                            pageHtml += '<a href="javascript:;" onclick="'+listFunc.replace("[pageNo]",i)+'">'+i+'</a>';
+                            window[$(form).attr("id")+'commListCallback'] = window[callback];
                         }
+                        window[$(form).attr("id")+'commListCallback'](data);
+
                     }
 
-                    if( pageObj.endPageNo >= lastPage ){
-                        pageHtml += '<a href="javascript:;">';
-                        pageHtml += '<img src="'+require("@/resources/img/next_arrow.png")+'">';
-                        pageHtml += '</a>';
+                    var pageObj = data.dto || data.vo;
+
+                    var firstPage = 1; // eslint-disable-line no-unused-vars
+                    var lastPage = Math.ceil((pageObj.totalCnt*1)/(pageObj.listNo*1));
+
+                    if( pageObj.pageNo == 1 ){
+                        pageObj.startPageNo = pageObj.pageNo;
+                    }else if(pageObj.pageNo < pageObj.startPageNo){
+                        pageObj.startPageNo = pageObj.startPageNo - pageObj.pagigRange;
+                    }else if( pageObj.pageNo > pageObj.endPageNo ){
+                        pageObj.startPageNo = pageObj.pageNo;
+                    }
+
+
+                    pageObj.endPageNo = (pageObj.startPageNo + pageObj.pagigRange)-1;
+
+                    if(pageObj.endPageNo > lastPage) pageObj.endPageNo=(lastPage==0?1:lastPage);
+
+                    var listFunc = "comm.paging.getList('"+form+"','"+url+"','"+$(form).attr("id")+"commListCallback'"+
+                        ",'[pageNo]','"+pageObj.listNo+"','"+pageObj.pagigRange+"','"+pageObj.startPageNo+"','"+pageObj.endPageNo+"','"+totalCnt+"',"+(scrollTopYn?("'"+scrollTopYn+"'"):null)+")";
+
+
+                    if( comm.mobile.isYn() ){
+                        // 모바일
+                        var pagination_mobile = $(".pagging_wrap",form);
+
+                        if( $(pagination_mobile).length == 0 ){
+                            pagination_mobile = $(".pagging_wrap");
+                        }
+
+                        if( pageObj.pageNo >= lastPage ){
+                            $(pagination_mobile).hide();
+                        }else{
+                            $(pagination_mobile).replaceWith('<a href="javascript:;" class="btn_story2 pagging_wrap" onclick="'+listFunc.replace("[pageNo]",((pageObj.pageNo*1)+1))+'">더보기</a>');
+                            // $(pagination_mobile).html('<button type="button" class="more" onclick="'+listFunc.replace("[pageNo]",((pageObj.pageNo*1)+1))+'">+ 더보기</button>');
+                        }
+
                     }else{
-                        pageHtml += '<a href="javascript:;" onclick="'+listFunc.replace("[pageNo]",pageObj.endPageNo+1)+'">';
-                        pageHtml += '<img src="'+require("@/resources/img/next_arrow.png")+'">';
-                        pageHtml += '</a>';
-                        //pageHtml += '<a href="#none" class="last" title="마지막" onclick="'+listFunc.replace("[pageNo]",lastPage)+'"><span>마지막 >> </span></a>';
+                        // pc
+
+                        var pageHtml = '';
+                        if( pageObj.startPageNo <= 1 ){
+                            pageHtml += '<a href="javascript:;">';
+                            pageHtml += '<img src="'+require("@/resources/img/prev_arrow.png")+'">';
+                            pageHtml += '</a>';
+                        }else{
+                            //pageHtml += '<a href="#none" class="first" title="처음" onclick="'+listFunc.replace("[pageNo]",1)+'"><span> << 처음</span></a>';
+                            pageHtml += '<a href="javascript:;" onclick="'+listFunc.replace("[pageNo]",pageObj.startPageNo-1)+'">';
+                            pageHtml += '<img src="'+require("@/resources/img/prev_arrow.png")+'">';
+                            pageHtml += '</a>';
+                        }
+
+                        for(var i =pageObj.startPageNo;i<=pageObj.endPageNo;i++){
+                            if( i == pageNo ){
+                                pageHtml += '<a href="javascript:;" class="on">'+(i)+'</a>';
+                            }else{
+                                pageHtml += '<a href="javascript:;" onclick="'+listFunc.replace("[pageNo]",i)+'">'+i+'</a>';
+                            }
+                        }
+
+                        if( pageObj.endPageNo >= lastPage ){
+                            pageHtml += '<a href="javascript:;">';
+                            pageHtml += '<img src="'+require("@/resources/img/next_arrow.png")+'">';
+                            pageHtml += '</a>';
+                        }else{
+                            pageHtml += '<a href="javascript:;" onclick="'+listFunc.replace("[pageNo]",pageObj.endPageNo+1)+'">';
+                            pageHtml += '<img src="'+require("@/resources/img/next_arrow.png")+'">';
+                            pageHtml += '</a>';
+                            //pageHtml += '<a href="#none" class="last" title="마지막" onclick="'+listFunc.replace("[pageNo]",lastPage)+'"><span>마지막 >> </span></a>';
+                        }
+
+                        let pagination_pc = $(".pagging_wrap",form);
+                        if( $(pagination_pc).length == 0 ){
+                            pagination_pc = $(".pagging_wrap");
+                        }
+
+                        $(pagination_pc).html(pageHtml);
+                        if( !scrollTopYn || scrollTopYn == "Y" ){
+                            $('html').scrollTop(0);
+                        }
+
                     }
 
-                    var pagination_pc = $(".pagging_wrap",form);
-                    if( $(pagination_pc).length == 0 ){
-                        pagination_pc = $(".pagging_wrap");
-                    }
+                })
 
-                    $(pagination_pc).html(pageHtml);
-                    if( !scrollTopYn || scrollTopYn == "Y" ){
-                        $('html').scrollTop(0);
-                    }
-
-                }
-
-            })
+            },
 
         },
+
 
         /**
          * form 요소에 serializeArray를 json 파라미터 형태로 리턴해준다

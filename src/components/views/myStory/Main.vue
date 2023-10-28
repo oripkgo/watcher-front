@@ -55,12 +55,12 @@ import comm from "@/resources/task/js/common/comm.js";
     data() {
       const $this = this;
       const data = $this.getMyStoryInfo();
-      const vo = data['vo'];
+      const dto = data['dto'];
 
       const result = {
         notice_show_cnt: 4,
         myStory_search_memberId: data['memId'],
-        member_category_list: JSON.parse(data['member_category_list']),
+        memberCategoryList: JSON.parse(data['memberCategoryList']),
         myStoryMainUrl: "/myStory/" + data['memId'],
         myStorylistDataUrl: '/myStory/list',
         noticeListDataUrl: '/notice/list/data?search_memId=' + data['memId'],
@@ -68,16 +68,16 @@ import comm from "@/resources/task/js/common/comm.js";
         categoryListYn: 'N',
         storyTitle : data['policy']['STORY_TITLE'],
         policy : data['policy'],
-        vo: {},
+        dto: {},
       };
 
-      if (vo) {
-        result['vo'] = vo;
-        result['pageNo'] = vo['pageNo'] || '1',
-        result['listNo'] = vo['listNo'] || '10',
-        result['pagigRange'] = vo['pagigRange'] || '10',
-        result['categoryId'] = vo['categoryId'],
-        result['boardTitle'] = (vo['category_nm'] || '전체글')
+      if (dto) {
+        result['dto'] = dto;
+        result['pageNo'] = dto['pageNo'] || '1',
+        result['listNo'] = dto['listNo'] || '10',
+        result['pagigRange'] = dto['pagigRange'] || '10',
+        result['categoryId'] = dto['categoryId'],
+        result['boardTitle'] = (dto['category_nm'] || '전체글')
       }
 
       if( data.categoryListYn ){
@@ -94,7 +94,7 @@ import comm from "@/resources/task/js/common/comm.js";
       const $this = this;
 
       // 회원 카테고리 세팅
-      $this.initCategory($this.member_category_list, $this);
+      $this.initCategory($this.memberCategoryList, $this);
 
       // 공지사항 세팅
       $this.initNotice($this.myStory_search_memberId, $this);
@@ -118,10 +118,10 @@ import comm from "@/resources/task/js/common/comm.js";
           if (resp.code == '0000') {
             data = {
               categoryListYn: resp['categoryListYn'],
-              member_category_list: resp['member_category_list'],
+              memberCategoryList: resp['memberCategoryList'],
               policy : resp['policy'],
               memId: resp['memId'],
-              vo: resp['vo'],
+              dto: resp['dto'],
             };
           }
         })
@@ -144,8 +144,8 @@ import comm from "@/resources/task/js/common/comm.js";
         comm.appendInput('#myStoryForm', "search_memId"               , uid       );
         comm.appendInput('#myStoryForm', "search_member_category_id"  , categId   );
 
-        comm.list('#myStoryForm', $this.myStorylistDataUrl,function(data){
-          $("#myStoryList").empty();
+        comm.paging.getList('#myStoryForm', $this.myStorylistDataUrl,function(data){
+          comm.paging.emptyList("#myStoryList")
 
           for (let i = 0; i < data.list.length; i++) {
             let obj = data.list[i];
@@ -200,10 +200,9 @@ import comm from "@/resources/task/js/common/comm.js";
 
             $(listHtml).data(obj);
 
-            $("#myStoryList").append(listHtml);
+            comm.paging.drawList("#myStoryList", listHtml);
           }
 
-          window.scrollTo(0, 0);
         }, $this.pageNo, $this.listNo, $this.pagigRange);
       },
 

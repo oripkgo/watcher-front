@@ -278,7 +278,7 @@ const mainObj = {
 
         list : function(){
             const noticeObj = this;
-            comm.list('#mainNoticeForm', noticeListUrl, function (data) {
+            comm.paging.getList('#mainNoticeForm', noticeListUrl, function (data) {
                 let node = $('<a href="javascript:;" style="display:none;"></a>')
                 if (data.code == '0000' && (data.list && data.list.length > 0)) {
                     if( noticeObj.isHide(data.list[0]['REG_DATE']) ){

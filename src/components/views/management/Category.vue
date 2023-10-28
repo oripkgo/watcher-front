@@ -75,7 +75,7 @@ export default {
     return {
       categoryObj : categoryObj,
       category_list : JSON.parse(comm.category.getCategory()),
-      member_category_list : JSON.parse(comm.category.getCategoryMember()),
+      memberCategoryList : JSON.parse(comm.category.getCategoryMember()),
     }
   },
   mounted() {
@@ -83,7 +83,7 @@ export default {
     window.triggerJqueryFadeIn();
 
     const $this = this;
-    categoryObj.init($this.category_list, $this.member_category_list);
+    categoryObj.init($this.category_list, $this.memberCategoryList);
   }
 }
 </script>

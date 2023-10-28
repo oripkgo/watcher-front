@@ -81,10 +81,10 @@ export default {
           $('.category_tab').append('<a href="javascript:;" class="tab_'+id+'"><span>'+nm+'</span></a>');
         }
 
-        const tabObj = $this.append_tab(id, $("#tab_parent"));
+        const tabObj = $this.appendTab(id, $("#tab_parent"));
         $(tabObj).html($this.draw_tags_in_tabs(id));
 
-        $this.tab_event();
+        $this.tabEvent();
 
         // 추천순 목록
         $this.recommendedList(id, $this);
@@ -127,7 +127,7 @@ export default {
       });
     },
 
-    tab_event : function(){
+    tabEvent : function(){
       var param = "#tab_box";
       var btn = "#tab_cnt>a";
       var obj = "#tab_box .obj";
@@ -204,7 +204,7 @@ export default {
     },
 
     defaultList : function(id, callback, $this){
-      comm.list('#defaultListForm'+id, $this.listUrl,function(data){
+      comm.paging.getList('#defaultListForm'+id, $this.listUrl,function(data){
         $("#defaultList"+id).empty();
 
         for (let i = 0; i < data.list.length; i++) {
@@ -269,7 +269,7 @@ export default {
       }, $this.pageNo, $this.listNo, $this.pagigRange);
     },
 
-    append_tab : function(id,target){
+    appendTab : function(id,target){
       let tabId = 'tabObj_'+id;
       let tabHtml = '';
 

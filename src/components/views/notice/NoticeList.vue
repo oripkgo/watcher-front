@@ -119,7 +119,7 @@ export default {
     },
 
     search: function ($this) {
-      comm.list('#noticeForm', $this.noticeListUrl, $this.listCallback, 1, $this.listNo, $this.pageNoRange);
+      comm.paging.getList('#noticeForm', $this.noticeListUrl, $this.listCallback, 1, $this.listNo, $this.pageNoRange);
     },
 
     listCallback(data) {

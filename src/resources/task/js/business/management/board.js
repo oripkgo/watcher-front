@@ -222,12 +222,11 @@ const boardObj = {
 
         }
 
-        window.scrollTo(0, 0);
         thisObj.initCheckBox();
     },
 
     search: function () {
-        comm.list("#managementBoardForm", storyListUrl, thisObj.listCallback, 1, 10, 10);
+        comm.paging.getList("#managementBoardForm", storyListUrl, thisObj.listCallback, 1, 10, 10);
     },
 };
 
