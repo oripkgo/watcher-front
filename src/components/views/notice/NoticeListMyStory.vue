@@ -124,7 +124,7 @@ export default {
 
     listCallback(data) {
       const $this = this;
-      $("#dataList").empty();
+      comm.paging.emptyList("#dataList");
 
       for (let i = 0; i < data.list.length; i++) {
         let obj = data.list[i];
@@ -145,7 +145,7 @@ export default {
 
         $(listHtml).data(obj);
 
-        $("#dataList").append(listHtml);
+        comm.paging.drawList("#dataList", listHtml);
       }
     },
   },

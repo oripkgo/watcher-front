@@ -148,28 +148,8 @@ const boardObj = {
         return $('<tr></tr>').clone(true);
     },
 
-    getTrHead: function () {
-        let _TrHeadStr = '';
-
-        _TrHeadStr += '<th><input type="checkbox" class="check all"></th>';
-        _TrHeadStr += '<th>공개여부</th>';
-        _TrHeadStr += '<th>카테고리</th>';
-        _TrHeadStr += '<th>회원 <br>카테고리</th>';
-        _TrHeadStr += '<th colspan="2">';
-        _TrHeadStr += '    <div class="btn_tb">';
-        _TrHeadStr += '        <a href="javascript:;" onclick="boardObj.deleteStory();"  >삭제</a>';
-        _TrHeadStr += '        <a href="javascript:;" onclick="boardObj.updatePublic();" >공개</a>';
-        _TrHeadStr += '        <a href="javascript:;" onclick="boardObj.updatePrivate();">비공개</a>';
-        _TrHeadStr += '        <a href="javascript:;" onclick="boardObj.goWritingPage();">글쓰기</a>';
-        _TrHeadStr += '    </div>';
-        _TrHeadStr += '</th>';
-
-        return $(thisObj.getTr()).html(_TrHeadStr);
-    },
-
     listCallback: function (data) {
-        $("#storyList").empty();
-        $("#storyList").append(thisObj.getTrHead());
+        comm.paging.emptyList("#storyList");
 
         for (let i = 0; i < data.list.length; i++) {
             let obj = data.list[i];
@@ -217,9 +197,7 @@ const boardObj = {
 
             listHtml = $(thisObj.getTr()).html(listHtml);
             $(listHtml).data(obj);
-
-            $("#storyList").append(listHtml);
-
+            comm.paging.drawList("#storyList", listHtml)
         }
 
         thisObj.initCheckBox();

@@ -17,7 +17,23 @@
             </div>
 
             <div class="board_basic">
-              <table id="storyList"></table>
+              <table>
+                <tbody>
+                  <th><input type="checkbox" class="check all"></th>
+                  <th>공개여부</th>
+                  <th>카테고리</th>
+                  <th>회원 <br>카테고리</th>
+                  <th colspan="2">
+                    <div class="btn_tb">
+                      <a href="javascript:;" onclick="boardObj.deleteStory();">삭제</a>
+                      <a href="javascript:;" onclick="boardObj.updatePublic();">공개</a>
+                      <a href="javascript:;" onclick="boardObj.updatePrivate();">비공개</a>
+                      <a href="javascript:;" onclick="boardObj.goWritingPage();">글쓰기</a>
+                    </div>
+                  </th>
+                </tbody>
+                <tbody id="storyList"></tbody>
+              </table>
               <div class="pagging_wrap"></div>
             </div>
           </div><!-------------//manage_box_wrap------------->
