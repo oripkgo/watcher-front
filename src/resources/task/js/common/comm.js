@@ -488,7 +488,7 @@ let comm = function(){
             },
 
             getToDay : function(format){
-                return this.date.getDate(new Date(),format);
+                return this.getDate(new Date(),format);
             },
 
             getDate : function(date,format){
