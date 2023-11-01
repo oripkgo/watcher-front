@@ -394,7 +394,7 @@ a.hover_line:hover {
 .search_right_box select {display:inline-block;vertical-align:top;border:none;height:30px;font-size:14px;font-weight:400;color:#000;}
 
 .board_basic {}
-.board_basic table {width:100%;}
+.board_basic table {width:100%;margin-bottom:20px;}
 .board_basic th {border-bottom:1px solid #ddd;font-size:15px;color:#757575;font-weight:400;padding:15px 0px 15px 0px;}
 .board_basic td:nth-child(1) {width:50px;text-align:center;}
 .board_basic td:nth-child(2) {width:120px;text-align:center;font-size:15px;color:#757575;font-weight:400;white-space: normal;}
