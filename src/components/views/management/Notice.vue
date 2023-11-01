@@ -10,12 +10,12 @@
               공지 관리
 
               <div class="search_right_box">
-                <select id="search_secret_yn" name="search_secret_yn">
+                <select id="searchSecretYn" name="searchSecretYn">
                   <option value="">전체</option>
                   <option value="NN">공개</option>
                   <option value="YY">비공개</option>
                 </select>
-                <input type="text" id="search_keyword" name="search_keyword" placeholder="">
+                <input type="text" id="searchKeyword" name="searchKeyword" placeholder="">
                 <a href="javascript:;" id="search"></a>
               </div>
             </div>
@@ -80,7 +80,7 @@
         $this.search($this);
       });
 
-      $("#search_keyword").on("keypress", function (e) {
+      $("#searchKeyword").on("keypress", function (e) {
         if (e.keyCode == 13) {
           $this.search($this);
           return false;
@@ -164,7 +164,7 @@
             comm.request({url:$this.noticePublicUrl, method : "PUT", data : param},function(resp){
               // 수정 성공
               if( resp.code == '0000'){
-                $("#search_secret_yn").val("NN");
+                $("#searchSecretYn").val("NN");
                 $this.search($this);
               }
             })
@@ -184,7 +184,7 @@
             comm.request({url:$this.noticePrivateUrl, method : "PUT", data : param},function(resp){
               // 수정 성공
               if( resp.code == '0000'){
-                $("#search_secret_yn").val("YY");
+                $("#searchSecretYn").val("YY");
                 $this.search($this);
               }
             })
@@ -225,7 +225,7 @@
           let obj = data.list[i];
           let trHtml = '';
 
-          // let listNum = ((data.vo.pageNo - 1) * data.vo.listNo) + (i + 1);
+          // let listNum = ((data.dto.pageNo - 1) * data.dto.listNo) + (i + 1);
 
           trHtml += '<td><input type="checkbox" class="check"></td>';
           trHtml += '<td>';

@@ -72,7 +72,7 @@ const mainObj = {
     },
 
     category : {
-        categoryApiUrl  : '/comm/category/list',
+        categoryApiUrl  : '/category/list',
         listUrl : storyListUrl,
         data : [],
         init : function(){

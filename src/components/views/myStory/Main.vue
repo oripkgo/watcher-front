@@ -63,7 +63,7 @@ import comm from "@/resources/task/js/common/comm.js";
         memberCategoryList: JSON.parse(data['memberCategoryList']),
         myStoryMainUrl: "/myStory/" + data['memId'],
         myStorylistDataUrl: '/myStory/list',
-        noticeListDataUrl: '/notice/list/data?search_memId=' + data['memId'],
+        noticeListDataUrl: '/notice/list/data?searchMemId=' + data['memId'],
         noticeMoreUrl: "/" + data['memId'] + "/notice/list",
         categoryListYn: 'N',
         storyTitle : data['policy']['STORY_TITLE'],

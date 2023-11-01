@@ -264,15 +264,15 @@ let comm = function(){
 
     const publicObj = {
         category : {
-            categoryApiUrl  : '/comm/category/list',
-            categoryMemberApiUrl  : '/comm/category/list/member',
-            categoryMemberPublicApiUrl  : '/comm/category/list/member/public',
+            categoryApiUrl  : '/category/list',
+            categoryMemberApiUrl  : '/category/list/member',
+            categoryMemberPublicApiUrl  : '/category/list/member/public',
             getCategory : function(){
                 let category_list = "[]";
                 comm.request({url: this.categoryApiUrl, method: "GET", async: false}, function (resp) {
                     // 수정 성공
                     if (resp.code == '0000') {
-                        category_list = resp['category_list'];
+                        category_list = resp['categoryList'];
                     }
                 })
 

@@ -11,6 +11,7 @@ import StoryView from "@/components/views/story/StoryView";
 import StoryList from "@/components/views/story/StoryList";
 import StoryWrite from "@/components/views/story/StoryWrite";
 import NoticeList from "@/components/views/notice/NoticeList";
+import NoticeListMyStory from "@/components/views/notice/NoticeListMyStory";
 import NoticeView from "@/components/views/notice/NoticeView";
 import NoticeWrite from "@/components/views/notice/NoticeWrite";
 import MyStoryMain from "@/components/views/myStory/Main";
@@ -41,8 +42,8 @@ const router = createRouter({
         { path : "/notice/list",                    name : "noticeList",            component : NoticeList },
         { path : "/notice/view",                    name : "noticeView",            component : NoticeView },
         { path : "/notice/write",                   name : "noticeWrite",           component : NoticeWrite },
-        { path : "/notice/update",                  name : "noticeupdate",          component : NoticeWrite },
-        { path : "/:memId/notice/list",             name : "noticeListMember",      component : NoticeList },
+        { path : "/notice/update",                  name : "noticeUpdate",          component : NoticeWrite },
+        { path : "/:memId/notice/list",             name : "noticeListMember",      component : NoticeListMyStory },
         { path : "/:memId/notice/view",             name : "noticeViewMember",      component : NoticeView },
         { path : "/myStory/:memId",                 name : "myStoryMain",           component : MyStoryMain },
         { path : "/myStory/:memId/:categoryId",     name : "myStoryMainCategory",   component : MyStoryMain },
