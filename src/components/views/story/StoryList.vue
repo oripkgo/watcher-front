@@ -45,7 +45,7 @@ export default {
     return {
       SEARCH_CATEGORY_ID : this.$route['query']['search_category_id'],
       SEARCH_KEYWORD : this.$route['query']['search_keyword'],
-      category_list : JSON.parse(comm.category.getCategory()),
+      CATEGORY_LIST : comm.category.get(),
       pageNo : this.$route['query']['pageNo'] || '1',
       listNo : this.$route['query']['listNo'] || '10',
       pagigRange : this.$route['query']['pagigRange'] || '10',
@@ -69,7 +69,7 @@ export default {
 
   methods: {
     initCategory : function($this){
-      $this.category_list.forEach(function(obj,idx){
+      $this.CATEGORY_LIST.forEach(function(obj,idx){
         const id = obj['ID'];
         const nm = obj['CATEGORY_NM'];
 
@@ -104,8 +104,8 @@ export default {
           });
           return;
 
-          // if (category_list.length > 0) {
-          //     id = category_list[0]['ID'];
+          // if (CATEGORY_LIST.length > 0) {
+          //     id = CATEGORY_LIST[0]['ID'];
           // }
         }
 
@@ -184,7 +184,7 @@ export default {
           listHtml += '    </div>';
           listHtml += '    <div class="story_key">';
 
-          listHtml += '        <span>'+comm.last_time_cal(obj.REG_DATE)+'</span>';
+          listHtml += '        <span>'+comm.date.getPastDate(obj.REG_DATE)+'</span>';
           listHtml += '        <span>공감 ' + obj.LIKE_CNT + '</span>';
           listHtml += '        <em>by ' + obj.NICKNAME + '</em>';
 
@@ -249,7 +249,7 @@ export default {
           // listHtml += '        <a href="javascript:;">#컬처</a>';
           // listHtml += '        <a href="javascript:;">#영화</a>';
           // listHtml += '        <a href="javascript:;">#영화컬처</a>';
-          listHtml += '        <span>'+comm.last_time_cal(obj.REG_DATE)+'</span>';
+          listHtml += '        <span>'+comm.date.getPastDate(obj.REG_DATE)+'</span>';
           listHtml += '        <span>공감 ' + obj.LIKE_CNT + '</span>';
           listHtml += '        <em>by ' + obj.NICKNAME + '</em>';
           listHtml += '    </div>';

@@ -6,12 +6,12 @@ const storyPrivateUrl = '/management/board/storys/private';
 const storyDeleteUrl = '/management/board/storys';
 const storyListUrl = '/management/board/storys';
 
-let category_list;
+let CATEGORY_LIST;
 let thisObj;
 
 const boardObj = {
     init : function(categoryList){
-        category_list = JSON.parse(categoryList);
+        CATEGORY_LIST = categoryList;
         thisObj = this;
     },
 
@@ -136,7 +136,7 @@ const boardObj = {
         $(selObj).empty();
         $(selObj).append('<option value="">카테고리</option>')
 
-        category_list.forEach(function(obj){
+        CATEGORY_LIST.forEach(function(obj){
             const id = obj['ID'];
             const nm = obj['CATEGORY_NM'];
 
@@ -178,7 +178,7 @@ const boardObj = {
 
             listHtml += '    </div>                                                                                        ';
             listHtml += '    <div class="story_key">                                                                       ';
-            listHtml += '        <span>'+comm.last_time_cal(obj['REG_DATE'])+'</span>                                         ';
+            listHtml += '        <span>'+comm.date.getPastDate(obj['REG_DATE'])+'</span>                                         ';
             listHtml += '        <span>공감 ' + obj['LIKE_CNT'] + '</span>                                                      ';
             listHtml += '        <span>댓글 ' + obj['COMMENT_CNT'] + '</span>                                                   ';
             listHtml += '    </div>                                                                                        ';

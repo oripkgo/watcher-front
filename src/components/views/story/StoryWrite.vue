@@ -109,8 +109,8 @@ export default {
     const $this = this;
     const vo = $this.getStoryInfo();
     const result = {
-      category_list : JSON.parse(comm.category.getCategory()),
-      category_list_member : JSON.parse(comm.category.getCategoryMemberPublic()),
+      CATEGORY_LIST : comm.category.get(),
+      CATEGORY_LIST_MEMBER : comm.category.getMemberPublic(),
       vo : {},
     };
 
@@ -203,7 +203,7 @@ export default {
 
 
     setCategoryOptions : function($this){
-      $this.category_list.forEach(function(obj){
+      $this.CATEGORY_LIST.forEach(function(obj){
         let option = $("<option></option>");
 
         option.attr("value",obj['ID']);
@@ -217,7 +217,7 @@ export default {
     setCategoryMemberOptions : function($this, defaultCategoryId){
       $("#story_category_member").empty();
       $("#story_category_member").html("<option value=''>선택</option>")
-      $this.category_list_member.forEach(function(obj){
+      $this.CATEGORY_LIST_MEMBER.forEach(function(obj){
         if( obj['DEFALUT_CATEG_ID'] != defaultCategoryId ){
           return;
         }

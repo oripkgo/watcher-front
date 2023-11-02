@@ -189,7 +189,7 @@ import comm from "@/resources/task/js/common/comm.js";
             // listHtml += '        <a href="javascript:;">#컬처</a>';
             // listHtml += '        <a href="javascript:;">#영화</a>';
             // listHtml += '        <a href="javascript:;">#영화컬처</a>';
-            listHtml += '        <span>'+comm.last_time_cal(obj.REG_DATE)+'</span>';
+            listHtml += '        <span>'+comm.date.getPastDate(obj.REG_DATE)+'</span>';
             listHtml += '        <span>공감 ' + obj.LIKE_CNT + '</span>';
             listHtml += '        <em>by ' + obj.NICKNAME + '</em>';
             listHtml += '    </div>';

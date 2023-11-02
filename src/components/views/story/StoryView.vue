@@ -86,7 +86,7 @@
 
       pastDate : function($this){
         // 지난 시간 세팅
-        $("#last_time").html(comm.last_time_cal($this.regDate));
+        $("#last_time").html(comm.date.getPastDate($this.regDate));
       },
 
       setTagAndComment : function($this){

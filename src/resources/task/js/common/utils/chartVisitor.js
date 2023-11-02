@@ -3,10 +3,10 @@ import comm from "@/resources/task/js/common/comm";
 const dailyVisitorUrl = "/visitor/chart/count/daily?searchDate=";
 const monthVisitorUrl = "/visitor/chart/count/month?searchDate=";
 
-const drawChart = function(chartTarget, datas, customDate, customTitle){
+const drawChart = function (chartTarget, datas, customDate, customTitle) {
     let toDay = new Date();
 
-    if( customDate ){
+    if (customDate) {
         toDay = customDate;
     }
 
@@ -23,9 +23,9 @@ const drawChart = function(chartTarget, datas, customDate, customTitle){
 
     labels = Object.keys(datas);
 
-    for(let key in datas){
+    for (let key in datas) {
 
-        if( datas[key] && datas[key] > maxData ){
+        if (datas[key] && datas[key] > maxData) {
             maxData = datas[key];
         }
 
@@ -58,14 +58,14 @@ const drawChart = function(chartTarget, datas, customDate, customTitle){
 
     // if( maxData <= 0 ){
     config.options.scales.y.min = 0;
-    config.options.scales.y.max = maxData+5;
+    config.options.scales.y.max = maxData + 5;
     // }
 
-    if( window.myChart ){
+    if (window.myChart) {
         window.myChart.data = config.data;
         window.myChart.options = config.options;
         window.myChart.update();
-    }else{
+    } else {
         window.myChart = new window['Chart'](
             document.getElementsByClassName(chartTarget)[0],
             config
@@ -73,10 +73,10 @@ const drawChart = function(chartTarget, datas, customDate, customTitle){
     }
 }
 
-const getChartData = function(visitList, customDate){
+const getChartData = function (visitList, customDate) {
     let result = {};
     let toDay = new Date();
-    if( customDate ){
+    if (customDate) {
         toDay = customDate;
     }
 
@@ -87,28 +87,28 @@ const getChartData = function(visitList, customDate){
     const last_day = new Date(y, m, 0).getDate();
 
     for (let i = 1; i <= last_day; i++) {
-        if(i > d){
+        if (i > d) {
             result[i] = null;
-        }else{
+        } else {
             result[i] = 0;
         }
     }
 
-    visitList.forEach(function(obj){
-        if( obj['VISIT_DATE'] ){
-            result[ (obj['VISIT_DATE'].substring(6)*1) ] = obj['CNT'];
+    visitList.forEach(function (obj) {
+        if (obj['VISIT_DATE']) {
+            result[(obj['VISIT_DATE'].substring(6) * 1)] = obj['CNT'];
         }
     })
 
     return result;
 }
 
-const getMonthChartData = function(visitList, customDate){
+const getMonthChartData = function (visitList, customDate) {
     let result = {};
 
     let toDay = new Date();
 
-    if( customDate ){
+    if (customDate) {
         toDay = customDate;
     }
 
@@ -118,25 +118,25 @@ const getMonthChartData = function(visitList, customDate){
 
 
     for (let i = 1; i <= 12; i++) {
-        if(i > m){
-            result[i+'월'] = null;
-        }else{
-            result[i+'월'] = 0;
+        if (i > m) {
+            result[i + '월'] = null;
+        } else {
+            result[i + '월'] = 0;
         }
 
     }
 
-    visitList.forEach(function(obj){
-        if( obj['VISIT_MONTH'] ){
-            result[ (obj['VISIT_MONTH'].substring(4)*1)+'월' ] = obj['CNT'];
+    visitList.forEach(function (obj) {
+        if (obj['VISIT_MONTH']) {
+            result[(obj['VISIT_MONTH'].substring(4) * 1) + '월'] = obj['CNT'];
         }
     })
 
     return result;
 }
 
-const chart = {
-    init : function(target, dateObj, title){
+const chartVisitor = {
+    init: function (target, dateObj, title) {
         this.drawTarget = target;
         this.dateObj = dateObj;
         this.title = title;
@@ -148,19 +148,19 @@ const chart = {
         this.dataStr = year + month + day; // 원하는 형식으로 날짜를 조합합니다.
     },
 
-    drawDailyVisitor : function(){
+    drawDailyVisitor: function () {
         let chartThis = this;
-        comm.request({url:dailyVisitorUrl+chartThis.dataStr, method : "GET"},function(resp){
-            if( resp.code == '0000'){
+        comm.request({url: dailyVisitorUrl + chartThis.dataStr, method: "GET"}, function (resp) {
+            if (resp.code == '0000') {
                 drawChart(chartThis.drawTarget, getChartData(resp['visitInfoList'], chartThis.dateObj), chartThis.dateObj)
             }
         })
     },
 
-    drawMonthVisitor : function(){
+    drawMonthVisitor: function () {
         let chartThis = this;
-        comm.request({url:monthVisitorUrl+this.dataStr, method : "GET"},function(resp){
-            if( resp.code == '0000'){
+        comm.request({url: monthVisitorUrl + this.dataStr, method: "GET"}, function (resp) {
+            if (resp.code == '0000') {
                 drawChart(chartThis.drawTarget, getMonthChartData(resp['visitInfoList'], chartThis.dateObj), chartThis.dateObj)
             }
         })
@@ -168,4 +168,4 @@ const chart = {
 }
 
 
-export default chart;
+export default chartVisitor;

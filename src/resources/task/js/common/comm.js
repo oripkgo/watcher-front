@@ -1,5 +1,9 @@
 import $ from 'jquery';
 import "./globalVar"
+import category from "@/resources/task/js/common/utils/category"
+import date from "@/resources/task/js/common/utils/date"
+import message from "@/resources/task/js/common/utils/message"
+import request from "@/resources/task/js/common/utils/request"
 
 let comm = function(){
     const kakaoKey = '16039b88287b9f46f214f7449158dfde';
@@ -220,7 +224,7 @@ let comm = function(){
 
                         $(".profile"    , comment_obj).attr("src",profile_img_arr);
                         $(".writer"     , comment_obj).html(listObj['NICKNAME']);
-                        $(".writer_time", comment_obj).html(comm.last_time_cal( listObj['REG_DATE'] ));
+                        $(".writer_time", comment_obj).html(comm.date.getPastDate( listObj['REG_DATE'] ));
                         $(".contents"   , comment_obj).html((listObj['COMENT']?listObj['COMENT']:""));
                         $("[name='coment_modify']"  , comment_obj).val((listObj['COMENT']?listObj['COMENT']:""));
                         //$(".write_wrap"  , comment_obj).show();
@@ -263,46 +267,9 @@ let comm = function(){
     };
 
     const publicObj = {
-        category : {
-            categoryApiUrl  : '/category/list',
-            categoryMemberApiUrl  : '/category/list/member',
-            categoryMemberPublicApiUrl  : '/category/list/member/public',
-            getCategory : function(){
-                let category_list = "[]";
-                comm.request({url: this.categoryApiUrl, method: "GET", async: false}, function (resp) {
-                    // 수정 성공
-                    if (resp.code == '0000') {
-                        category_list = resp['categoryList'];
-                    }
-                })
-
-                return category_list;
-            },
-            getCategoryMember : function(){
-                let category_list = "[]";
-                comm.request({url: this.categoryMemberApiUrl, method: "GET", async: false}, function (resp) {
-                    // 수정 성공
-                    if (resp.code == '0000') {
-                        category_list = resp['memberCategoryList'];
-                    }
-                })
-
-                return category_list;
-            },
-
-            getCategoryMemberPublic : function(){
-                let category_list = "[]";
-                comm.request({url: this.categoryMemberPublicApiUrl, method: "GET", async: false}, function (resp) {
-                    // 수정 성공
-                    if (resp.code == '0000') {
-                        category_list = resp['memberCategoryList'];
-                    }
-                })
-
-                return category_list;
-            },
-
-        },
+        category : category,
+        date : date,
+        message: message,
         validation : function(target){
             let checkVal = false;
             $("input:not([type='hidden']),select,textarea",target).each(function(){
@@ -355,7 +322,7 @@ let comm = function(){
                 let call_resp_obj = resp;
 
                 // 태그 세팅 s
-                call_resp_obj.tagsHtml = comm.tags_setting_val(call_resp_obj.tags || call_resp_obj.TAGS);
+                call_resp_obj.tagsHtml = comm.setTags(call_resp_obj.tags || call_resp_obj.TAGS);
                 if( option && option.tagsTarget && call_resp_obj.tagsHtml ){
                     $('.conts_tag').show();
                     $('.conts_tag').append(call_resp_obj.tagsHtml);
@@ -457,7 +424,7 @@ let comm = function(){
             })
         },
 
-        tags_setting_val : function(tags){
+        setTags : function(tags){
             if( !tags ){
                 return '';
             }
@@ -472,81 +439,6 @@ let comm = function(){
             return tagsHtml;
         },
 
-        date : {
-            getDayOfTheWeek : function(date){
-                const d = date;
-                const weekday = [];new Array(7);
-                weekday[0] = "일";
-                weekday[1] = "월";
-                weekday[2] = "화";
-                weekday[3] = "수";
-                weekday[4] = "목";
-                weekday[5] = "금";
-                weekday[6] = "토";
-
-                return weekday[d.getDay()];
-            },
-
-            getToDay : function(format){
-                return this.getDate(new Date(),format);
-            },
-
-            getDate : function(date,format){
-                let date_format = format || ''
-
-                let year = date.getFullYear(); // 년도
-                let month = date.getMonth() + 1;  // 월
-                let dt = date.getDate();  // 날짜
-                let day = date.getDay();  // eslint-disable-line no-unused-vars
-                // 요일
-
-
-                month = ( "00"+month )
-                month = month.substring(month.length-2,month.length);
-
-                dt = ( "00"+dt )
-                dt = dt.substring(dt.length-2,dt.length);
-
-                return year + date_format + month + date_format + dt;
-            },
-        },
-
-        last_time_cal : function(last_date){
-            let write_date = new Date(last_date) ;
-            let now_date = new Date();
-
-            if( this.date.getDate(now_date) != this.date.getDate(write_date)){
-                write_date = new Date(this.date.getDate(write_date,'-')) ;
-            }
-
-            let last_time_result = now_date.getTime() - write_date.getTime();
-
-            let floor = function(num){
-                return Math.floor(num*1);
-            }
-            if( ( last_time_result/1000 ) < 60 ){
-
-                if( last_time_result < 0 ){
-                    return "방금";
-                }
-
-                return floor(( last_time_result/1000 ))+"초 전";
-            }
-
-            if( ( last_time_result/1000/60 ) < 60 ){
-                return floor(( last_time_result/1000/60 ))+'분 전';
-            }
-
-            if( ( last_time_result/1000/60/60 ) < 60 ){
-                return floor(( last_time_result/1000/60/60 ))+'시간 전';
-            }
-
-            if( ( last_time_result/1000/60/60/24 ) < 365 ){
-                return floor(( last_time_result/1000/60/60/24 ))+'일 전';
-            }
-
-            return floor(( last_time_result/1000/60/60/24/365 ))+'년 전';
-        },
 
         loginObj : {
             init : function(type){
@@ -776,86 +668,27 @@ let comm = function(){
                 opt.data = comm.serializeJson($(opt.form).serializeArray());
             }
 
-            let ajaxOpt = {
-                url: window.apiHost + opt.url,
-                type:opt.method || 'POST',
-                data : opt.data || null,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", 'Bearer '+ window.apiToken);
+            if( !opt.headers ){
+                opt.headers = {};
+            }
 
-                    if( opt.headers ){
-                        $.map(opt.headers,function(val,key){
-                            xhr.setRequestHeader(key,val);
-                        })
-                    }else{
-                        if( opt['contentType'] != false ){
-                            xhr.setRequestHeader("Content-type","application/json");
-                        }
-                    }
-                },
-                success : function(result){
-                    if( result.code == '0000' ){
-                        if( succCall ){
-                            succCall(result);
-                        }
-                    }else{
-                        if( errCall ){
-                            errCall(result);
-                        }else{
-                            comm.message.alert(result.message);
-                        }
-                    }
-                },
-                error:function(result){
-                    if( errCall ){
-                        errCall(result);
-                    }else{
-                        if( result.responseJSON ){
-                            let status = result.responseJSON.status; // eslint-disable-line no-unused-vars
-                            let msg = result.responseJSON.message;
+            opt.headers['Authorization'] = 'Bearer '+ window.apiToken;
 
-                            comm.message.alert(msg);
+            if( opt['contentType'] != false ){
+                opt.headers['Content-type'] = "application/json";
+            }
 
-                        }else{
-                            comm.message.alert("http server error");
-                        }
-                    }
+            request.send(window.apiHost + opt.url, opt.method || 'POST', opt.data, function (result) {
+                if (succCall) {
+                    succCall(result);
                 }
-            }
-
-            if( Object.hasOwnProperty.call(opt, "processData") ){
-                ajaxOpt['processData'] = opt['processData'];
-            }
-
-
-            if( Object.hasOwnProperty.call(opt, "contentType") ){
-                ajaxOpt['contentType'] = opt['contentType'];
-            }
-
-            if( Object.hasOwnProperty.call(opt, "async") ){
-                ajaxOpt['async'] = opt['async'];
-            }
-
-            $.ajax(ajaxOpt)
-        },
-
-        message: {
-            alert: function (msg,callback) {
-                alert(msg);
-
-                if( callback ){
-                    callback();
+            }, function (result) {
+                if (errCall) {
+                    errCall(result);
+                } else {
+                    comm.message.alert(result.message);
                 }
-
-            },
-            confirm : function(msg,callback){
-                if( confirm(msg) ){
-                    callback(true);
-                }else{
-                    callback(false);
-                }
-
-            }
+            }, opt.headers, opt['async'])
         },
 
         paging : {

@@ -60,7 +60,7 @@ export default {
 
   data() {
     return {
-      categoryListStr: comm.category.getCategory(),
+      categoryList: comm.category.get(),
       boardObj:boardObj,
     }
   },
@@ -70,7 +70,7 @@ export default {
     window.triggerJqueryFadeIn();
 
     const $this = this;
-    boardObj.init($this.categoryListStr);
+    boardObj.init($this.categoryList);
     boardObj.initCategory();
     boardObj.search();
 

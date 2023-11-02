@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import chart from "@/resources/task/js/common/utils/chart";
+import chartVisitor from "@/resources/task/js/common/utils/chartVisitor";
 
   export default {
     name: 'commCharts',
@@ -16,17 +16,17 @@ import chart from "@/resources/task/js/common/utils/chart";
     },
 
     mounted() {
-      chart.init("graph_canvas", this.chartDate);
-      chart.drawDailyVisitor();
+      chartVisitor.init("graph_canvas", this.chartDate);
+      chartVisitor.drawDailyVisitor();
       window['commCharts'] = this;
     },
     methods:{
       drawDailyVisitor : function(){
-        chart.drawDailyVisitor();
+        chartVisitor.drawDailyVisitor();
       },
 
       drawMonthVisitor : function(){
-        chart.drawMonthVisitor();
+        chartVisitor.drawMonthVisitor();
       },
     },
   }

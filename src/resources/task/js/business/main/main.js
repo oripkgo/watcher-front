@@ -76,7 +76,7 @@ const mainObj = {
         listUrl : storyListUrl,
         data : [],
         init : function(){
-            this.data = JSON.parse(comm.category.getCategory())
+            this.data = comm.category.get();
             const categoryObj = this;
             categoryObj.data.forEach(function(obj,idx){
                 const id = obj['ID'];
@@ -146,7 +146,7 @@ const mainObj = {
                     listHtml += '    </div>';
                     listHtml += '    <div class="story_key">';
 
-                    listHtml += '        <span>'+comm.last_time_cal(obj.REG_DATE)+'</span>';
+                    listHtml += '        <span>'+comm.date.getPastDate(obj.REG_DATE)+'</span>';
                     listHtml += '        <span>공감 ' + obj.LIKE_CNT + '</span>';
                     listHtml += '        <em>by ' + obj.NICKNAME + '</em>';
 
