@@ -672,7 +672,7 @@ let comm = function(){
                 opt.headers = {};
             }
 
-            opt.headers['Authorization'] = 'Bearer '+ window.apiToken;
+            //opt.headers['Authorization'] = 'Bearer '+ window.apiToken;
 
             if( opt['contentType'] != false ){
                 opt.headers['Content-type'] = "application/json";

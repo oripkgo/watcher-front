@@ -16,6 +16,8 @@ const request = {
 
         xhr.open(method || "GET", url, async);
 
+        xhr.setRequestHeader("Authorization", 'Bearer '+ window.apiToken);
+
         if( headers ){
             for (let key in headers) {
                 xhr.setRequestHeader(key, headers[key]);
