@@ -4,6 +4,8 @@ import category from "@/resources/task/js/common/utils/category"
 import date from "@/resources/task/js/common/utils/date"
 import message from "@/resources/task/js/common/utils/message"
 import request from "@/resources/task/js/common/utils/request"
+import availability from "@/resources/task/js/common/utils/availability"
+import boardView from "@/resources/task/js/common/utils/boardView"
 
 let comm = function(){
     const kakaoKey = '16039b88287b9f46f214f7449158dfde';
@@ -271,46 +273,15 @@ let comm = function(){
         date : date,
         message: message,
         validation : function(target){
-            let checkVal = false;
-            $("input:not([type='hidden']),select,textarea",target).each(function(){
-                if( checkVal )return;
+            const result = availability.check(target);
 
-                const thisObj = $(this);
-                const tagNm = $(thisObj).prop("tagName").toLowerCase();
-                const tagTp =  $(thisObj).prop("type").toLowerCase();
-                const title = $(thisObj).attr("title");
-                const checkYn = $(thisObj).attr("checkYn");
-                const checkMsg = $(thisObj).attr("checkMsg");
+            comm.message.alert(result.message);
+            $(result.failTarget).focus();
 
-                if( checkYn == 'Y' ){
-                    if( !$(thisObj).val() ){
-                        checkVal = true;
-                        let msg;
-                        if( checkMsg ){
-                            msg = checkMsg;
-                        }
-
-                        if( title ){
-                            msg = title;
-
-                            if( tagNm == 'select' || tagTp == 'file' ){
-                                msg += ' 선택은 필수입니다.';
-                            }else{
-                                msg += ' 입력은 필수입니다.';
-                            }
-                        }
-
-                        comm.message.alert(msg,function(){
-
-                        });
-
-                        $(thisObj).focus();
-                    }
-                }
-            });
-
-            return checkVal;
+            return result.checkVal;
         },
+
+        boardView : boardView,
 
         initBoardView : function(viewType, viewId, callback, option){
             let param = {
