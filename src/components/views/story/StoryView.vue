@@ -31,7 +31,7 @@
           <div class="conts_tag" id="tagsTarget">
             <strong class="conts_tit">태그</strong>
           </div>
-          <div class="conts_review"></div>
+          <div class="conts_review" id="conts_review"></div>
         </div>
       </div>
     </div>
@@ -93,14 +93,15 @@
 
         comm.boardView.init($this.id,$this.type);
 
-        comm.boardView.renderTags('tagsTarget')
-        comm.boardView.renderLike('likeTarget')
+        comm.boardView.renderTag('tagsTarget');
+        comm.boardView.renderLike('likeTarget');
+        comm.boardView.renderComment('conts_review');
 
         // comm.initBoardView(
         //     $this.type,
         //     $this.id,
         //     function () {},
-        //     {"likeTarget": ".like", "tagsTarget": ".conts_tag", "commentTarget": ".conts_review"}
+        //     {"likeTarget": ".like", "tagsTarget": ".conts_tag", "conts_review": ".conts_review"}
         // );
       },
 

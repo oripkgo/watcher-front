@@ -3,6 +3,7 @@ const serverSuccessCheckValue = {key :"code", val : "0000"}
 const request = {
     send : function(url, method, data, succCallback, errCallback, headers, async){
         const xhr = new XMLHttpRequest();
+
         method = ( method || 'GET').toUpperCase();
         async = !(async == true || async == false)? true : async;
 
@@ -47,6 +48,10 @@ const request = {
         if( method == 'GET' || method == 'DELETE'){
             xhr.send();
         }else{
+            if( typeof data !== 'string' ){
+                data = JSON.stringify(data);
+            }
+
             xhr.send(data);
         }
     },

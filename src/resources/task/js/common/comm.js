@@ -1,11 +1,11 @@
 import $ from 'jquery';
 import "./globalVar"
-import category from "@/resources/task/js/common/utils/category"
-import date from "@/resources/task/js/common/utils/date"
-import message from "@/resources/task/js/common/utils/message"
-import request from "@/resources/task/js/common/utils/request"
-import availability from "@/resources/task/js/common/utils/availability"
-import boardView from "@/resources/task/js/common/utils/boardView"
+import CATEGORY from "@/resources/task/js/common/utils/category"
+import DATE from "@/resources/task/js/common/utils/date"
+import MESSAGE from "@/resources/task/js/common/utils/message"
+import REQUEST from "@/resources/task/js/common/utils/request"
+import AVAILABILITY from "@/resources/task/js/common/utils/availability"
+import BOARD_VIEW from "@/resources/task/js/common/utils/boardView"
 
 let comm = function(){
     const kakaoKey = '16039b88287b9f46f214f7449158dfde';
@@ -269,11 +269,11 @@ let comm = function(){
     };
 
     const publicObj = {
-        category : category,
-        date : date,
-        message: message,
+        category : CATEGORY,
+        date : DATE,
+        message: MESSAGE,
         validation : function(target){
-            const result = availability.check(target);
+            const result = AVAILABILITY.check(target);
 
             comm.message.alert(result.message);
             $(result.failTarget).focus();
@@ -281,7 +281,31 @@ let comm = function(){
             return result.checkVal;
         },
 
-        boardView : boardView,
+        boardView : {
+            init : function(id, type){
+                BOARD_VIEW.init(id, type);
+                this.tagObj = BOARD_VIEW.tag;
+                this.likeObj = BOARD_VIEW.like;
+                this.commentObj = BOARD_VIEW.comment;
+            },
+            renderTag : function(tagId){
+                this.tagObj.render(tagId);
+            },
+            renderLike : function(tagId){
+                this.likeObj.render(tagId, function(){
+                    comm.message.confirm("해당 콘텐츠가 마음에 드시나요? 로그인 후 의견을 알려주세요.\n\n로그인 하시겠습니까?", function(Yn){
+                        if( Yn ){
+                            comm.loginObj.popup.open();
+                        }
+                    });
+                });
+            },
+            renderComment: function (tagId) {
+                let _pageForm = $('#' + tagId).parents('form');
+
+                this.commentObj.render(tagId, _pageForm.get(0), comm.paging.getList);
+            },
+        },
 
         initBoardView : function(viewType, viewId, callback, option){
             let param = {
@@ -649,7 +673,7 @@ let comm = function(){
                 opt.headers['Content-type'] = "application/json";
             }
 
-            request.send(window.apiHost + opt.url, opt.method || 'POST', opt.data, function (result) {
+            REQUEST.send(window.apiHost + opt.url, opt.method || 'POST', opt.data, function (result) {
                 if (succCall) {
                     succCall(result);
                 }
