@@ -1,13 +1,16 @@
 import request from "@/resources/task/js/common/utils/request";
-import comm from "@/resources/task/js/common/comm";
-import $ from "jquery";
 
 const boardViewInitApiUrl = '/board/view/init';
 const boardlikeModifyApiUrl = '/board/like/modify';
 const commentListApiUrl = '/board/comment/select';
+const commentInsertApiUrl = "/board/comment/insert";
+const commentDeleteApiUrl = "/board/comment/delete";
+const commentUpdateApiUrl = "/board/comment/update";
+
 const likeYImgUrl = require("@/resources/img/icon_heart_on.png");
 const likeNImgUrl = require("@/resources/img/zim_ico.png");
-
+const profileEmptyImgUrl = require("@/resources/img/member_ico.png");
+const commentButtonDivisionImgUrl = require("@/resources/img/line.png");
 
 const getBoardInitDefaultData = function (id, type) {
     let result = {};
@@ -53,23 +56,28 @@ const boardView = {
     init: function (id, type) {
         this.viewInitResult = getBoardInitDefaultData(id, type);
 
-        this.tag.init(id, type, this.viewInitResult);
-        this.like.init(id, type, this.viewInitResult);
-        this.comment.init(id, type, this.viewInitResult);
+        this.loginYn = this.viewInitResult.loginYn;
+        this.tags = this.viewInitResult['tags'] || this.viewInitResult['TAGS'];
+        this.likeId = this.viewInitResult['LIKE_ID'];
+        this.likeYn = this.viewInitResult['LIKE_YN'];
+
+        this.tag.init(id, type, this.tags);
+        this.like.init(id, type, this.loginYn, this.likeId, this.likeYn);
+        this.comment.init(id, type, this.loginYn);
     },
 
     tag: {
-        init: function (id, type, viewInitData) {
+        init: function (id, type, tags) {
             this.id = id;
             this.type = type;
-            this.viewInitResult = viewInitData;
+            this.tags = tags;
         },
 
         render: function (tagId) {
             let result = "<strong class=\"conts_tit\">태그</strong>";
             let targetElement = document.getElementById(tagId);
 
-            let tags = this.viewInitResult['tags'] || this.viewInitResult['TAGS'];
+            let tags = this.tags;
 
             if (!tags) {
                 targetElement.style.display = 'none';
@@ -87,10 +95,13 @@ const boardView = {
         },
     },
     like: {
-        init: function (id, type, viewInitData) {
+        init: function (id, type, loginYn, likeId, likeYn, notLoginStatusProcessingFunc) {
             this.id = id;
             this.type = type;
-            this.viewInitResult = viewInitData;
+            this.likeId = likeId;
+            this.likeYn = likeYn;
+            this.loginYn = loginYn;
+            this.notLoginStatusProcessingFunc = notLoginStatusProcessingFunc;
         },
 
         setLikeElementDataSet: function (targetObj, data) {
@@ -100,11 +111,11 @@ const boardView = {
             if (data.type) {
                 targetObj.dataset['contentsType'] = data.type;
             }
-            if (data.viewInitResult['LIKE_ID']) {
-                targetObj.dataset['likeId'] = data.viewInitResult['LIKE_ID'];
+            if (data['likeId']) {
+                targetObj.dataset['likeId'] = data['likeId'];
             }
-            if (data.viewInitResult['LIKE_YN']) {
-                targetObj.dataset['likeYn'] = data.viewInitResult['LIKE_YN'];
+            if (data['likeYn']) {
+                targetObj.dataset['likeYn'] = data['likeYn'];
             }
         },
 
@@ -139,19 +150,19 @@ const boardView = {
             }
         },
 
-        render: function (tagId, callbackNotLogin) {
+        render: function (tagId) {
             const likeThis = this;
-            let targetElement = document.getElementById(tagId);
+            const targetElement = document.getElementById(tagId);
 
             likeThis.setLikeElementDataSet(targetElement, likeThis);
 
-            likeThis.changeTheLikeImageWithLikeYnValue(targetElement, likeThis.viewInitResult['LIKE_YN']);
+            likeThis.changeTheLikeImageWithLikeYnValue(targetElement, likeThis['likeYn']);
 
             targetElement.addEventListener("click", function () {
                 // const $this = this;
                 const data = targetElement.dataset;
 
-                if (likeThis.viewInitResult['loginYn'] == 'Y') {
+                if (likeThis['loginYn'] == 'Y') {
                     const resp = updateBoardLike(data.contentsId, data.contentsType, data.likeId, data.likeYn);
 
                     targetElement.dataset['likeYn'] = (targetElement.dataset['likeYn'] == 'Y' ? 'N' : 'Y');
@@ -160,306 +171,418 @@ const boardView = {
                     likeThis.changeTheLikeImageWithLikeYnValue(targetElement, targetElement.dataset['likeYn']);
                 } else {
                     console.log('비로그인 상태에서 좋아요 클릭');
-                    if (callbackNotLogin) {
-                        callbackNotLogin();
+                    if (likeThis.notLoginStatusProcessingFunc) {
+                        likeThis.notLoginStatusProcessingFunc();
                     }
                 }
             });
         },
     },
     comment: {
-        init: function (id, type, viewInitData) {
+        init: function (id, type, loginYn, notLoginStatusProcessingFunc) {
             this.deleteMsg = "해당 댓글을 삭제하시겠습니까?";
             this.id = id;
             this.type = type;
-            this.viewInitResult = viewInitData;
+            this.loginYn = loginYn;
+            this.notLoginStatusProcessingFunc = notLoginStatusProcessingFunc;
+
+            this.elementIdRoot = 'commentRoot';
+            this.elementIdForm = 'commentForm';
+            this.elementIdCount = 'commentCount';
+
+            this.elementIdInsertWriteArea = 'commentWriteArea';
+            this.elementIdInsertTextArea = 'commentInputInsert';
+            this.elementIdInsertButton = 'commentInsertButton';
+
+            this.elementIdListArea = 'commentList';
+            this.elementClassListData = 'commentListData';
+
+            this.elementClassUpdateButton = 'update';
+            this.elementClassDeleteButton = 'delete';
+            this.elementClassDeclarationButton = 'declaration';
+
+            this.elementClassUpdateContents = 'contents';
+            this.elementClassUpdateWriteArea = 'commentWriteArea';
+            this.elementClassUpdateTextArea = 'commentInputUpdate';
+            this.elementClassUpdateConfirmButton = 'commentInputUpdateConfirm';
         },
 
-        getRegId : {},
-
-        getComentLi : function(){
-            let comment_li = '';
-
-            comment_li += '<li>';
-            comment_li += '    <div class="member_re"><img class="profile" src="'+require("@/resources/img/member_ico.png")+'"></div>';
-            comment_li += '    <div class="review_info">';
-            comment_li += '        <em class="writer"></em>';
-            comment_li += '        <img src="'+require("@/resources/img/line.png")+'">';
-            comment_li += '            <span class="writer_time"></span>';
-            comment_li += '            <img src="'+require("@/resources/img/line.png")+'" class="declaration_line">';
-            comment_li += '                <span class="accuse declaration">신고</span>';
-            comment_li += '            <img src="'+require("@/resources/img/line.png")+'" class="update_line">';
-            comment_li += '                 <span class="accuse update">수정</span>';
-            comment_li += '            <img src="'+require("@/resources/img/line.png")+'" class="delete_line">';
-            comment_li += '                 <span class="accuse delete">삭제</span>';
-            comment_li += '                <strong class="contents"></strong>';
-            comment_li += '                <div class="write_wrap" style="display: none;">';
-            comment_li += '                     <textarea placeholder="입력" name="coment_modify"></textarea><a href="javascript:;" id="coment_modify">확인</a></div>';
-            comment_li += '                </div>';
-            // comment_li += '                <a href="javascript:;" class="see_replies">답글보기</a>';
-            // comment_li += '                <a href="javascript:;" class="Write_a_reply">답글달기</a>';
-            comment_li += '    </div>';
-            comment_li += '</li>';
-
-            return comment_li;
-        },
-
-        getComment : function(commentInputObj){
-            return  $(commentInputObj).val().replace(/[\n]/g,'<br>');
-        },
-
-        crud : function(commentObj){
+        getHtmlModelElement : function(){
             const commentThis = this;
-            $(commentObj).find(".declaration, .update, .delete").on("click",function(obj){
-                // 댓글 이벤트
-                const target = obj.currentTarget;
-                const targetData = $(target).parents("li").data();
-                const comment_id = targetData.id || targetData.ID;
-                const reg_id = commentThis.getRegId[comment_id];
-                const param = {
-                    commentId : comment_id,
-                    regId : reg_id,
-                };
 
-                if( $(target).hasClass('declaration') ){
-                    // 댓글 신고
-                    alert('댓글 신고');
+            let frameHtmlModelStr  = '<div class="conts_review" id="'+commentThis.elementIdRoot+'">';
+            frameHtmlModelStr += '<form id="'+commentThis.elementIdForm+'">';
+            frameHtmlModelStr += '<input type="hidden" name="contentsId" value="'+commentThis.id+'">';
+            frameHtmlModelStr += '<input type="hidden" name="contentsType" value="'+commentThis.type+'">';
+            frameHtmlModelStr += '</form>';
+            frameHtmlModelStr += '<strong class="conts_tit" id="commentCount" data-cnt="0">댓글<em>0</em></strong>';
+            frameHtmlModelStr += '<div class="write_wrap" id="'+commentThis.elementIdInsertWriteArea+'">';
 
-                }else if( $(target).hasClass('update') ){
-                    // 댓글 수정
-                    if( $(target).hasClass("ing") ){
-                        $(target).removeClass("ing");
+            if( commentThis.loginYn == 'Y' ){
+                frameHtmlModelStr += '<textarea placeholder="댓글 입력" name="comment" id="'+commentThis.elementIdInsertTextArea+'"></textarea>';
+                frameHtmlModelStr += '<a href="javascript:;" id="'+commentThis.elementIdInsertButton+'">확인</a>';
+            }else{
+                frameHtmlModelStr += '<textarea placeholder="로그인하고 댓글을 입력해보세요!" disabled></textarea>';
+                frameHtmlModelStr += '<a href="javascript:;">확인</a>';
+            }
 
-                        let parent = $(target).parents("li");
-                        $('.review_info .write_wrap', parent).find("textarea").val($('.review_info .contents', parent).text());
-                        $('.review_info .write_wrap', parent).hide();
-                        $('.review_info .contents', parent).show();
+            frameHtmlModelStr += '</div>';
+            frameHtmlModelStr += '<ul class="reviewList" id="'+commentThis.elementIdListArea+'"></ul>';
+            frameHtmlModelStr += '<div class="pagging_wrap"></div>';
+            frameHtmlModelStr += '</div>';
 
-                        $(target).text("수정");
-                    }else{
-                        $(target).addClass("ing");
+            return (new DOMParser().parseFromString(frameHtmlModelStr, 'text/html').getElementById(commentThis.elementIdRoot));
+        },
 
-                        let parent = $(target).parents("li");
-                        $('.review_info .write_wrap', parent).show();
-                        $('.review_info .contents', parent).hide();
 
-                        $(target).text("수정 취소");
+        getListElementData : function(){
+            const commentThis = this;
+            let listElementHtml = '';
 
-                        $('.review_info #coment_modify', parent).off("click").on("click", function(){
-                            // write_wrap" style="display: none;">';
-                            // comment_li += '                     <textarea placeholder="입력" name="coment_modify"
-                            const thisObj = $(this);
-                            const comment = commentThis.getComment($($(thisObj).parents('.write_wrap')).find("textarea"));
-                            param.coment = comment;
-                            comm.request({url:"/board/comment/update", data : JSON.stringify(param)},function(resp){
-                                // 수정 성공
-                                if( resp.code == '0000'){
-                                    const review_info = $(thisObj).parents(".review_info");
+            listElementHtml += '<li class="'+commentThis.elementClassListData+'">';
+            listElementHtml += '    <div class="member_re"><img class="profile" src="'+profileEmptyImgUrl+'"></div>';
+            listElementHtml += '    <div class="review_info">';
+            listElementHtml += '        <em class="writer"></em>';
+            listElementHtml += '        <img src="'+commentButtonDivisionImgUrl+'">';
+            listElementHtml += '            <span class="writer_time"></span>';
+            listElementHtml += '            <img src="'+commentButtonDivisionImgUrl+'" class="declaration_line">';
+            listElementHtml += '                <span class="accuse '+commentThis.elementClassDeclarationButton+'">신고</span>';
+            listElementHtml += '            <img src="'+commentButtonDivisionImgUrl+'" class="update_line">';
+            listElementHtml += '                 <span class="accuse '+commentThis.elementClassUpdateButton+'">수정</span>';
+            listElementHtml += '            <img src="'+commentButtonDivisionImgUrl+'" class="delete_line">';
+            listElementHtml += '                 <span class="accuse '+commentThis.elementClassDeleteButton+'">삭제</span>';
+            listElementHtml += '                <strong class="'+commentThis.elementClassUpdateContents+'"></strong>';
+            listElementHtml += '                <div class="write_wrap '+commentThis.elementClassUpdateWriteArea+'" style="display: none;">';
+            listElementHtml += '                     <textarea placeholder="입력" name="comment_modify" class="'+commentThis.elementClassUpdateTextArea+'"></textarea>';
+            listElementHtml += '                     <a href="javascript:;" class="'+commentThis.elementClassUpdateConfirmButton+'">확인</a>';
+            listElementHtml += '                </div>';
+            // listElementHtml += '                <a href="javascript:;" class="see_replies">답글보기</a>';
+            // listElementHtml += '                <a href="javascript:;" class="Write_a_reply">답글달기</a>';
+            listElementHtml += '    </div>';
+            listElementHtml += '</li>';
 
-                                    $(".contents", review_info).html(comment);
+            return (new DOMParser().parseFromString(listElementHtml, 'text/html').querySelector("." + commentThis.elementClassListData));
+        },
 
-                                    $(target).removeClass("ing");
-                                    $('.write_wrap', review_info).hide();
-                                    $('.contents', review_info).show();
+        replaceLineBreakWithBrById : function(inputId){
+            return  document.getElementById(inputId).value.replace(/[\n]/g,'<br>');
+        },
 
-                                    $(target).text("수정");
-                                }
-                            })
-                        });
-                    }
-                }else if( $(target).hasClass('delete') ){
-                    // 댓글 삭제
-                    comm.message.confirm(commentThis.deleteMsg,function(Yn){
-                        if( Yn ){
-                            comm.request({url:"/board/comment/delete", data : JSON.stringify(param)},function(resp){
-                                // 삭제 성공
-                                if( resp.code == '0000'){
-                                    $(target).parents("li").remove();
+        replaceLineBreakWithBrByElement : function(element){
+            return  element.value.replace(/[\n]/g,'<br>');
+        },
 
-                                    let cmtCnt = $('.comment_cnt').data("cnt")*1;
 
-                                    if( cmtCnt > 0 ){
-                                        cmtCnt = cmtCnt-1;
-                                    }
+        replaceTargetWithCommentRoot : function(target){
+            const commentThis = this;
+            target.parentNode.replaceChild(commentThis.getHtmlModelElement(), target);
+            return document.getElementById(commentThis.elementIdRoot);
+        },
 
-                                    $('.comment_cnt').data('cnt',cmtCnt);
-                                    $('.comment_cnt').html('댓글<em>'+cmtCnt+'</em>');
-                                }
-                            })
+
+        setCount : function(cnt){
+            const commentThis = this;
+            document.getElementById(commentThis.elementIdCount).dataset['cnt'] = cnt;
+        },
+
+        getCount : function(){
+            const commentThis = this;
+            return ( (document.getElementById(commentThis.elementIdCount).dataset['cnt'] || 0) * 1 );
+        },
+
+
+        leadLogin : function(){
+            const commentThis = this;
+
+            if( commentThis.notLoginStatusProcessingFunc ){
+                commentThis.notLoginStatusProcessingFunc();
+            }
+        },
+
+        declaration : function(/*commentElement*/){
+            // const commentThis = this;
+            alert('댓글 신고');
+        },
+
+        update : function(id, regId){
+            const commentThis = this;
+            const commentElement = commentThis.getElementById(id);
+            const target = commentElement.querySelector("."+commentThis.elementClassUpdateButton);
+            const param = {
+                commentId: id,
+                regId: regId,
+            }
+
+            if (target.classList.contains("ing")) {
+                target.classList.remove("ing");
+
+                let parent = commentElement;
+                let updateWriteArea = parent.querySelector('.'+commentThis.elementClassUpdateWriteArea);
+                let textarea = parent.querySelector('.'+commentThis.elementClassUpdateTextArea);
+                let contents = parent.querySelector('.'+commentThis.elementClassUpdateContents);
+
+                textarea.value = contents.textContent;
+                updateWriteArea.style.display = 'none';
+                contents.style.display = 'block';
+
+                target.textContent = "수정";
+            }else{
+                target.classList.add("ing");
+
+                let parent = commentElement;
+                let writeWrap = parent.querySelector('.'+commentThis.elementClassUpdateWriteArea);
+                let contents = parent.querySelector('.'+commentThis.elementClassUpdateContents);
+                let commentModifyButton = parent.querySelector('.'+commentThis.elementClassUpdateWriteArea+' .'+commentThis.elementClassUpdateConfirmButton);
+
+                writeWrap.style.display = 'block';
+                contents.style.display = 'none';
+                target.textContent = "수정 취소";
+
+                commentModifyButton.addEventListener("click", function(){
+                    const thisObj = this;
+                    param.comment = commentThis.replaceLineBreakWithBrByElement(thisObj.parentElement.querySelector('.'+commentThis.elementClassUpdateTextArea));
+
+                    request.send(commentUpdateApiUrl,"PUT", param, function(resp){
+                        if (resp.code === '0000') {
+                            target.classList.remove("ing");
+                            contents.innerHTML = resp.comment;
+                            writeWrap.style.display = 'none';
+                            contents.style.display = 'block';
+                            target.textContent = "수정";
                         }
-                    });
+                    },null,{'Content-type': "application/json"})
+                });
+            }
+        },
+
+
+        delete: function (id, regId) {
+            const commentThis = this;
+
+            const param = {
+                commentId: id,
+                regId: regId,
+            }
+
+            request.send(commentDeleteApiUrl, "DELETE", param, function (resp) {
+                // 삭제 성공
+                if (resp.code == '0000') {
+                    commentThis.getElementById(id).remove();
+
+                    let cmtCnt = commentThis.getCount();
+
+                    if (cmtCnt > 0) {
+                        cmtCnt = cmtCnt - 1;
+                    }
+
+                    commentThis.setCount(cmtCnt);
+                    commentThis.drawCount();
                 }
             })
         },
-        setting: function(contents_type, contents_id, target, cnt, list, login_yn){
-            const $this = this;
-            let $conts_review = $('<div class="conts_review" id="conts_review"></div>');
 
-            $($conts_review).html('<strong class="conts_tit comment_cnt" data-cnt="'+cnt+'">댓글<em>'+cnt+'</em></strong>');
+        insertAndApplyEvents : function(){
+            const commentThis = this;
 
-            if( login_yn == 'N' ){
-                $($conts_review).append('<div class="write_wrap"><textarea placeholder="로그인하고 댓글을 입력해보세요!"></textarea><a href="javascript:;">확인</a></div>');
+            let commentInsertParam = {
+                contentsId:commentThis.id,
+                contentsType:commentThis.type,
+                refContentsId:"0",
+                comment : commentThis.replaceLineBreakWithBrById(commentThis.elementIdInsertTextArea),
+            };
 
-                $($conts_review).find('.write_wrap').on("focus click", function(){
+            request.send(commentInsertApiUrl,"POST", commentInsertParam, function(resp){
+                let profile_img = profileEmptyImgUrl;
 
-                    comm.loginObj.popup.open();
-                });
+                if( resp.comment['profile'] ){
+                    profile_img = resp.comment['profile'];
+                }
+
+                // 등록성공
+                if( resp.code == '0000'){
+                    let listElement = commentThis.getElement(
+                        resp.comment['id'],
+                        profile_img,
+                        resp.comment['nickName'],
+                        resp.comment['comment'],
+                        resp.comment.regId,
+                        "방금"
+                    );
+
+                    commentThis.addListBegin(listElement);
+                    commentThis.resetInput();
+                    commentThis.setCount(commentThis.getCount()+1);
+                    commentThis.drawCount();
+
+                    commentThis.setCommentDataInDataSet(listElement.querySelector("."+commentThis.elementClassUpdateConfirmButton), resp.comment);
+                    commentThis.setCommentDataInDataSet(listElement.querySelector("."+commentThis.elementClassUpdateButton), resp.comment);
+                    commentThis.setCommentDataInDataSet(listElement.querySelector("."+commentThis.elementClassDeclarationButton), resp.comment);
+                    commentThis.setCommentDataInDataSet(listElement.querySelector("."+commentThis.elementClassDeleteButton), resp.comment);
+
+                    // commentThis.crud(listElement);
+                    commentThis.addEventToElement(document.getElementById('commentList').children[0])
+                }
+            },null,{'Content-type': "application/json"})
+        },
+
+        addListBegin : function(element){
+            const commentThis = this;
+            const listElement = document.getElementById(commentThis.elementIdListArea);
+            listElement.insertBefore(element, listElement.firstChild);
+        },
+
+        resetInput : function(){
+            const commentThis = this;
+
+            document.getElementById(commentThis.elementIdInsertTextArea).value = '';
+        },
+
+        drawCount : function(){
+            const commentThis = this;
+            const nowCount = commentThis.getCount();
+
+            document.getElementById(commentThis.elementIdCount).dataset['cnt'] = nowCount;
+            document.getElementById(commentThis.elementIdCount).innerHTML = '댓글<em>'+nowCount+'</em>';
+        },
+
+        getElementById : function(commentId){
+           return document.getElementById("comment-"+commentId);
+        },
+
+        getElement : function(id, profile, nickName, comment, regId, regDate){
+            const commentThis = this;
+
+            let commentElement = commentThis.getListElementData();
+
+            commentElement.querySelector(".profile").setAttribute("src", (profile || profileEmptyImgUrl));
+            commentElement.querySelector(".writer").innerHTML = nickName;
+            commentElement.querySelector(".writer_time").innerHTML = regDate;
+            commentElement.querySelector(".contents").innerHTML = comment;
+            commentElement.querySelector("[name='comment_modify']").value = comment;
+
+            commentElement.querySelector(".declaration_line").style.display = 'none';
+            commentElement.querySelector(".declaration").style.display = 'none';
+            commentElement.querySelector(".update_line").style.display = 'none';
+            commentElement.querySelector(".update").style.display = 'none';
+            commentElement.querySelector(".delete_line").style.display = 'none';
+            commentElement.querySelector(".delete").style.display = 'none';
+
+            if( window.loginId == regId ){
+                commentElement.querySelector(".update_line").style.display = 'inline';
+                commentElement.querySelector(".update").style.display = 'inline';
+                commentElement.querySelector(".delete_line").style.display = 'inline';
+                commentElement.querySelector(".delete").style.display = 'inline';
             }else{
-                $($conts_review).append('<div class="write_wrap"><textarea placeholder="댓글 입력" name="coment"></textarea><a href="javascript:;" id="coment_insert">확인</a></div>');
-
-                // 댓글 등록
-                $($conts_review).find('#coment_insert').on("click", function(){
-                    let comment_insert_param = {
-                        "contentsType":contents_type,
-                        "contentsId":contents_id,
-                        "refContentsId":"0",
-
-                    };
-
-                    // comm.message.confirm(
-                    //     '댓글을 등록하시겠습니까?'
-                    // )
-
-                    comment_insert_param.coment = $this.getComment($(target).find("[name='coment']"));
-                    comm.request({url:"/board/comment/insert",data:JSON.stringify(comment_insert_param)},function(resp){
-                        let profile_img = "/resources/img/member_ico.png";
-
-                        if( resp.comment['profile'] ){
-                            profile_img = resp.comment['profile'];
-                        }
-
-                        // 등록성공
-                        if( resp.code == '0000'){
-                            let comment_obj = $($this.getComentLi());
-
-                            $(".profile"                , comment_obj).attr("src",profile_img);
-                            $(".writer"                 , comment_obj).html(resp.comment['nickName']);
-                            $(".writer_time"            , comment_obj).html("방금");
-                            $(".contents"               , comment_obj).html(resp.comment['coment']);
-                            $("[name='coment_modify']"  , comment_obj).val(resp.comment['coment']);
-                            //$(".write_wrap"  , comment_obj).show();
-
-                            $this.getRegId[String(resp.comment.id)] = resp.comment.regId;
-
-                            $(comment_obj).data(resp.comment);
-
-                            $(".declaration_line", comment_obj ).hide();
-                            $(".declaration"     , comment_obj ).hide();
-                            $(".update_line"     , comment_obj ).hide();
-                            $(".update"          , comment_obj ).hide();
-                            $(".delete_line"     , comment_obj ).hide();
-                            $(".delete"          , comment_obj ).hide();
-
-                            if( window.loginId == resp.comment.regId ){
-                                $(".update_line"     , comment_obj ).show();
-                                $(".update"          , comment_obj ).show();
-                                $(".delete_line"     , comment_obj ).show();
-                                $(".delete"          , comment_obj ).show();
-
-                            }else{
-                                $(".declaration_line", comment_obj ).show();
-                                $(".declaration"     , comment_obj ).show();
-                            }
-
-                            $this.crud(comment_obj);
-
-                            $(target).find(".reviewList","#conts_review").prepend(comment_obj);
-                            $("[name='coment']",target).val('');
-
-                            let cnt = ( ($('.comment_cnt').data('cnt') || 0) * 1 )+1;
-
-                            $('.comment_cnt').data('cnt',cnt);
-                            $('.comment_cnt').html('댓글<em>'+cnt+'</em>');
-                        }
-                    })
-                });
+                commentElement.querySelector(".declaration_line").style.display = 'inline';
+                commentElement.querySelector(".declaration").style.display = 'inline';
             }
 
-            $($conts_review).append('<ul class="reviewList"></ul>');
+            commentElement.setAttribute("id", "comment-"+id);
 
+            return commentElement;
+        },
+
+        setCommentDataInDataSet: function (target, oriData) {
+            let changeData = {
+                comment         : oriData.comment         || oriData['COMMENT'],
+                confirmId       : oriData.confirmId       || oriData['CONFIRM_ID'],
+                contentsId      : oriData.contentsId      || oriData['CONTENTS_ID'],
+                contentsType    : oriData.contentsType    || oriData['CONTENTS_TYPE'],
+                id              : oriData.id              || oriData['ID'],
+                nickName        : oriData.nickName        || oriData['NICKNAME'],
+                profile         : oriData.profile         || oriData['MEM_PROFILE_IMG'],
+                refContentsId   : oriData.refContentsId   || oriData['REF_CONTENTS_ID'],
+                regId           : oriData.regId           || oriData['REG_ID'],
+            }
+
+            Object.assign(target.dataset, changeData);
+        },
+
+        getCommentDataInDataSet: function (target, key) {
+            return target.dataset[key];
+        },
+
+
+        drawList : function(list){
+            const commentThis = this;
             if( list && list.length > 0 ){
                 for(let i=0;i<list.length;i++){
                     let listObj = list[i];
-                    let comment_obj = $($this.getComentLi());
+                    let commentElement = commentThis.getElement(
+                        listObj['ID'],
+                        listObj['MEM_PROFILE_IMG'],
+                        listObj['NICKNAME'],
+                        (listObj['COMMENT']?listObj['COMMENT']:""),
+                        listObj['REG_ID'],
+                        listObj['REG_DATE']
+                    );
 
-                    let profile_img_arr = "/resources/img/member_ico.png";
+                    commentThis.setCommentDataInDataSet(commentElement.querySelector("."+commentThis.elementClassUpdateConfirmButton), listObj);
+                    commentThis.setCommentDataInDataSet(commentElement.querySelector("."+commentThis.elementClassUpdateButton), listObj);
+                    commentThis.setCommentDataInDataSet(commentElement.querySelector("."+commentThis.elementClassDeclarationButton), listObj);
+                    commentThis.setCommentDataInDataSet(commentElement.querySelector("."+commentThis.elementClassDeleteButton), listObj);
 
-                    if( listObj['MEM_PROFILE_IMG'] ){
-                        profile_img_arr = listObj['MEM_PROFILE_IMG'];
-                    }
-
-                    $(".profile"    , comment_obj).attr("src",profile_img_arr);
-                    $(".writer"     , comment_obj).html(listObj['NICKNAME']);
-                    $(".writer_time", comment_obj).html(comm.date.getPastDate( listObj['REG_DATE'] ));
-                    $(".contents"   , comment_obj).html((listObj['COMENT']?listObj['COMENT']:""));
-                    $("[name='coment_modify']"  , comment_obj).val((listObj['COMENT']?listObj['COMENT']:""));
-                    //$(".write_wrap"  , comment_obj).show();
-
-                    $this.getRegId[String(listObj.ID)] = listObj.REG_ID;
-
-                    $(comment_obj).data(listObj);
-
-                    $(".declaration_line", comment_obj ).hide();
-                    $(".declaration"     , comment_obj ).hide();
-                    $(".update_line"     , comment_obj ).hide();
-                    $(".update"          , comment_obj ).hide();
-                    $(".delete_line"     , comment_obj ).hide();
-                    $(".delete"          , comment_obj ).hide();
-
-                    if( window.loginId == listObj.REG_ID ){
-                        $(".update_line"     , comment_obj ).show();
-                        $(".update"          , comment_obj ).show();
-                        $(".delete_line"     , comment_obj ).show();
-                        $(".delete"          , comment_obj ).show();
-                    }else{
-                        $(".declaration_line", comment_obj ).show();
-                        $(".declaration"     , comment_obj ).show();
-                    }
-
-                    $('.reviewList', $conts_review).append(comment_obj);
+                    document.getElementById(commentThis.elementIdListArea).appendChild(commentElement);
                 }
-            }
-
-            // 댓글 삭제, 신고, 수정 처리
-            $this.crud($('.reviewList', $conts_review));
-
-            $(target).replaceWith($conts_review);
-
-            if( list && list.length > 0 ){
-                $(target).append('<div class="pagging_wrap"></div>');
             }
         },
 
-        render: function (tagId, commentForm, commentListPaginFunc) {
-            let commentThis = this;
+        addEventToElement : function(element){
+            const commentThis = this;
 
-            if( tagId.substring(0,1) !== '#' ){
-                tagId = '#' + tagId;
+            // 삭제 이벤트 적용
+            element.
+            querySelectorAll("."+commentThis.elementClassDeleteButton).forEach(function(obj){
+                obj.addEventListener("click", function(){
+                    commentThis.delete(
+                        commentThis.getCommentDataInDataSet(this,"id"),
+                        commentThis.getCommentDataInDataSet(this,"regId")
+                    );
+                })
+            })
+
+            // 수정 이벤트 적용
+            element.
+            querySelectorAll("."+commentThis.elementClassUpdateButton).forEach(function(obj){
+                obj.addEventListener("click", function(){
+                    commentThis.update(
+                        commentThis.getCommentDataInDataSet(this,"id"),
+                        commentThis.getCommentDataInDataSet(this,"regId")
+                    );
+                })
+            })
+
+            // 신고하기 이벤트 적용
+            element.
+            querySelectorAll("."+commentThis.elementClassDeclarationButton).forEach(function(obj){
+                obj.addEventListener("click", function(){
+                    commentThis.declaration(
+                        commentThis.getCommentDataInDataSet(this,"id"),
+                        commentThis.getCommentDataInDataSet(this,"regId")
+                    );
+                })
+            })
+        },
+
+        render: function (tagId, listPagingFunc) {
+            const commentThis = this;
+            let targetElement = commentThis.replaceTargetWithCommentRoot(document.getElementById(tagId));
+
+            if( commentThis.loginYn === 'Y' ){
+                targetElement.querySelector('#'+commentThis.elementIdInsertButton).addEventListener("click", function () {
+                    commentThis.insertAndApplyEvents();
+                })
+            }else{
+                document.getElementById(commentThis.elementIdInsertWriteArea).addEventListener("click", function () {
+                    commentThis.leadLogin();
+                });
             }
 
-            let inputContentsId = document.createElement('input');
-            inputContentsId.type = 'hidden';
-            inputContentsId.name = 'contentsId';
-            inputContentsId.value = commentThis.id;
-
-
-            let inputContentsType = document.createElement('input');
-            inputContentsType.type = 'hidden';
-            inputContentsType.name = 'contentsType';
-            inputContentsType.value = commentThis.type;
-
-            commentForm.appendChild(inputContentsId);
-            commentForm.appendChild(inputContentsType);
-
-            commentListPaginFunc(commentForm, commentListApiUrl, function (resp) {
-                commentThis.setting(
-                    commentThis.type,
-                    commentThis.id,
-                    tagId,
-                    resp.comment['cnt'],
-                    resp.comment['list'],
-                    commentThis.viewInitResult['loginYn']
-                );
+            listPagingFunc(targetElement.querySelector("#" + commentThis.elementIdForm), commentListApiUrl, function (resp) {
+                commentThis.setCount(resp.comment['cnt'])
+                commentThis.drawCount();
+                commentThis.drawList(resp.comment['list']);
+                commentThis.addEventToElement(document.getElementById(commentThis.elementIdListArea));
             });
         },
     },

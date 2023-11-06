@@ -283,27 +283,31 @@ let comm = function(){
 
         boardView : {
             init : function(id, type){
-                BOARD_VIEW.init(id, type);
-                this.tagObj = BOARD_VIEW.tag;
-                this.likeObj = BOARD_VIEW.like;
-                this.commentObj = BOARD_VIEW.comment;
-            },
-            renderTag : function(tagId){
-                this.tagObj.render(tagId);
-            },
-            renderLike : function(tagId){
-                this.likeObj.render(tagId, function(){
+                const notLoginCallback = function(){
                     comm.message.confirm("해당 콘텐츠가 마음에 드시나요? 로그인 후 의견을 알려주세요.\n\n로그인 하시겠습니까?", function(Yn){
                         if( Yn ){
                             comm.loginObj.popup.open();
                         }
                     });
-                });
+                }
+
+                BOARD_VIEW.init(id, type);
+                this.tagObj = BOARD_VIEW.tag;
+                this.likeObj = BOARD_VIEW.like;
+                this.commentObj = BOARD_VIEW.comment;
+
+                this.tagObj.init(id, type, BOARD_VIEW.tags);
+                this.likeObj.init(id, type, BOARD_VIEW.loginYn, BOARD_VIEW.likeId, BOARD_VIEW.likeYn, notLoginCallback);
+                this.commentObj.init(id, type, BOARD_VIEW.loginYn, notLoginCallback);
+            },
+            renderTag : function(tagId){
+                this.tagObj.render(tagId);
+            },
+            renderLike : function(tagId){
+                this.likeObj.render(tagId);
             },
             renderComment: function (tagId) {
-                let _pageForm = $('#' + tagId).parents('form');
-
-                this.commentObj.render(tagId, _pageForm.get(0), comm.paging.getList);
+                this.commentObj.render(tagId, comm.paging.getList);
             },
         },
 
@@ -838,7 +842,7 @@ let comm = function(){
                         }
 
                         for(var i =pageObj.startPageNo;i<=pageObj.endPageNo;i++){
-                            if( i == pageNo ){
+                            if( i == _pageNo ){
                                 pageHtml += '<a href="javascript:;" class="on">'+(i)+'</a>';
                             }else{
                                 pageHtml += '<a href="javascript:;" onclick="'+listFunc.replace("[pageNo]",i)+'">'+i+'</a>';
