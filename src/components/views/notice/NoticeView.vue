@@ -29,14 +29,14 @@
           <div id="noticeContents"></div>
 
           <div class="conts_sns">
-            <a href="javascript:;" class="zimm like" :data-likecnt="vo['LIKE_CNT']">공감 {{vo['LIKE_CNT']}}</a>
+            <a href="javascript:;" class="zimm" id="likeTarget" :data-likecnt="vo['LIKE_CNT']">공감 {{vo['LIKE_CNT']}}</a>
           </div>
 
-          <div class="conts_tag" style="display: none;">
+          <div class="conts_tag" id="tagTarget" style="display: none;">
             <strong class="conts_tit">태그</strong>
           </div>
 
-          <div class="conts_review"></div>
+          <div class="conts_review" id="commentTarget"></div>
         </div>
       </div>
     </div>
@@ -84,7 +84,10 @@ import comm from "@/resources/task/js/common/comm.js";
 
         $("#noticeContents").replaceWith($this.vo['CONTENTS'].replace(/\/resources/g, window.getServerImg("/resources")))
 
-        comm.initBoardView($this.type, $this.id, function(){},{"likeTarget":".like", "tagsTarget":".conts_tag", "commentTarget":".conts_review"});
+        comm.boardView.init($this.id,$this.type);
+        // comm.boardView.renderTag('tagTarget');
+        comm.boardView.renderLike('likeTarget');
+        comm.boardView.renderComment('commentTarget');
 
         $(".sns_btn").click(function () {
           $(".sns_view").slideToggle("fast");
