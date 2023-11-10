@@ -4,7 +4,7 @@
     <div class="ani-in layout">
       <div class="story_search_wrap ani_y delay1">
         <div class="sub_title">Story</div>
-        <span>다양한 지식을 공유 해보세요</span>
+        <span>다양한 이야기를 공유 해보세요</span>
         <form name="searchForm" id="searchForm">
           <div class="story_search">
             <select id="seachCategory">
