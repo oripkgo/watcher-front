@@ -5,7 +5,10 @@ import DATE from "@/resources/task/js/common/utils/date"
 import MESSAGE from "@/resources/task/js/common/utils/message"
 import REQUEST from "@/resources/task/js/common/utils/request"
 import AVAILABILITY from "@/resources/task/js/common/utils/availability"
-import BOARD_VIEW from "@/resources/task/js/common/utils/boardView"
+
+import BOARD_COMMENT from "@/resources/task/js/common/utils/boardComment"
+import BOARD_LIKE from "@/resources/task/js/common/utils/boardLike"
+import BOARD_TAGS from "@/resources/task/js/common/utils/boardTags"
 
 let comm = function(){
     const kakaoKey = '16039b88287b9f46f214f7449158dfde';
@@ -291,14 +294,18 @@ let comm = function(){
                     });
                 }
 
-                BOARD_VIEW.init(id, type);
-                this.tagObj = BOARD_VIEW.tag;
-                this.likeObj = BOARD_VIEW.like;
-                this.commentObj = BOARD_VIEW.comment;
+                const confirmDeleteMsg = function(callback){
+                    comm.message.confirm("댓글을 삭제하시겠습니까?",callback);
+                }
 
-                this.tagObj.init(id, type, BOARD_VIEW.tags);
-                this.likeObj.init(id, type, BOARD_VIEW.loginYn, BOARD_VIEW.likeId, BOARD_VIEW.likeYn, notLoginCallback);
-                this.commentObj.init(id, type, BOARD_VIEW.loginYn, notLoginCallback);
+                this.loginYn = window.loginYn?"Y":"N";
+                this.tagObj = BOARD_TAGS;
+                this.likeObj = BOARD_LIKE;
+                this.commentObj = BOARD_COMMENT;
+
+                this.tagObj.init(id, type);
+                this.likeObj.init(id, type, this.loginYn, notLoginCallback);
+                this.commentObj.init(id, type, this.loginYn, notLoginCallback, confirmDeleteMsg);
             },
             renderTag : function(tagId){
                 this.tagObj.render(tagId);
@@ -399,7 +406,7 @@ let comm = function(){
                     comm.appendInput(_pageForm, "contentsId"    , param.contentsId      );
 
                     //function(form,url,callback,pageNo,totalCnt,sPageNo,ePageNo,listNo,pagigRange){
-                    comm.paging.getList(_pageForm, "/board/comment/select", function(comment_resp){
+                    comm.paging.getList(_pageForm, "/board/boardComment/select", function(comment_resp){
                         privateObj.comment.setting(
                             param.contentsType,
                             param.contentsId,

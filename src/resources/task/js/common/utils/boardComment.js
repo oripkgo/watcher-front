@@ -1,190 +1,21 @@
 import request from "@/resources/task/js/common/utils/request";
 
-const boardViewInitApiUrl = '/board/view/init';
-const boardlikeModifyApiUrl = '/board/like/modify';
+const profileEmptyImgUrl = require("@/resources/img/member_ico.png");
+const commentButtonDivisionImgUrl = require("@/resources/img/line.png");
+
 const commentListApiUrl = '/board/comment/select';
 const commentInsertApiUrl = "/board/comment/insert";
 const commentDeleteApiUrl = "/board/comment/delete";
 const commentUpdateApiUrl = "/board/comment/update";
 
-const likeYImgUrl = require("@/resources/img/icon_heart_on.png");
-const likeNImgUrl = require("@/resources/img/zim_ico.png");
-const profileEmptyImgUrl = require("@/resources/img/member_ico.png");
-const commentButtonDivisionImgUrl = require("@/resources/img/line.png");
-
-const getBoardInitDefaultData = function (id, type) {
-    let result = {};
-    request.send(boardViewInitApiUrl, "GET", {
-        "contentsId": id,
-        "contentsType": type,
-    }, function (resp) {
-        result = resp;
-    }, null, null, false)
-
-    return result
-}
-
-const updateBoardLike = function (contentsId, contentsType, likeId, likeYn) {
-    let result = {};
-    let param = {};
-
-    if (contentsId) {
-        param.contentsId = contentsId;
-    }
-
-    if (contentsType) {
-        param.contentsType = contentsType;
-    }
-
-    if (likeId) {
-        param.likeId = likeId;
-    }
-
-    if (likeYn) {
-        param.likeYn = likeYn;
-    }
-
-    request.send(boardlikeModifyApiUrl, "POST", param, function (resp) {
-        result = resp;
-    }, null, {'Content-type': "application/json"}, false);
-
-    return result;
-}
-
-
-const boardView = {
-    init: function (id, type) {
-        this.viewInitResult = getBoardInitDefaultData(id, type);
-
-        this.loginYn = this.viewInitResult.loginYn;
-        this.tags = this.viewInitResult['tags'] || this.viewInitResult['TAGS'];
-        this.likeId = this.viewInitResult['LIKE_ID'];
-        this.likeYn = this.viewInitResult['LIKE_YN'];
-
-        this.tag.init(id, type, this.tags);
-        this.like.init(id, type, this.loginYn, this.likeId, this.likeYn);
-        this.comment.init(id, type, this.loginYn);
-    },
-
-    tag: {
-        init: function (id, type, tags) {
-            this.id = id;
-            this.type = type;
-            this.tags = tags;
-        },
-
-        render: function (tagId) {
-            let result = "<strong class=\"conts_tit\">태그</strong>";
-            let targetElement = document.getElementById(tagId);
-
-            let tags = this.tags;
-
-            if (!tags) {
-                targetElement.style.display = 'none';
-                return;
-            }
-
-            let tags_arr = tags.split(",");
-
-            for (let i = 0; i < tags_arr.length; i++) {
-                result += '<a href="javascript:;">#' + tags_arr[i] + '</a>';
-            }
-
-            targetElement.innerHTML = result;
-            targetElement.style.display = 'block';
-        },
-    },
-    like: {
-        init: function (id, type, loginYn, likeId, likeYn, notLoginStatusProcessingFunc) {
-            this.id = id;
-            this.type = type;
-            this.likeId = likeId;
-            this.likeYn = likeYn;
-            this.loginYn = loginYn;
-            this.notLoginStatusProcessingFunc = notLoginStatusProcessingFunc;
-        },
-
-        setLikeElementDataSet: function (targetObj, data) {
-            if (data.id) {
-                targetObj.dataset['contentsId'] = data.id;
-            }
-            if (data.type) {
-                targetObj.dataset['contentsType'] = data.type;
-            }
-            if (data['likeId']) {
-                targetObj.dataset['likeId'] = data['likeId'];
-            }
-            if (data['likeYn']) {
-                targetObj.dataset['likeYn'] = data['likeYn'];
-            }
-        },
-
-        changeLikeElementDataSet: function (targetObj, likeYn, likeId) {
-            if (likeYn == 'Y') {
-                let likecnt = (targetObj.dataset['likecnt'] * 1) + 1;
-                targetObj.innerText = ('공감 ' + likecnt);
-                targetObj.dataset['likecnt'] = likecnt;
-
-                targetObj.dataset['likeId'] = likeId;
-                targetObj.dataset['likeYn'] = 'Y';
-
-            } else {
-                let likecnt = (targetObj.dataset['likecnt'] * 1) - 1
-
-                if (likecnt < 0) {
-                    likecnt = 0;
-                }
-
-                targetObj.innerText = ('공감 ' + likecnt);
-                targetObj.dataset['likecnt'] = likecnt;
-                delete targetObj.dataset['likeId'];
-            }
-
-        },
-
-        changeTheLikeImageWithLikeYnValue: function (targetObj, likeYn) {
-            if (likeYn == 'N') {
-                targetObj.style.background = "url('" + likeNImgUrl + "') no-repeat left center";
-            } else {
-                targetObj.style.background = "url('" + likeYImgUrl + "') no-repeat left center";
-            }
-        },
-
-        render: function (tagId) {
-            const likeThis = this;
-            const targetElement = document.getElementById(tagId);
-
-            likeThis.setLikeElementDataSet(targetElement, likeThis);
-
-            likeThis.changeTheLikeImageWithLikeYnValue(targetElement, likeThis['likeYn']);
-
-            targetElement.addEventListener("click", function () {
-                // const $this = this;
-                const data = targetElement.dataset;
-
-                if (likeThis['loginYn'] == 'Y') {
-                    const resp = updateBoardLike(data.contentsId, data.contentsType, data.likeId, data.likeYn);
-
-                    targetElement.dataset['likeYn'] = (targetElement.dataset['likeYn'] == 'Y' ? 'N' : 'Y');
-
-                    likeThis.changeLikeElementDataSet(targetElement, targetElement.dataset['likeYn'], resp['like_id']);
-                    likeThis.changeTheLikeImageWithLikeYnValue(targetElement, targetElement.dataset['likeYn']);
-                } else {
-                    console.log('비로그인 상태에서 좋아요 클릭');
-                    if (likeThis.notLoginStatusProcessingFunc) {
-                        likeThis.notLoginStatusProcessingFunc();
-                    }
-                }
-            });
-        },
-    },
-    comment: {
-        init: function (id, type, loginYn, notLoginStatusProcessingFunc) {
+const boardComment = {
+        init: function (id, type, loginYn, notLoginStatusProcessingFunc, deleteConfirmMsgFunc) {
             this.deleteMsg = "해당 댓글을 삭제하시겠습니까?";
             this.id = id;
             this.type = type;
             this.loginYn = loginYn;
             this.notLoginStatusProcessingFunc = notLoginStatusProcessingFunc;
+            this.deleteConfirmMsgFunc = deleteConfirmMsgFunc;
 
             this.elementIdRoot = 'commentRoot';
             this.elementIdForm = 'commentForm';
@@ -446,7 +277,7 @@ const boardView = {
         },
 
         getElementById : function(commentId){
-           return document.getElementById("comment-"+commentId);
+            return document.getElementById("comment-"+commentId);
         },
 
         getElement : function(id, profile, nickName, comment, regId, regDate){
@@ -534,10 +365,16 @@ const boardView = {
             element.
             querySelectorAll("."+commentThis.elementClassDeleteButton).forEach(function(obj){
                 obj.addEventListener("click", function(){
-                    commentThis.delete(
-                        commentThis.getCommentDataInDataSet(this,"id"),
-                        commentThis.getCommentDataInDataSet(this,"regId")
-                    );
+                    if( commentThis.deleteConfirmMsgFunc ){
+                        commentThis.deleteConfirmMsgFunc(function(result){
+                            if( result ){
+                                commentThis.delete(
+                                    commentThis.getCommentDataInDataSet(obj,"id"),
+                                    commentThis.getCommentDataInDataSet(obj,"regId")
+                                );
+                            }
+                        })
+                    }
                 })
             })
 
@@ -585,8 +422,7 @@ const boardView = {
                 commentThis.addEventToElement(document.getElementById(commentThis.elementIdListArea));
             });
         },
-    },
-}
+    }
 
 
-export default boardView;
+export default boardComment;
