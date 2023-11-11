@@ -5,7 +5,7 @@ const request = {
         const xhr = new XMLHttpRequest();
 
         method = ( method || 'GET').toUpperCase();
-        async = !(async == true || async == false)? true : async;
+        // async = !(async == true || async == false)? true : async;
 
         if( (method == 'GET' || method == 'DELETE') && data){
             url = url + "?" + this.getParam(data);
