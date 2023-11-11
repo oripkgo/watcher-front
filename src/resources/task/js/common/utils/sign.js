@@ -1,20 +1,39 @@
+import request from "@/resources/task/js/common/utils/request";
+
+const tokenApiUrl = "/comm/token";
+// const loginApiUrl = "";
+// const logoutApiUrl = "";
+
 const sign = {
     apiUrl: {
         in: "",
         out: "",
     },
 
-    popup :{
-        init : function(){},
-        open : function(){},
-        close : function(){},
+    in: function () {
+
+    },
+    out: function () {
+
+    },
+    isLogin: function () {
+
     },
 
-    session : {getToken : function(){},},
+    getToken: function () {
+        let result = "";
 
-    in : function(){},
-    out : function(){},
-    isLogin : function(){},
+        request.send(tokenApiUrl, "GET", {
+            token: (sessionStorage.getItem("apiToken") || "")
+        }, function (resp) {
+            if (resp.code == '0000') {
+                result = resp.apiToken;
+            }
+        }, null, null, false)
+
+        console.log('token : ' + result)
+        return result;
+    },
 }
 
 
