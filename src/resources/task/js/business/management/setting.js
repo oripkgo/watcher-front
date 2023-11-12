@@ -7,7 +7,7 @@ const settingObj = {
             url: settingUpdateUrl,
             method: "PUT",
             form: formId,
-            headers: {"Content-type": "application/x-www-form-urlencoded"},
+            // headers: {"Content-type": "application/x-www-form-urlencoded"},
         }, function (resp) {
             // 성공
             if (resp.code == '0000') {

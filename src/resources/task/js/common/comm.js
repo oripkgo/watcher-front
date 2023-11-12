@@ -9,9 +9,11 @@ import BOARD_COMMENT from "@/resources/task/js/common/utils/boardComment"
 import BOARD_LIKE from "@/resources/task/js/common/utils/boardLike"
 import BOARD_TAGS from "@/resources/task/js/common/utils/boardTags"
 import PAGING from "@/resources/task/js/common/utils/paging"
-import SIGN from "@/resources/task/js/common/utils/sign"
+// import SIGN from "@/resources/task/js/common/utils/sign"
 import MOBILE from "@/resources/task/js/common/utils/mobile"
 import VISITOR from "@/resources/task/js/common/utils/visitor"
+import TOKEN from "@/resources/task/js/common/utils/token"
+import DOM from "@/resources/task/js/common/utils/dom"
 
 let comm = function () {
     const kakaoKey = '16039b88287b9f46f214f7449158dfde';
@@ -26,59 +28,11 @@ let comm = function () {
         paging: PAGING,
         mobile: MOBILE,
         visitor: VISITOR,
-        sign: SIGN,
+        token: TOKEN,
+        dom : DOM,
 
         validation: function (target) {
             return AVAILABILITY.check(target);
-        },
-
-        /**
-         * form 요소에 serializeArray를 json 파라미터 형태로 리턴해준다
-         * */
-        serializeJson: function (arr) {
-            var obj = {};
-            arr.forEach(function (data) {
-                if (data.value) {
-                    obj[data.name] = data.value;
-                }
-
-            })
-
-            return obj;
-        },
-
-        getParamJson: function (queryStr) {
-            const urlParams = new URLSearchParams(queryStr);
-
-            // JSON 형태로 변환
-            const jsonParams = {};
-            for (const [key, value] of urlParams) {
-                jsonParams[key] = value;
-            }
-
-            return jsonParams;
-        },
-
-        appendForm: function (id, name) {
-            let formObj = $('<form></form>');
-            $(formObj).attr("id", id);
-            $(formObj).attr("name", (name || (id || "")));
-            return formObj;
-        },
-
-        appendInput: function (form, name, value, isHideId) {
-            if ($("#" + name).length > 0) {
-                $("#" + name).remove();
-            }
-
-            if (isHideId) {
-                $(form).append('<input type="hidden" name="' + name + '">');
-            } else {
-                $(form).append('<input type="hidden" name="' + name + '" id="' + name + '">');
-            }
-
-            $(form).find("input[name='" + name + "']").val(value);
-            return $(form).find("input[name='" + name + "']");
         },
 
         generateUUID: function () {
@@ -103,14 +57,14 @@ let comm = function () {
             }
 
             if (opt.form) {
-                opt.data = comm.serializeJson($(opt.form).serializeArray());
+                opt.data = comm.dom.serializeJson($(opt.form).serializeArray());
             }
 
             if (!opt.headers) {
                 opt.headers = {};
             }
 
-            //opt.headers['Authorization'] = 'Bearer '+ window.apiToken;
+            //opt.headers['Authorization'] = 'Bearer '+ sessionStorage.getItem("apiToken");
 
             if (opt['contentType'] != false) {
                 opt.headers['Content-type'] = "application/json";
@@ -124,7 +78,9 @@ let comm = function () {
                 if (errCall) {
                     errCall(result);
                 } else {
-                    comm.message.alert(result.message);
+                    if( result && result.message ){
+                        comm.message.alert(result.message);
+                    }
                 }
             }, opt.headers, opt['async'])
         },
@@ -134,7 +90,7 @@ let comm = function () {
                 const notLoginCallback = function () {
                     comm.message.confirm("해당 콘텐츠가 마음에 드시나요? 로그인 후 의견을 알려주세요.\n\n로그인 하시겠습니까?", function (Yn) {
                         if (Yn) {
-                            comm.loginObj.popup.open();
+                            comm.sign.popup.open();
                         }
                     });
                 }
@@ -163,18 +119,18 @@ let comm = function () {
             },
         },
 
-        loginObj: {
+        sign: {
             init: function (type) {
                 this.popup.init();
 
-                this.loginProcessEvent(type);
-                window['login_success_callback'] = this.login_success_callback;
+                this.addEventLoginProcess(type);
+                window['callbackLoginSuccess'] = this.callbackLoginSuccess;
             },
 
             getLoginProcessEventHtml: function () {
                 let loginProcessEventHtml = '';
 
-                loginProcessEventHtml += '<div class="member_app logOut" style="display: none;">';
+                loginProcessEventHtml += '<div class="member_app logout" style="display: none;">';
                 loginProcessEventHtml += '    <a href="/myStory/' + window.memberId + '" id="myStory">내 스토리</a>';
                 loginProcessEventHtml += '    <a href="/management/main" id="management">관리</a>';
                 loginProcessEventHtml += '    <a href="' + window.storyUrlWrite + '" id="writing">글쓰기</a>';
@@ -185,7 +141,7 @@ let comm = function () {
 
             },
 
-            kakaoInit: function (kakaoObj) {
+            initKakao: function (kakaoObj) {
                 kakaoObj.init(kakaoKey);
                 kakaoObj.isInitialized();
 
@@ -196,7 +152,7 @@ let comm = function () {
                                 kakaoObj.API.request({
                                     url: '/v2/user/me',
                                     success: function (res) {
-                                        window.login_success_callback(Object.assign(res, {"type": "kakao"}));
+                                        window.callbackLoginSuccess(Object.assign(res, {"type": "kakao"}));
                                     },
                                     fail: function (error) {
                                         comm.message.alert(
@@ -214,7 +170,7 @@ let comm = function () {
                 })
             },
 
-            naverInit: function (naverKey, naverObj) {
+            initNaver: function (naverKey, naverObj) {
                 window.name = 'parentWindow';
                 const naver_id_login = new naverObj(naverKey, window.location.origin + "/index.html");
                 let state = naver_id_login['getUniqState']();
@@ -235,7 +191,7 @@ let comm = function () {
                 // 네이버 로그인 e
             },
 
-            login_success_callback: function (obj) {
+            callbackLoginSuccess: function (obj) {
                 let param = {}
 
                 if (obj.type == 'naver') {
@@ -283,9 +239,9 @@ let comm = function () {
                     // 로그인 성공
 
                     //팝업 닫기
-                    // comm.loginObj.popup.close();
+                    // comm.sign.popup.close();
                     //
-                    // $(".member_set.logOut").show();
+                    // $(".member_set.logout").show();
                     // $(".loginStart").hide();
 
                     comm.session.add(res);
@@ -293,18 +249,18 @@ let comm = function () {
                 })
             },
 
-            loginProcessEvent: function (type) {
+            addEventLoginProcess: function (type) {
                 const $this = this;
                 $(document).on("ready", function () {
 
-                    $('.member_set.logOut').after($this.getLoginProcessEventHtml())
+                    $('.member_set.logout').after($this.getLoginProcessEventHtml())
 
                     $(".member_set").on("click", function () {
                         $(".member_app").slideToggle("fast");
                     })
 
                     $("#logout").on("click", function () {
-                        comm.loginObj.logOut(type);
+                        comm.sign.logout(type);
                     })
                 })
             },
@@ -347,20 +303,20 @@ let comm = function () {
                 },
             },
 
-            logOut: function (loginType, callback) {
+            logout: function (loginType, callback) {
                 comm.message.confirm("로그아웃 하시겠습니까?", function (Yn) {
                     if (Yn) {
-                        let logOutParam = {};
+                        let logoutParam = {};
 
                         if (loginType == 'naver') {
-                            logOutParam.type = 'naver';
-                            logOutParam.access_token = localStorage.getItem("access_token");
+                            logoutParam.type = 'naver';
+                            logoutParam.access_token = localStorage.getItem("access_token");
                         } else {
-                            logOutParam.type = 'kakao';
+                            logoutParam.type = 'kakao';
                         }
 
-                        comm.request({url: "/sign/out", data: JSON.stringify(logOutParam)}, function (res) {
-                            $(".logOut").hide();
+                        comm.request({url: "/sign/out", data: JSON.stringify(logoutParam)}, function (res) {
+                            $(".logout").hide();
                             $(".loginStart").show();
 
                             if (callback) {
@@ -397,7 +353,7 @@ let comm = function () {
                     storyCommentPublicStatus: memData.storyCommentPublicStatus,
                     storyTitle: memData.storyTitle,
                 }));
-                sessionStorage.setItem("apiToken", memData.apiToken);
+                sessionStorage.setItem("apiToken", memData['apiToken']);
             },
 
             remove: function () {
@@ -408,18 +364,6 @@ let comm = function () {
                 delete window.memProfileImg;
                 delete window.memberId;
                 delete window.nowStoryMemId;
-                delete window.apiToken;
-            },
-
-            token: {
-                init: function () {
-                    const token = SIGN.getToken();
-
-                    if (token) {
-                        window.apiToken = token;
-                        sessionStorage.setItem("apiToken", token);
-                    }
-                },
             },
         },
     };

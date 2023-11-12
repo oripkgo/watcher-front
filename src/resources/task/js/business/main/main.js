@@ -168,11 +168,11 @@ const mainObj = {
         tab : {
             drawInTags : function(id){
                 let div = $('<div></div>')
-                let recommendedListForm = comm.appendForm('RecommendedListForm'+id);
+                let recommendedListForm = comm.dom.appendForm('RecommendedListForm'+id);
 
-                comm.appendInput(recommendedListForm, "SortByRecommendationYn", "YY");
-                comm.appendInput(recommendedListForm, "search_category_id", id);
-                comm.appendInput(recommendedListForm, "limitNum", "3");
+                comm.dom.appendInput(recommendedListForm, "SortByRecommendationYn", "YY");
+                comm.dom.appendInput(recommendedListForm, "search_category_id", id);
+                comm.dom.appendInput(recommendedListForm, "limitNum", "3");
                 $(recommendedListForm).append('<ul class="story_wrap" id="RecommendedDataList'+id+'"></ul>')
 
                 $(div).append(recommendedListForm);

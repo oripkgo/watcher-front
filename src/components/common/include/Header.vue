@@ -8,7 +8,7 @@
       <router-link to="/notice/list">NOTICE</router-link>
     </div>
     <div class="top_navi">
-      <a v-if="loginInfo.isLogin" href="javascript:;" class="member_set logOut">
+      <a v-if="loginInfo.isLogin" href="javascript:;" class="member_set logout">
         <img v-if="loginInfo.memProfileImg" :src="loginInfo.memProfileImg">
         <img v-else src="@/resources/img/member_ico_b.png">
       </a>
@@ -55,11 +55,11 @@
       window.naverLoginSuccess = naverLoginSuccess;
       window.token = token;
       window.callbackUrl = callbackUrl;
-      comm.session.token.init();
+      comm.token.init();
 
-      comm.loginObj.init(window.loginType);
-      comm.loginObj.kakaoInit(window['Kakao']);
-      comm.loginObj.naverInit(token, window['naver_id_login']);
+      comm.sign.init(window.loginType);
+      comm.sign.initKakao(window['Kakao']);
+      comm.sign.initNaver(token, window['naver_id_login']);
       comm.visitor.save(window.nowStoryMemId, window.refererUrl);
     }
   }

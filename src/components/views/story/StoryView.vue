@@ -116,6 +116,7 @@
           if (status) {
             comm.request({
               url: "/story/delete",
+              method : "DELETE",
               data: JSON.stringify({id: $this.id})
             }, function (resp) {
               if (resp.code == '0000') {

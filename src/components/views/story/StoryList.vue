@@ -111,7 +111,7 @@ export default {
 
         let keyword = $("#searchForm").find("#keyword").val();
 
-        comm.appendInput($('#defaultListForm' + id), 'search_keyword', keyword);
+        comm.dom.appendInput($('#defaultListForm' + id), 'search_keyword', keyword);
 
         // 기본 목록
         $this.defaultList(id, function(){
@@ -284,16 +284,16 @@ export default {
 
     draw_tags_in_tabs : function(id){
       let div = $('<div></div>')
-      let recommendedListForm = comm.appendForm('RecommendedListForm'+id);
-      let defaultListForm = comm.appendForm('defaultListForm'+id);
+      let recommendedListForm = comm.dom.appendForm('RecommendedListForm'+id);
+      let defaultListForm = comm.dom.appendForm('defaultListForm'+id);
 
-      comm.appendInput(recommendedListForm, "SortByRecommendationYn", "YY", true);
-      comm.appendInput(recommendedListForm, "search_category_id", id, true);
-      comm.appendInput(recommendedListForm, "limitNum", "3", true);
+      comm.dom.appendInput(recommendedListForm, "SortByRecommendationYn", "YY", true);
+      comm.dom.appendInput(recommendedListForm, "search_category_id", id, true);
+      comm.dom.appendInput(recommendedListForm, "limitNum", "3", true);
       $(recommendedListForm).append('<ul class="story_wrap" id="RecommendedDataList'+id+'"></ul>')
 
-      comm.appendInput(defaultListForm, "SortByRecommendationYn", "NN", true);
-      comm.appendInput(defaultListForm, "search_category_id", id, true);
+      comm.dom.appendInput(defaultListForm, "SortByRecommendationYn", "NN", true);
+      comm.dom.appendInput(defaultListForm, "search_category_id", id, true);
       $(defaultListForm).append('<div class="story_wrap01"><ul id="defaultList'+id+'"></ul></div>');
       $(defaultListForm).append('<div class="pagging_wrap"></div>');
 

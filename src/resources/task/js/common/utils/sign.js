@@ -19,21 +19,6 @@ const sign = {
     isLogin: function () {
 
     },
-
-    getToken: function () {
-        let result = "";
-
-        request.send(tokenApiUrl, "GET", {
-            token: (sessionStorage.getItem("apiToken") || "")
-        }, function (resp) {
-            if (resp.code == '0000') {
-                result = resp.apiToken;
-            }
-        }, null, null, false)
-
-        console.log('token : ' + result)
-        return result;
-    },
 }
 
 

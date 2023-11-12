@@ -124,9 +124,9 @@ export default {
 
       $("#contents").val($(".ql-editor","#editor").html());
 
-      comm.appendInput('#notice_write_form'    , 'summary' ,String($(".ql-editor","#editor").text()).substring(0,200)  );
-      comm.appendInput('#notice_write_form'    , 'regId'   ,window.loginId  );
-      comm.appendInput('#notice_write_form'    , 'uptId'   ,window.loginId  );
+      comm.dom.appendInput('#notice_write_form'    , 'summary' ,String($(".ql-editor","#editor").text()).substring(0,200)  );
+      comm.dom.appendInput('#notice_write_form'    , 'regId'   ,window.loginId  );
+      comm.dom.appendInput('#notice_write_form'    , 'uptId'   ,window.loginId  );
 
       var form = $('#notice_write_form')[0]
       var formData = new FormData(form);

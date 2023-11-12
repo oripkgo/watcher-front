@@ -180,7 +180,7 @@ export default {
       $("#memberCategoryId").val($("#story_category_member").val());
       $("#contents").val($(".ql-editor","#editor").html());
 
-      comm.appendInput('#story_write_form', 'summary' ,String($(".ql-editor","#editor").text()).substring(0,200)  );
+      comm.dom.appendInput('#story_write_form', 'summary' ,String($(".ql-editor","#editor").text()).substring(0,200)  );
 
       var form = $('#story_write_form')[0]
       var formData = new FormData(form);
@@ -188,7 +188,6 @@ export default {
       comm.request({
         url: "/story/insert",
         data : formData,
-        // headers : {"Content-type":"application/x-www-form-urlencoded"},
         processData : false,
         contentType : false,
       },function(res){

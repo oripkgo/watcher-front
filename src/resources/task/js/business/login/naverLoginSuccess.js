@@ -13,8 +13,8 @@ const naverLoginSuccess = {
             window.opener = window.open('', 'parentWindow');
         }
 
-        if( window.opener.login_success_callback ){
-            window.opener.login_success_callback( Object.assign(window['inner_profileParams'], {"type":"naver"}));
+        if( window.opener.callbackLoginSuccess ){
+            window.opener.callbackLoginSuccess( Object.assign(window['inner_profileParams'], {"type":"naver"}));
         }
 
         window.close();

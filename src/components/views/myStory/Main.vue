@@ -141,8 +141,8 @@ import comm from "@/resources/task/js/common/comm.js";
       },
 
       initMyStory : function(uid, categId, $this){
-        comm.appendInput('#myStoryForm', "search_memId"               , uid       );
-        comm.appendInput('#myStoryForm', "search_member_category_id"  , categId   );
+        comm.dom.appendInput('#myStoryForm', "search_memId"               , uid       );
+        comm.dom.appendInput('#myStoryForm', "search_member_category_id"  , categId   );
 
         comm.paging.getList('#myStoryForm', $this.myStorylistDataUrl,function(data){
           comm.paging.emptyList("#myStoryList")

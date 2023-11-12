@@ -4,6 +4,10 @@ const request = {
     send : function(url, method, data, succCallback, errCallback, headers, async){
         const xhr = new XMLHttpRequest();
 
+        if( typeof data == 'string' ){
+            data = JSON.parse(data);
+        }
+
         method = ( method || 'GET').toUpperCase();
         // async = !(async == true || async == false)? true : async;
 
@@ -17,7 +21,7 @@ const request = {
 
         xhr.open(method || "GET", url, async);
 
-        xhr.setRequestHeader("Authorization", 'Bearer '+ window.apiToken);
+        xhr.setRequestHeader("Authorization", 'Bearer '+ sessionStorage.getItem("apiToken"));
 
         if( headers ){
             for (let key in headers) {
@@ -48,7 +52,7 @@ const request = {
         if( method == 'GET' || method == 'DELETE'){
             xhr.send();
         }else{
-            if( typeof data !== 'string' ){
+            if( (headers['Content-type'] && headers['Content-type'].indexOf('application/json') > -1) && (typeof data !== 'string') ){
                 data = JSON.stringify(data);
             }
 
@@ -59,7 +63,7 @@ const request = {
     getParam : function(json){
         let params = new URLSearchParams();
         for (let key in json) {
-            params.append(key, json[key]);
+            params.append(key, json[key].trim());
         }
 
         return params.toString();
