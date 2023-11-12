@@ -63,7 +63,7 @@ const request = {
     getParam : function(json){
         let params = new URLSearchParams();
         for (let key in json) {
-            params.append(key, json[key].trim());
+            params.append(key, json[key]);
         }
 
         return params.toString();
