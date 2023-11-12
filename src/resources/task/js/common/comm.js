@@ -29,12 +29,7 @@ let comm = function () {
         sign: SIGN,
 
         validation: function (target) {
-            const result = AVAILABILITY.check(target);
-
-            comm.message.alert(result.message);
-            $(result.failTarget).focus();
-
-            return result.checkVal;
+            return AVAILABILITY.check(target);
         },
 
         /**

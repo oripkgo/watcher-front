@@ -64,8 +64,15 @@ const categoryObj = {
 
     applyCategoryEvents : function(){
         $("." + categListNm, "." + categListSpaceNm).off("click").on("click", function(){
-            if ($("." + categListNm+".on", "." + categListSpaceNm).length > 0 && comm.validation(formId)) {
-                return
+            if ($("." + categListNm+".on", "." + categListSpaceNm).length > 0) {
+                const result = comm.validation(formId);
+                if( result.checkVal ){
+                    comm.message.alert(result.message, function(){
+                        $(result.failTarget).focus();
+                    })
+
+                    return;
+                }
             }
 
             const thisData = $(this).data();
