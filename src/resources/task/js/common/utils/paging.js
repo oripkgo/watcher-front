@@ -168,10 +168,9 @@ const paging = {
         let _startPageNo;		// 시작 페이지
         let _endPageNo;			// 끝 페이지
 
-        if (this && this.getList) {
-            window['pagingListFunc'] = this.getList
+        if (paging && paging.getList) {
+            window['pagingListFunc'] = paging.getList
         }
-
 
         if (pageNo) {
             _pageNo = pageNo * 1;
@@ -189,7 +188,6 @@ const paging = {
             _startPageNo = sPageNo * 1;
             _endPageNo = ePageNo * 1;
         }
-
 
         appendInput(form, 'viewType');
         appendInput(form, 'pageNo');

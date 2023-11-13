@@ -1,4 +1,4 @@
-import request from "@/resources/task/js/common/utils/request";
+import REQUEST from "@/resources/task/js/common/utils/request";
 
 const categoryApiUrl = '/category/list';
 const categoryMemberApiUrl = '/category/list/member';
@@ -21,7 +21,7 @@ const category = {
     },
     get: function () {
         let category_list = "[]";
-        request.send(categoryApiUrl, "GET", null, function (resp) {
+        REQUEST.send(categoryApiUrl, "GET", null, function (resp) {
             // 수정 성공
             if (resp.code == '0000') {
                 category_list = resp['categoryList'];
@@ -32,7 +32,7 @@ const category = {
     },
     getMember: function () {
         let category_list = "[]";
-        request.send(categoryMemberApiUrl, "GET", null, function (resp) {
+        REQUEST.send(categoryMemberApiUrl, "GET", null, function (resp) {
             // 수정 성공
             if (resp.code == '0000') {
                 category_list = resp['memberCategoryList'];
@@ -43,7 +43,7 @@ const category = {
     },
     getMemberPublic: function () {
         let category_list = "[]";
-        request.send(categoryMemberPublicApiUrl, "GET", null, function (resp) {
+        REQUEST.send(categoryMemberPublicApiUrl, "GET", null, function (resp) {
             // 수정 성공
             if (resp.code == '0000') {
                 category_list = resp['memberCategoryList'];

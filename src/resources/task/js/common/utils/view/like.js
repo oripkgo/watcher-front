@@ -1,4 +1,4 @@
-import request from "@/resources/task/js/common/utils/request";
+import REQUEST from "@/resources/task/js/common/utils/request";
 
 const likeYImgUrl = require("@/resources/img/icon_heart_on.png");
 const likeNImgUrl = require("@/resources/img/zim_ico.png");
@@ -7,7 +7,7 @@ const boardLikeApiUrl = '/board/like';
 
 const getBoardLike = function (id, type) {
     let result = {};
-    request.send(boardLikeApiUrl, "GET", {
+    REQUEST.send(boardLikeApiUrl, "GET", {
         "contentsId": id,
         "contentsType": type,
     }, function (resp) {
@@ -37,14 +37,14 @@ const updateBoardLike = function (contentsId, contentsType, likeId, likeYn) {
         param.likeYn = likeYn;
     }
 
-    request.send(boardLikeApiUrl, "POST", param, function (resp) {
+    REQUEST.send(boardLikeApiUrl, "POST", param, function (resp) {
         result = resp;
     }, null, {'Content-type': "application/json"}, false);
 
     return result;
 }
 
-const boardLike =  {
+const like =  {
         init: function (id, type, loginYn, notLoginStatusProcessingFunc) {
             const result = getBoardLike(id, type);
 
@@ -132,4 +132,4 @@ const boardLike =  {
     }
 
 
-export default boardLike;
+export default like;

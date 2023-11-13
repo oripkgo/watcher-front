@@ -1,4 +1,4 @@
-import request from "@/resources/task/js/common/utils/request";
+import REQUEST from "@/resources/task/js/common/utils/request";
 
 const dailyVisitorUrl = "/visitor/chart/count/daily?searchDate=";
 const monthVisitorUrl = "/visitor/chart/count/month?searchDate=";
@@ -150,7 +150,7 @@ const chartVisitor = {
 
     drawDailyVisitor: function () {
         let chartThis = this;
-        request.send(dailyVisitorUrl + chartThis.dataStr,"GET",null, function(resp){
+        REQUEST.send(dailyVisitorUrl + chartThis.dataStr,"GET",null, function(resp){
             if (resp.code == '0000') {
                 drawChart(chartThis.drawTarget, getChartData(resp['visitInfoList'], chartThis.dateObj), chartThis.dateObj)
             }
@@ -159,7 +159,7 @@ const chartVisitor = {
 
     drawMonthVisitor: function () {
         let chartThis = this;
-        request.send(monthVisitorUrl + chartThis.dataStr,"GET",null, function(resp){
+        REQUEST.send(monthVisitorUrl + chartThis.dataStr,"GET",null, function(resp){
             if (resp.code == '0000') {
                 drawChart(chartThis.drawTarget, getMonthChartData(resp['visitInfoList'], chartThis.dateObj), chartThis.dateObj)
             }

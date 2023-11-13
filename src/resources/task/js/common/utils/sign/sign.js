@@ -1,4 +1,4 @@
-import request from "@/resources/task/js/common/utils/request";
+import REQUEST from "@/resources/task/js/common/utils/request";
 
 const tokenApiUrl = "/comm/token";
 // const loginApiUrl = "";

@@ -5,9 +5,9 @@ import DATE from "@/resources/task/js/common/utils/date"
 import MESSAGE from "@/resources/task/js/common/utils/message"
 import REQUEST from "@/resources/task/js/common/utils/request"
 import AVAILABILITY from "@/resources/task/js/common/utils/availability"
-import BOARD_COMMENT from "@/resources/task/js/common/utils/boardComment"
-import BOARD_LIKE from "@/resources/task/js/common/utils/boardLike"
-import BOARD_TAGS from "@/resources/task/js/common/utils/boardTags"
+import TAGS from "@/resources/task/js/common/utils/view/tags"
+import LIKE from "@/resources/task/js/common/utils/view/like"
+import COMMENT from "@/resources/task/js/common/utils/view/comment"
 import PAGING from "@/resources/task/js/common/utils/paging"
 // import SIGN from "@/resources/task/js/common/utils/sign"
 import MOBILE from "@/resources/task/js/common/utils/mobile"
@@ -100,22 +100,22 @@ let comm = function () {
                 }
 
                 this.loginYn = window.loginYn ? "Y" : "N";
-                this.tagObj = BOARD_TAGS;
-                this.likeObj = BOARD_LIKE;
-                this.commentObj = BOARD_COMMENT;
+                this.tags = TAGS;
+                this.like = LIKE;
+                this.comment = COMMENT;
 
-                this.tagObj.init(id, type);
-                this.likeObj.init(id, type, this.loginYn, notLoginCallback);
-                this.commentObj.init(id, type, this.loginYn, notLoginCallback, confirmDeleteMsg);
+                this.tags.init(id, type);
+                this.like.init(id, type, this.loginYn, notLoginCallback);
+                this.comment.init(id, type, this.loginYn, notLoginCallback, confirmDeleteMsg);
             },
             renderTag: function (tagId) {
-                this.tagObj.render(tagId);
+                this.tags.render(tagId);
             },
             renderLike: function (tagId) {
-                this.likeObj.render(tagId);
+                this.like.render(tagId);
             },
             renderComment: function (tagId) {
-                this.commentObj.render(tagId, comm.paging.getList);
+                this.comment.render(tagId);
             },
         },
 

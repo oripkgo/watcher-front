@@ -1,4 +1,4 @@
-import request from "@/resources/task/js/common/utils/request";
+import REQUEST from "@/resources/task/js/common/utils/request";
 
 const insertApiUrl = '/visitor/insert';
 
@@ -13,7 +13,7 @@ const visitor = {
             visitStoryMemId: memId,
         };
 
-        request.send(insertApiUrl,"POST", param,null,null,{'Content-type': "application/json"});
+        REQUEST.send(insertApiUrl,"POST", param,null,null,{'Content-type': "application/json"});
     }
 }
 

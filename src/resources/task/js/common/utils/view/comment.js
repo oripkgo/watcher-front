@@ -1,14 +1,15 @@
-import request from "@/resources/task/js/common/utils/request";
+import REQUEST from "@/resources/task/js/common/utils/request";
+import COMMENT_LIST from "@/resources/task/js/common/utils/view/commentList";
 
 const profileEmptyImgUrl = require("@/resources/img/member_ico.png");
 const commentButtonDivisionImgUrl = require("@/resources/img/line.png");
 
-const commentListApiUrl = '/board/comment/select';
+
 const commentInsertApiUrl = "/board/comment/insert";
 const commentDeleteApiUrl = "/board/comment/delete";
 const commentUpdateApiUrl = "/board/comment/update";
 
-const boardComment = {
+const comment = {
         init: function (id, type, loginYn, notLoginStatusProcessingFunc, deleteConfirmMsgFunc) {
             this.deleteMsg = "해당 댓글을 삭제하시겠습니까?";
             this.id = id;
@@ -173,7 +174,7 @@ const boardComment = {
                     const thisObj = this;
                     param.comment = commentThis.replaceLineBreakWithBrByElement(thisObj.parentElement.querySelector('.'+commentThis.elementClassUpdateTextArea));
 
-                    request.send(commentUpdateApiUrl,"PUT", param, function(resp){
+                    REQUEST.send(commentUpdateApiUrl,"PUT", param, function(resp){
                         if (resp.code === '0000') {
                             target.classList.remove("ing");
                             contents.innerHTML = resp.comment;
@@ -195,7 +196,7 @@ const boardComment = {
                 regId: regId,
             }
 
-            request.send(commentDeleteApiUrl, "DELETE", param, function (resp) {
+            REQUEST.send(commentDeleteApiUrl, "DELETE", param, function (resp) {
                 // 삭제 성공
                 if (resp.code == '0000') {
                     commentThis.getElementById(id).remove();
@@ -222,7 +223,7 @@ const boardComment = {
                 comment : commentThis.replaceLineBreakWithBrById(commentThis.elementIdInsertTextArea),
             };
 
-            request.send(commentInsertApiUrl,"POST", commentInsertParam, function(resp){
+            REQUEST.send(commentInsertApiUrl,"POST", commentInsertParam, function(resp){
                 let profile_img = profileEmptyImgUrl;
 
                 if( resp.comment['profile'] ){
@@ -401,7 +402,7 @@ const boardComment = {
             })
         },
 
-        render: function (tagId, listPagingFunc) {
+        render: function (tagId) {
             const commentThis = this;
             let targetElement = commentThis.replaceTargetWithCommentRoot(document.getElementById(tagId));
 
@@ -415,14 +416,17 @@ const boardComment = {
                 });
             }
 
-            listPagingFunc(targetElement.querySelector("#" + commentThis.elementIdForm), commentListApiUrl, function (resp) {
+            COMMENT_LIST.get(targetElement.querySelector("#" + commentThis.elementIdForm), function (resp) {
+                COMMENT_LIST.empty("#"+commentThis.elementIdListArea);
+
                 commentThis.setCount(resp.comment['cnt'])
                 commentThis.drawCount();
                 commentThis.drawList(resp.comment['list']);
                 commentThis.addEventToElement(document.getElementById(commentThis.elementIdListArea));
-            });
+            })
+
         },
     }
 
 
-export default boardComment;
+export default comment;

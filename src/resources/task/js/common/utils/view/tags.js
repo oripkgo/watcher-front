@@ -1,10 +1,10 @@
-import request from "@/resources/task/js/common/utils/request";
+import REQUEST from "@/resources/task/js/common/utils/request";
 
 const boardTagsApiUrl = '/board/tags';
 
 const getBoardTags = function (id, type) {
     let result = {};
-    request.send(boardTagsApiUrl, "GET", {
+    REQUEST.send(boardTagsApiUrl, "GET", {
         "contentsId": id,
         "contentsType": type,
     }, function (resp) {
@@ -14,7 +14,7 @@ const getBoardTags = function (id, type) {
     return result
 }
 
-const boardTags = {
+const tags = {
         init: function (id, type) {
             const result = getBoardTags(id, type);
             this.id = id;
@@ -45,4 +45,4 @@ const boardTags = {
     }
 
 
-export default boardTags;
+export default tags;
