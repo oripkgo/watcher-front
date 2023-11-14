@@ -1,5 +1,5 @@
 import REQUEST from "@/resources/task/js/common/utils/request";
-import COMMENT_LIST from "@/resources/task/js/common/utils/view/commentList";
+import COMMENT_LIST from "@/resources/task/js/common/utils/comment/commentList";
 
 const profileEmptyImgUrl = require("@/resources/img/member_ico.png");
 const commentButtonDivisionImgUrl = require("@/resources/img/line.png");
