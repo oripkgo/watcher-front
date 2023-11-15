@@ -1,8 +1,6 @@
 import $ from "jquery";
 
 const globalObj = {
-    LOGIN_BTN_IMG_NAVER: require("@/resources/img/login_naver.png"),
-    LOGIN_BTN_IMG_KAKAO: require("@/resources/img/login_kakao.png"),
     apiHost : process.env.VUE_APP_API_HOST,
     refererUrl: document.referrer,
     origin: location.origin,
