@@ -5,10 +5,9 @@ import SIGN_NAVER from "@/resources/task/js/common/utils/sign/signNaver";
 import SIGN_KAKAO from "@/resources/task/js/common/utils/sign/signKakao";
 import SIGN_SESSION from "@/resources/task/js/common/utils/sign/signSession";
 
-
-const requiresLoginpageUrls = ['/management', '/story/write'];
 const signinUrl = "/sign/in";
 const signoutUrl = "/sign/out";
+const requiresLoginpageUrls = ['/management', '/story/write'];
 
 const callbackLoginSuccess = function (obj) {
     let param = {}
