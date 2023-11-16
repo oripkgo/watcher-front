@@ -1,252 +1,121 @@
-import $ from "jquery";
+import REQUEST from "@/resources/task/js/common/utils/request";
+import MESSAGE from "@/resources/task/js/common/utils/message";
 import SIGN_POPUP from "@/resources/task/js/common/utils/sign/signPopup";
-import comm from "@/resources/task/js/common/comm";
+import SIGN_NAVER from "@/resources/task/js/common/utils/sign/signNaver";
+import SIGN_KAKAO from "@/resources/task/js/common/utils/sign/signKakao";
+import SIGN_SESSION from "@/resources/task/js/common/utils/sign/signSession";
 
 
-// const loginApiUrl = "";
-// const logoutApiUrl = "";
-const kakaoKey = '16039b88287b9f46f214f7449158dfde';
 const requiresLoginpageUrls = ['/management'];
+const signinUrl = "/sign/in";
+const signoutUrl = "/sign/out";
 
-const sign = {
-    init: function (type, myStoryUrl, managementUrl, writeUrl) {
-        // this.popup.init();
-        this.myStoryUrl = myStoryUrl;
-        this.managementUrl = managementUrl;
-        this.writeUrl = writeUrl;
-        SIGN_POPUP.init();
+const callbackLoginSuccess = function (obj) {
+    let param = {}
 
-        this.addEventLoginProcess(type);
-        window['callbackLoginSuccess'] = this.callbackLoginSuccess;
-    },
+    if (obj.type == 'naver') {
+        param.type = obj.type;
+        param.id = obj.id;
+        param.email = obj.email;
+        param.nickname = obj.nickname;
+        param.name = obj.name;
+        param.profile = obj.profile_image;
 
-    getLoginProcessEventHtml: function () {
-        let loginProcessEventHtml = '';
-
-        loginProcessEventHtml += '<div class="member_app logout" style="display: none;">';
-        loginProcessEventHtml += '    <a href="/myStory/' + window.memberId + '" id="myStory">내 스토리</a>';
-        loginProcessEventHtml += '    <a href="/management/main" id="management">관리</a>';
-        loginProcessEventHtml += '    <a href="' + window.storyUrlWrite + '" id="writing">글쓰기</a>';
-        loginProcessEventHtml += '    <a href="javascript:;" id="logout">로그아웃</a>';
-        loginProcessEventHtml += '</div>';
-
-        return loginProcessEventHtml;
-
-    },
-
-    initKakao: function (kakaoObj) {
-        kakaoObj.init(kakaoKey);
-        kakaoObj.isInitialized();
-
-        $(document).on("ready", function () {
-            $("#kakao-login-btn").on("click", function () {
-                kakaoObj.Auth.login({
-                    success: function (authObj) { // eslint-disable-line no-unused-vars
-                        kakaoObj.API.request({
-                            url: '/v2/user/me',
-                            success: function (res) {
-                                window.callbackLoginSuccess(Object.assign(res, {"type": "kakao"}));
-                            },
-                            fail: function (error) {
-                                comm.message.alert(
-                                    'login success, but failed to request user information: ' +
-                                    JSON.stringify(error)
-                                )
-                            },
-                        })
-                    },
-                    fail: function (err) {
-                        comm.message.alert(JSON.stringify(err))
-                    },
-                })
-            })
-        })
-    },
-
-    initNaver: function (naverKey, naverObj) {
-        window.name = 'parentWindow';
-        const naver_id_login = new naverObj(naverKey, window.location.origin + "/index.html");
-        let state = naver_id_login['getUniqState']();
-        localStorage.setItem("naverLoginAuthData", state);
-        naver_id_login['setButton']("white", 2, 40);
-        naver_id_login['setDomain'](window.location.origin);
-        naver_id_login['setState'](state);
-        naver_id_login['oauthParams'].state = state;
-        naver_id_login['setPopup']();
-        naver_id_login.is_callback = true;
-        naver_id_login.init_naver_id_login_callback = function () {
-            $("img", "#naver_id_login").attr("src", SIGN_POPUP.loginBtnImgNaver);
-            $("img", "#naver_id_login").css({
-                width: 'auto', height: 'auto'
-            })
+        if (obj.gender) {
+            if (obj.gender == 'M') {
+                param.gender = '1';
+            } else {
+                param.gender = '2';
+            }
         }
-        naver_id_login.init_naver_id_login();
-        // 네이버 로그인 e
-    },
+    } else {
+        param.type = obj.type;
+        param.id = obj.id;
 
-    callbackLoginSuccess: function (obj) {
-        let param = {}
+        if (obj.properties) {
+            param.nickname = obj.properties.nickname;
+            param.profile = obj.properties.profile_image;
+        }
 
-        if (obj.type == 'naver') {
-            param.type = obj.type;
-            param.id = obj.id;
-            param.email = obj.email;
-            param.nickname = obj.nickname;
-            param.name = obj.name;
-            param.profile = obj.profile_image;
+        if (obj.kakao_account) {
+            param.email = obj.kakao_account.email;
+            //param.gender 	= obj.kakao_account.gender &&
 
-            if (obj.gender) {
-                if (obj.gender == 'M') {
+            if (obj.kakao_account.gender) {
+                if (obj.kakao_account.gender == "male") {
                     param.gender = '1';
                 } else {
                     param.gender = '2';
                 }
             }
-        } else {
-            param.type = obj.type;
-            param.id = obj.id;
-
-            if (obj.properties) {
-                param.nickname = obj.properties.nickname;
-                param.profile = obj.properties.profile_image;
-            }
-
-            if (obj.kakao_account) {
-                param.email = obj.kakao_account.email;
-                //param.gender 	= obj.kakao_account.gender &&
-
-                if (obj.kakao_account.gender) {
-                    if (obj.kakao_account.gender == "male") {
-                        param.gender = '1';
-                    } else {
-                        param.gender = '2';
-                    }
-                }
-            }
         }
+    }
 
-        comm.request({
-            url: "/sign/in",
-            data: JSON.stringify(param)
-        }, function (res) { // eslint-disable-line no-unused-vars
-            // 로그인 성공
+    REQUEST.send(signinUrl, "POST", param, function (res) {
+        SIGN_SESSION.add(res);
+        window.location.reload();
+    }, null, {'Content-type': "application/json"})
+}
 
-            //팝업 닫기
-            // comm.sign.popup.close();
-            //
-            // $(".member_set.logout").show();
-            // $(".loginStart").hide();
+const logout = function (loginType, callback) {
+    MESSAGE.confirm("로그아웃 하시겠습니까?", function (result) {
+        if (result) {
+            let logoutParam = {};
 
-            comm.session.add(res);
-            window.location.reload();
-        })
-    },
-
-    addEventLoginProcess: function (type) {
-        const $this = this;
-        $(document).on("ready", function () {
-
-            $('.member_set.logout').after($this.getLoginProcessEventHtml())
-
-            $(".member_set").on("click", function () {
-                $(".member_app").slideToggle("fast");
-            })
-
-            $("#logout").on("click", function () {
-                comm.sign.logout(type);
-            })
-        })
-    },
-
-    popup: {
-        init: function () {
-            let loginHtml = '';
-            loginHtml += '<div class="pop_wrap" id="loginHtmlObj">';
-            loginHtml += '	<a href="javascript:;" class="btn_close"></a>';
-            loginHtml += '	<div class="pop_tit">로그인</div>';
-            loginHtml += '	<div class="btn_pop">';
-            loginHtml += '		<a href="javascript:;" id="kakao-login-btn"><img src="' + window.LOGIN_BTN_IMG_KAKAO + '"/></a>';
-            loginHtml += '		<a href="javascript:;" id="naver_id_login"><img src="' + window.LOGIN_BTN_IMG_NAVER + '"/></a>';
-            loginHtml += '	</div>';
-            loginHtml += '</div>';
-
-            if ($("#loginHtmlObj").length > 0) {
-                $("#loginHtmlObj").remove();
+            if (loginType == 'naver') {
+                logoutParam.type = 'naver';
+                logoutParam.access_token = localStorage.getItem("access_token");
+            } else {
+                logoutParam.type = 'kakao';
             }
 
-            $("body").append(loginHtml);
+            REQUEST.send(signoutUrl, "POST", logoutParam, function (res) {
+                // document.querySelector(".logout").style.display = 'none';
+                // document.querySelector(".loginStart").style.display = 'block';
 
-            $(".btn_start").on("click", function () {
-                $("#backbg").fadeIn("slow");
-                $(".pop_wrap").show();
-            });
-            $(".btn_close").click(function () {
-                $("#backbg").fadeOut("slow");
-                $(".pop_wrap").hide();
-            });
-        },
-
-        open: function () {
-            $("#backbg").fadeIn("slow");
-            $(".pop_wrap").show();
-        },
-        close: function () {
-            $("#backbg").fadeOut("slow");
-            $(".pop_wrap").hide();
-        },
-    },
-
-    logout: function (loginType, callback) {
-        comm.message.confirm("로그아웃 하시겠습니까?", function (Yn) {
-            if (Yn) {
-                let logoutParam = {};
-
-                if (loginType == 'naver') {
-                    logoutParam.type = 'naver';
-                    logoutParam.access_token = localStorage.getItem("access_token");
-                } else {
-                    logoutParam.type = 'kakao';
+                if (callback) {
+                    callback(res);
                 }
 
-                comm.request({url: "/sign/out", data: JSON.stringify(logoutParam)}, function (res) {
-                    $(".logout").hide();
-                    $(".loginStart").show();
+                SIGN_SESSION.remove();
 
-                    if (callback) {
-                        callback(res);
-                    }
+                if (requiresLoginpageUrls.some(function (ele) {
+                    return (window.location.pathname.indexOf(ele) > -1)
+                })) {
+                    window.location.href = '/main';
+                } else {
+                    window.location.reload();
+                }
+            }, null, {'Content-type': "application/json"})
+        }
+    });
+}
 
-                    comm.session.remove();
+const sign = {
+    init: function () {
+        SIGN_POPUP.init(SIGN_KAKAO.getButtonImgUrl(), SIGN_NAVER.getButtonImgUrl());
+        SIGN_NAVER.init();
+        SIGN_KAKAO.init();
 
-                    if (requiresLoginpageUrls.some(function (ele) {
-                        return (window.location.pathname.indexOf(ele) > -1)
-                    })) {
-                        window.location.href = '/main';
-                    } else {
-                        window.location.reload();
-                    }
-                })
-            }
-        });
+        window['callbackLoginSuccess'] = callbackLoginSuccess;
+    },
+
+    isLogin: function () {
+        return sessionStorage.getItem("sessionData") ? true : false;
+    },
+
+    in: function () {
+        SIGN_POPUP.open()
+    },
+    out: function () {
+        const session = this.getSession();
+        logout(session.loginType);
+    },
+
+    getSession: function () {
+        return JSON.parse(sessionStorage.getItem("sessionData") || '{}');
     },
 };
-
-// const sign = {
-//     apiUrl: {
-//         in: "",
-//         out: "",
-//     },
-//
-//     in: function () {
-//
-//     },
-//     out: function () {
-//
-//     },
-//     isLogin: function () {
-//
-//     },
-// }
 
 
 export default sign;

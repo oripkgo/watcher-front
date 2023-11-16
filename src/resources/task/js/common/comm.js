@@ -14,6 +14,7 @@ import MOBILE from "@/resources/task/js/common/utils/mobile"
 import VISITOR from "@/resources/task/js/common/utils/visitor"
 import TOKEN from "@/resources/task/js/common/utils/token"
 import DOM from "@/resources/task/js/common/utils/dom"
+import NAVIGATION from "@/resources/task/js/common/utils/navigation"
 
 let comm = function () {
     // const privateObj = {};
@@ -27,6 +28,7 @@ let comm = function () {
         visitor: VISITOR,
         token: TOKEN,
         dom : DOM,
+        navigation : NAVIGATION,
 
         validation: function (target) {
             return AVAILABILITY.check(target);
@@ -87,7 +89,7 @@ let comm = function () {
                 const notLoginCallback = function () {
                     comm.message.confirm("해당 콘텐츠가 마음에 드시나요? 로그인 후 의견을 알려주세요.\n\n로그인 하시겠습니까?", function (Yn) {
                         if (Yn) {
-                            comm.sign.popup.open();
+                            comm.sign.in();
                         }
                     });
                 }
