@@ -6,7 +6,7 @@ import SIGN_KAKAO from "@/resources/task/js/common/utils/sign/signKakao";
 import SIGN_SESSION from "@/resources/task/js/common/utils/sign/signSession";
 
 
-const requiresLoginpageUrls = ['/management'];
+const requiresLoginpageUrls = ['/management', '/story/write'];
 const signinUrl = "/sign/in";
 const signoutUrl = "/sign/out";
 
