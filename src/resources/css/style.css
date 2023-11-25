@@ -597,7 +597,7 @@ a.page_top_link {display:block;color:#fff;text-align:center;font-size:14px;line-
 	height: 300px;
 }
 
-
+@import url("style-new.css");
 @import url("style-max-width-1200.css");
 @import url("style-max-width-840.css");
 @import url("style-max-width-750.css");
