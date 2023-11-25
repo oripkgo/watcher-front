@@ -1,23 +1,26 @@
 
 <template>
-  <div class="section">
-    <div class="ani-in layout">
-      <div class="story_search_wrap ani_y delay1">
-        <div class="sub_title">Story</div>
-        <span>다양한 이야기를 공유 해보세요</span>
-        <form name="searchForm" id="searchForm">
-          <div class="story_search">
-            <select id="seachCategory">
-              <option value="">카테고리</option>
-            </select>
-            <input type="text" id="keyword" placeholder="키워드 입력">
-            <a href="javascript:;" id="search"><img src="@/resources/img/btn_search_b.png"></a>
+  <form name="searchForm" id="searchForm">
+  <div class="section ani-in">
+    <div class="layout_02">
+      <div class="ani_y layout_sub title_box_02">
+        <div class="sub_title_top"><p>Story</p></div>
+        <div class="sub_title_bottom">
+          <p class="title_description">다양한 이야기를 공유 해보세요</p>
+          <div class="search_box_02">
+            <div class="search_group">
+              <select id="seachCategory">
+                <option value="">카테고리</option>
+              </select>
+              <input type="text" id="keyword" placeholder="키워드 입력">
+              <a href="javascript:;" id="search"><img src="@/resources/img/btn_search_b.png"></a>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
-
     </div>
   </div>
+  </form>
 
   <div class="section">
     <div class="ani-in layout">

@@ -1,50 +1,55 @@
 <template>
   <form id="noticeForm" name="noticeForm" method="get">
-    <div class="section uline2">
-      <div class="ani-in manage_layout action">
-        <div class="manage_conts">
-          <!-------------//manage_menu------------->
 
-          <div class="manage_box_wrap">
-            <div class="sub_title01">
-              <p>NOTICE</p>
-
-              <div class="search_right_box">
+    <div class="section ani-in">
+      <div class="layout_02">
+        <div class="ani_y layout_sub title_box_02">
+          <div class="sub_title_top"><p>{{myStoryTitle}} Notice</p></div>
+          <div class="sub_title_bottom">
+            <p class="title_description">다양한 소식을 만나보세요.</p>
+            <div class="search_box_02">
+              <div class="search_group">
                 <select id="search_id" name="search_id">
                   <option value="">선택</option>
                   <option value="01">제목</option>
                   <option value="02">내용</option>
                 </select>
                 <input type="text" id="searchKeyword" name="searchKeyword" placeholder="키워드 입력">
-                <a href="javascript:;" id="search"></a>
+                <a href="javascript:;" id="search"><img src="@/resources/img/btn_search_b.png"></a>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            <div class="board_notice list">
-              <table>
-                <colgroup>
-                  <col/>
-                  <col/>
-                  <col width="100"/>
-                  <col width="150"/>
-                  <col width="100"/>
-                </colgroup>
+    <div class="section ani-in">
+      <div class="layout_02">
+        <div class="ani_y layout_sub title_box_02">
+          <div class="board_notice list line">
+            <table>
+              <colgroup>
+                <col width="5%"/>
+                <col width="50%"/>
+                <col width="20%"/>
+                <col width="15%"/>
+                <col width="5%"/>
+              </colgroup>
 
-                <thead>
-                <tr>
-                  <th scope="col">No.</th>
-                  <th scope="col">제목</th>
-                  <th scope="col">작성자</th>
-                  <th scope="col">작성일</th>
-                  <th scope="col">조회수</th>
-                </tr>
-                </thead>
-                <tbody id="dataList"></tbody>
-              </table>
+              <thead>
+              <tr>
+                <th scope="col">No.</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">작성일</th>
+                <th scope="col">조회수</th>
+              </tr>
+              </thead>
+              <tbody id="dataList"></tbody>
+            </table>
 
-              <div class="pagging_wrap"></div>
-            </div>
-          </div><!-------------//manage_box_wrap------------->
+            <div class="pagging_wrap"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -61,6 +66,7 @@ export default {
 
     const data = $this.getNoticeInfo();
     const result = {
+      myStoryTitle : this.$route['query'].myStoryTitle,
       noticeListUrl: data['noticeListUrl'],
       listNo: data['dto']['listNo'],
       pageNoRange: data['dto']['pagigRange'],
@@ -76,6 +82,9 @@ export default {
 
   mounted() {
     const $this = this;
+    //스크롤 페이드인
+    window.triggerJqueryFadeIn();
+
     $("#search").on("click", function () {
       $this.search($this);
     });
