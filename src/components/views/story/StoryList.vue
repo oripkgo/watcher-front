@@ -208,7 +208,7 @@ export default {
 
     defaultList : function(id, callback, $this){
       comm.paging.getList('#defaultListForm'+id, $this.listUrl,function(data){
-        $("#defaultList"+id).empty();
+        comm.paging.emptyList("#defaultList"+id);
 
         for (let i = 0; i < data.list.length; i++) {
           let obj = data.list[i];
