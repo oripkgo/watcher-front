@@ -86,11 +86,13 @@ export default {
     window.triggerJqueryFadeIn();
 
     $("#search").on("click", function () {
+      $("#dataList").empty();
       $this.search($this);
     });
 
     $("#searchKeyword").on("keypress", function (e) {
       if (e.keyCode == 13) {
+        $("#dataList").empty();
         $this.search($this);
         return false;
       }

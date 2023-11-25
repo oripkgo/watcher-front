@@ -112,9 +112,9 @@ export default {
           // }
         }
 
-        let keyword = $("#searchForm").find("#keyword").val();
+        comm.dom.appendInput($('#defaultListForm' + id), 'search_keyword', $("#searchForm").find("#keyword").val());
 
-        comm.dom.appendInput($('#defaultListForm' + id), 'search_keyword', keyword);
+        $("#defaultList"+id).empty();
 
         // 기본 목록
         $this.defaultList(id, function(){
