@@ -1,24 +1,3 @@
-/*
- <div class="section ani-in">
-      <div class="layout_02 title_box_02 ani_y">
-        <div class="sub_title_top"><p>Notice</p></div>
-        <div class="sub_title_bottom">
-          <p class="title_description">다양한 소식을 만나보세요.</p>
-          <div class="search_box_02">
-            <select id="search_id" name="search_id">
-              <option value="">선택</option>
-              <option value="01">제목</option>
-              <option value="02">내용</option>
-            </select>
-            <input type="text" id="searchKeyword" name="searchKeyword" placeholder="키워드 입력">
-            <a href="javascript:;" id="search"><img src="@/resources/img/btn_search_b.png"></a>
-          </div>
-        </div>
-      </div>
-    </div>
-*/
-
-
 .layout_02 {
     max-width: 1460px;
     margin: 0px auto;
