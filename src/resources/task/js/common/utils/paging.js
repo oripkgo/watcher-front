@@ -241,7 +241,9 @@ const paging = {
                 let pagination_mobile = getElementPagingArea(form);
 
                 if (pageObj.pageNo >= lastPage) {
-                    pagination_mobile.style.display = 'none';
+                    if( pagination_mobile ){
+                        pagination_mobile.style.display = 'none';
+                    }
                 } else {
                     let newPagination = document.createElement('a');
                     newPagination.href = 'javascript:;';
