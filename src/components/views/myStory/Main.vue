@@ -1,43 +1,46 @@
 <template>
+
   <div class="section">
-    <div class="ani-in my_layout">
-      <div class="mystory_top ani_y delay1">
-        <div class="mystory_title"><a :href="this.myStoryMainUrl">{{ storyTitle }}</a></div>
-        <div class="storybox_search_wrap">
-        </div>
+    <div class="ani-in new_mystory_layout">
+      <div class="new_mystory_title_box ani_y">
+        <a class="new_mystory_title" :href="this.myStoryMainUrl">{{ storyTitle }}</a>
+        <a href="javascript:;" class="new_mystory_mobile_menu_btn"></a>
       </div>
     </div>
   </div>
 
+
   <div class="section uline2">
-    <div class="ani-in my_layout rline">
-      <div class="mystory_menu">
-        <div class="title_line">카테고리 전체보기</div>
-      </div>
-
-      <div class="conts_wrap2 ani_y delay2">
-        <div class="mystory_menu_mobile">
-          <div class="board_title">카테고리 전체보기</div>
+    <div class="ani-in new_mystory_layout">
+      <div class="new_mystory_contents_box ani_y">
+        <div class="new_mystory_menu_box">
+          <div class="new_mystory_photo"><img src="http://k.kakaocdn.net/dn/bVfWYG/btro7gspxak/ZFQ1OhKUjDeTqGMp8fotUK/img_640x640.jpg"></div>
+          <div class="new_mystory_menu_list">
+            <ul></ul>
+          </div>
         </div>
+        <div class="new_mystory_contents">
+          <div class="new_mystory_notice">
+            <div class="board_title" v-if="this.categoryListYn != 'Y'">
+              공지사항
+              <a href="javascript:;" id="notice_more">더보기 <img src="@/resources/img/down_arrow.png"></a>
+            </div>
+            <ul class="notice_list" v-if="this.categoryListYn != 'Y'"></ul>
+          </div>
+          <div class="new_mystory_list">
+            <div class="board_title">
+              {{ boardTitle }}
+            </div>
 
-        <div class="board_title" v-if="this.categoryListYn != 'Y'">
-          공지사항
-          <a href="javascript:;" id="notice_more">더보기 <img src="@/resources/img/down_arrow.png"></a>
+            <form id="myStoryForm">
+              <input type="hidden" name="search_memId" id="search_memId">
+              <input type="hidden" name="search_category_id" id="search_category_id">
+
+              <ul class="board_list" id="myStoryList"></ul>
+              <div class="pagging_wrap"></div>
+            </form>
+          </div>
         </div>
-        <ul class="notice_list" v-if="this.categoryListYn != 'Y'">
-        </ul>
-
-        <div class="board_title">
-          {{ boardTitle }}
-        </div>
-
-        <form id="myStoryForm">
-          <input type="hidden" name="search_memId" id="search_memId">
-          <input type="hidden" name="search_category_id" id="search_category_id">
-
-          <ul class="board_list" id="myStoryList"></ul>
-          <div class="pagging_wrap"></div>
-        </form>
       </div>
     </div>
   </div>
@@ -100,6 +103,11 @@ export default {
 
     // 나의 스토리 세팅
     $this.initMyStory($this.myStory_search_memberId, $this.categoryId, $this);
+
+    $(".new_mystory_mobile_menu_btn").click(function(){
+      $(".new_mystory_menu_box").toggleClass("on");
+    });
+
   },
 
   methods: {
@@ -131,10 +139,17 @@ export default {
     initCategory: function (list, $this) {
       if (list && list.length > 0) {
         list.forEach(function (obj) {
+          const li = $('<li></li>');
           const a = $('<a></a>');
           $(a).text(obj.CATEGORY_NM);
           $(a).attr('href', "/myStory/" + $this.myStory_search_memberId + "/" + obj.ID + "?category_nm=" + encodeURIComponent(obj.CATEGORY_NM));
-          $(".mystory_menu, .mystory_menu_mobile").append(a);
+
+          if( $this.$route.query['category_nm'] == obj.CATEGORY_NM ){
+            $(a).addClass("on");
+          }
+
+          $(li).append(a)
+          $(".new_mystory_menu_list ul").append(li);
         })
       }
     },
