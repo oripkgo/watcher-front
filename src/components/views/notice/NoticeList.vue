@@ -135,7 +135,7 @@ export default {
 
     listCallback(data) {
       const $this = this;
-      comm.paging.emptyList("#dataList");
+      comm.paging.emptyList("#dataList", data.dto.pageNo);
 
       for (let i = 0; i < data.list.length; i++) {
         let obj = data.list[i];

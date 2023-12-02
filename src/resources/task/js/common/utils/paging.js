@@ -141,8 +141,8 @@ const emptyElementChild = function (targetElement) {
 
 
 const paging = {
-    emptyList: function (target) {
-        if (!isMobileYn()) {
+    emptyList: function (target, pageNo) {
+        if (!isMobileYn() || (pageNo === 1 && isMobileYn())) {
             emptyElementChild(document.querySelector(target))
         }
     },
