@@ -245,13 +245,16 @@ const paging = {
                         pagination_mobile.style.display = 'none';
                     }
                 } else {
-                    let newPagination = document.createElement('a');
-                    newPagination.href = 'javascript:;';
-                    newPagination.className = 'btn_story2 pagging_wrap';
-                    newPagination.setAttribute('onclick', window['pagingNumberTagClickFuncStr'].replace("[pageNo]", (pageObj.pageNo * 1) + 1));
-                    newPagination.textContent = '더보기';
+                    if(pagination_mobile){
+                        let newPagination = document.createElement('a');
+                        newPagination.href = 'javascript:;';
+                        newPagination.className = 'btn_story2 pagging_wrap';
+                        newPagination.setAttribute('onclick', window['pagingNumberTagClickFuncStr'].replace("[pageNo]", (pageObj.pageNo * 1) + 1));
+                        newPagination.textContent = '더보기';
 
-                    pagination_mobile.parentNode.replaceChild(newPagination, pagination_mobile);
+                        pagination_mobile.parentNode.replaceChild(newPagination, pagination_mobile);
+                    }
+
                     // 또는 아래 코드를 사용하여 기존 내용을 갱신합니다.
                     // pagination_mobile.innerHTML = '<a href="javascript:;" class="btn_story2 pagging_wrap" onclick="' + listFunc.replace("[pageNo]", ((pageObj.pageNo * 1) + 1)) + '">더보기</a>';
                 }
