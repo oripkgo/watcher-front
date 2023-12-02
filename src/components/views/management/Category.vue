@@ -7,9 +7,9 @@
           <commMenu/>
           <div class="manage_box_wrap">
             <div class="sub_title01">
-              카테고리
+              <p>카테고리</p>
               <div class="btn_tb_wrap">
-                <div class="btn_tb">
+                <div class="btn_tb management_category_btn">
                   <a href="javascript:;" v-on:click="categoryObj.insertCategory();">카테고리 추가</a>
                   <a href="javascript:;" v-on:click="categoryObj.deleteCategory();">카테고리 삭제</a>
                   <a href="javascript:;" v-on:click="categoryObj.saveCategory();">카테고리 저장</a>

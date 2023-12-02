@@ -200,8 +200,10 @@
 
     .btn_tb a {font-size:12px;padding:6px 10px;}
 
+
     .category_left {display:block;width:100%;}
     .category_right {display:block;width:100%;margin-left:0%;padding:20px 0px;}
+    .management_category_btn a{font-size:11px}
 
     .storybox_search_wrap {position:relative;top:0px;right:0px;margin-top:20px;}
     .storybox_search {width:80%;}
