@@ -55,22 +55,21 @@ export default {
     window.naverLoginSuccess = naverLoginSuccess;
     window.token = token;
     window.callbackUrl = callbackUrl;
-    comm.token.init();
+    comm.token.init(function(){
+      comm.navigation.init(
+          document.querySelector(".top_navi"),
+          [
+            {url: "/myStory/" + window.memberId, name: "내 스토리"},
+            {url: "/management/main", name: "관리"},
+            {url: window.storyUrlWrite, name: "글쓰기"},
+          ],
+      );
 
-
-    comm.navigation.init(
-        document.querySelector(".top_navi"),
-        [
-          {url: "/myStory/" + window.memberId, name: "내 스토리"},
-          {url: "/management/main", name: "관리"},
-          {url: window.storyUrlWrite, name: "글쓰기"},
-        ],
-    );
-
-    // comm.sign.init(window.loginType);
-    // comm.sign.initKakao(window['Kakao']);
-    // comm.sign.initNaver(token, window['naver_id_login']);
-    comm.visitor.save(window.nowStoryMemId, window.refererUrl);
+      // comm.sign.init(window.loginType);
+      // comm.sign.initKakao(window['Kakao']);
+      // comm.sign.initNaver(token, window['naver_id_login']);
+      comm.visitor.save(window.nowStoryMemId, window.refererUrl);
+    });
   }
 }
 </script>
