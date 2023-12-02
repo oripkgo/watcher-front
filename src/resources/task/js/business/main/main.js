@@ -333,7 +333,7 @@ const mainObj = {
                         let storyHtml = '';
 
                         if( obj.THUMBNAIL_IMG_PATH ){
-                            storyHtml += '<img width="1000" height="500" src="' + window.getServerImg(obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/')) + '">';
+                            storyHtml += '<img class="main-middel-banner" src="' + window.getServerImg(obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/')) + '">';
                         }else{
                             return;
                         }
