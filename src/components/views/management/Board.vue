@@ -7,13 +7,34 @@
         <div class="manage_conts">
           <commMenu/>
           <div class="manage_box_wrap">
-            <div class="sub_title01">
-              게시글 관리
-              <div class="search_right_box">
-                <select id="seachCategory" name="search_category_id"></select>
-                <input type="text" placeholder="" name="search_keyword" id="search_keyword">
-                <a href="javascript:;" id="search"></a>
+
+            <div class="new_manage_head_box">
+              <div class="new_manage_title_box">
+                <p class="new_manage_title">
+                  게시글 관리
+                </p>
               </div>
+              <div class="new_manage_btn_and_search_box">
+                <div class="new_search_right_box">
+                  <div class="search_right_box">
+                    <select id="seachCategory" name="search_category_id"></select>
+                    <input type="text" placeholder="" name="search_keyword" id="search_keyword">
+                    <a href="javascript:;" id="search"></a>
+                  </div>
+                </div>
+                <div class="new_btn_right_box"></div>
+
+              </div>
+            </div>
+
+
+            <div class="sub_title01">
+              <div class="manage_title_box">
+                <p class="manage_title">
+
+                </p>
+              </div>
+
             </div>
 
             <div class="board_basic">

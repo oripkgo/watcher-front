@@ -1,0 +1,52 @@
+
+/*
+ <div class="new_manage_head_box">
+              <div class="new_manage_title_box">
+                <p class="new_manage_title">
+
+                </p>
+              </div>
+              <div class="new_manage_btn_and_search_box">
+
+
+              </div>
+            </div>
+
+*/
+
+.new_manage_head_box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.new_manage_title_box{
+    flex:50%;
+    display: block;
+    font-size: 22px;
+    color: #000;
+    font-weight: 600;
+    text-align: left;
+    /*border-bottom: 3px solid #333;*/
+    /*padding-bottom: 15px;*/
+    text-transform: uppercase;
+    position: relative;
+}
+
+.new_manage_btn_and_search_box{
+    flex:50%;
+}
+
+.new_manage_btn_and_search_box .search_right_box{
+    position: static;
+}
+
+.new_manage_btn_and_search_box .btn_tb_wrap{
+    position: static;
+}
+
+@media (max-width: 750px) {
+    .new_manage_title_box{
+        font-size: 18px;
+    }
+}

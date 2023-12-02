@@ -599,6 +599,7 @@ a.page_top_link {display:block;color:#fff;text-align:center;font-size:14px;line-
 }
 
 @import url("style-new-mystory.css");
+@import url("style-new-management.css");
 @import url("style-new-board-title.css");
 @import url("style-max-width-1200.css");
 @import url("style-max-width-840.css");
