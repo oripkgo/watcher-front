@@ -3,6 +3,7 @@ import comm from "@/resources/task/js/common/comm.js";
 
 const categoryInsertUrl = "/management/category";
 const categListSpaceNm = "category_left";
+const categoryMemberListIdNm = "categoryMemberList";
 const categListNm = "category_1st";
 const categSelectNm = "categorySelect";
 const formId = '#managementCategoryForm';
@@ -28,7 +29,7 @@ const categoryObj = {
         return $('<option></option>');
     },
 
-    setSelectCategory : function(){
+    setCategorySelectElement : function(){
         CATEGORY_LIST.forEach(function(obj){
             const option = thisObj.getSelectCategoryOptionObj();
 
@@ -40,14 +41,18 @@ const categoryObj = {
         })
     },
 
-    setCategoryList : function(){
+    setCategoryMemberList : function(){
         MEMBER_CATEGORY_LIST.forEach(function(obj){
-            const category = thisObj.getCategoryTagObj();
-
+            let category = thisObj.getCategoryTagObj();
             $(category).text(obj.CATEGORY_NM);
-
-            $(category).data(obj);
+            $(category).attr("id", "mem_category_"+obj.ID);
+            $(category).data(Object.assign({},obj));
             $("." + categListSpaceNm).append(category);
+
+            let categoryOption = thisObj.getSelectCategoryOptionObj();
+            $(categoryOption).text(obj.CATEGORY_NM);
+            $(categoryOption).attr("value", obj.ID);
+            $("#" + categoryMemberListIdNm).append(categoryOption);
         })
     },
 
@@ -62,17 +67,48 @@ const categoryObj = {
         $("[name='showYn'][value='"+(data.SHOW_YN || "Y")+"']").prop("checked",true);
     },
 
-    applyCategoryEvents : function(){
-        $("." + categListNm, "." + categListSpaceNm).off("click").on("click", function(){
-            if ($("." + categListNm+".on", "." + categListSpaceNm).length > 0) {
-                const result = comm.validation(formId);
-                if( result.checkVal ){
-                    comm.message.alert(result.message, function(){
-                        $(result.failTarget).focus();
-                    })
-
+    applyCategoryMemberSelectEvents : function(){
+        const thisObj = this;
+        $("#" + categoryMemberListIdNm).on("change", function(){
+            if( $("option:selected",this).val() == "" ){
+                if( thisObj.checkCategorySelect() ){
                     return;
                 }
+
+                thisObj.disableFields();
+                return;
+            }
+
+            $("#mem_category_"+$(this).val()).click();
+
+            // const thisData = $("option:selected",this).data();
+            // thisObj.enableFields();
+            // thisObj.setCategoryInfoInField(thisData);
+        })
+    },
+
+    checkCategorySelect : function(){
+        if ($("." + categListNm+".on", "." + categListSpaceNm).length > 0) {
+            const result = comm.validation(formId);
+            if( result.checkVal ){
+                comm.message.alert(result.message, function(){
+                    $(result.failTarget).focus();
+                    let categorySelectEleId = $("." + categListNm+".on", "." + categListSpaceNm).attr("id").replace("mem_category_","");
+                    $("#"+categoryMemberListIdNm).val(categorySelectEleId);
+                })
+
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    applyCategoryMemberListEvents : function(){
+        const thisObj = this;
+        $("." + categListNm, "." + categListSpaceNm).off("click").on("click", function(){
+            if( thisObj.checkCategorySelect() ){
+                return;
             }
 
             const thisData = $(this).data();
@@ -85,14 +121,16 @@ const categoryObj = {
     },
 
     initCategory : function(){
-        thisObj.setSelectCategory();
-        thisObj.setCategoryList();
-        thisObj.applyCategoryEvents();
+        thisObj.setCategorySelectElement();
+        thisObj.setCategoryMemberList();
+        thisObj.applyCategoryMemberListEvents();
+        thisObj.applyCategoryMemberSelectEvents();
     },
 
     applyEventCategoryInfoFields : function(){
         $("#categoryNm").on("keyup", function () {
             $("." + categListNm+".on", "." + categListSpaceNm).text($(this).val());
+            $("#" + categoryMemberListIdNm).find("option:selected").text($(this).val())
         })
 
         $("select, input, textarea", "#fieldsObj").on("blur", function () {
@@ -100,6 +138,10 @@ const categoryObj = {
             let category_coments = $("#categoryComents").val();
             let defalut_categ_id = $("#defalutCategId").val();
             let show_yn = $("[name='showYn']:checked").val();
+
+            if( $("." + categListNm+".on", "." + categListSpaceNm).length == 0 ){
+                return;
+            }
 
             const data = $("." + categListNm+".on", "." + categListSpaceNm).data();
             data.CATEGORY_NM = category_nm;
@@ -119,13 +161,13 @@ const categoryObj = {
     disableFields : function(){
         $("#categoryComents, #categoryNm, #defalutCategId", "#fieldsObj").val("");
         $("[name='showYn'][value='Y']").prop("checked",true);
-
-        $("select, input, textarea", "#fieldsObj").prop("disabled", true);
+        $("select, input, textarea", "#fieldsObj").not(".not_disabled").prop("disabled", true);
         $(".category_1st.on").removeClass("on");
+        $("#"+categoryMemberListIdNm).val("");
     },
 
     enableFields : function(){
-        $("select, input, textarea", "#fieldsObj").prop("disabled", false);
+        $("select, input, textarea", "#fieldsObj").not(".not_disabled").prop("disabled", false);
     },
 
     insertCategory : function(){
@@ -143,12 +185,17 @@ const categoryObj = {
         let obj = thisObj.getCategoryTagObj();
 
         const tagId = comm.generateUUID();
-        $(obj).attr("id", tagId);
-        $(obj).data()['TAG_ID'] = tagId;
+        $(obj).attr("id", "mem_category_"+tagId);
+        $(obj).data()['TAG_ID'] = "mem_category_"+tagId;
         $(obj).data()['DELETE_YN'] = "N";
         $("#fieldsObj .category_left").append(obj)
-        thisObj.applyCategoryEvents();
+        thisObj.applyCategoryMemberListEvents();
         $(obj).click();
+
+        let categoryOption = thisObj.getSelectCategoryOptionObj();
+        $(categoryOption).attr("value", tagId);
+        $("#" + categoryMemberListIdNm).append(categoryOption);
+        $("#" + categoryMemberListIdNm).val(tagId);
 
         $("#categoryNm").focus();
     },
@@ -167,12 +214,15 @@ const categoryObj = {
         comm.message.confirm("선택한 카테고리를 삭제하시겠습니까?",function(result){
             if( result ){
                 const target = $("." + categListNm+".on", "." + categListSpaceNm);
+
                 if( !$(target).data()['ID'] ){
                     $(target).remove();
                 }else{
                     $(target).data()["DELETE_YN"] = "Y";
                     $(target).hide();
                 }
+
+                $("#"+categoryMemberListIdNm).find("[value='"+$(target).data()['ID']+"']").remove();
                 thisObj.disableFields();
             }
         });
