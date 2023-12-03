@@ -1,27 +1,18 @@
-
-/*
- <div class="new_manage_head_box">
-              <div class="new_manage_title_box">
-                <p class="new_manage_title">
-
-                </p>
-              </div>
-              <div class="new_manage_btn_and_search_box">
-
-
-              </div>
-            </div>
-
-*/
-
 .new_manage_head_box{
     display: flex;
     align-items: center;
-    justify-content: center;
+    border-bottom: 3px solid #333;
 }
 
 .new_manage_title_box{
-    flex:50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 2;
+}
+
+.new_manage_title_box p.new_manage_title{
+    flex:1;
     display: block;
     font-size: 22px;
     color: #000;
@@ -34,7 +25,9 @@
 }
 
 .new_manage_btn_and_search_box{
-    flex:50%;
+    flex:1;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .new_manage_btn_and_search_box .search_right_box{
@@ -45,8 +38,43 @@
     position: static;
 }
 
+.new_manage_head_box .btn_tb{
+    margin:10px 10px 10px 10px;
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+}
+
+.new_manage_head_box .btn_tb a{
+    font-size: 12px;
+}
+
+.new_manage_btn_box{
+    flex:2;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+.new_manage_head_box .btn_tb_wrap{
+    position: static;
+}
+
+
 @media (max-width: 750px) {
-    .new_manage_title_box{
+    .new_manage_title_box p.new_manage_title{
         font-size: 18px;
+    }
+
+    .new_manage_btn_and_search_box .search_right_box{
+        width:230px;
+    }
+
+    .new_manage_head_box{
+        display: block;
+    }
+
+    .new_manage_btn_box{
+        margin-top:15px;
     }
 }

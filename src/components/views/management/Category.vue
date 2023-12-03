@@ -6,15 +6,24 @@
         <div class="manage_conts">
           <commMenu/>
           <div class="manage_box_wrap">
-            <div class="sub_title01">
-              <p>카테고리</p>
-              <div class="btn_tb_wrap">
-                <div class="btn_tb management_category_btn">
-                  <a href="javascript:;" v-on:click="categoryObj.insertCategory();">카테고리 추가</a>
-                  <a href="javascript:;" v-on:click="categoryObj.deleteCategory();">카테고리 삭제</a>
-                  <a href="javascript:;" v-on:click="categoryObj.saveCategory();">카테고리 저장</a>
-                </div>
+
+            <div class="new_manage_head_box">
+              <div class="new_manage_title_box">
+                <p class="new_manage_title">
+                  카테고리
+                </p>
               </div>
+                <div class="new_manage_btn_box">
+                  <div class="new_btn_right_box">
+                    <div class="btn_tb_wrap">
+                      <div class="btn_tb">
+                        <a href="javascript:;" v-on:click="categoryObj.insertCategory();">카테고리 추가</a>
+                        <a href="javascript:;" v-on:click="categoryObj.deleteCategory();">카테고리 삭제</a>
+                        <a href="javascript:;" v-on:click="categoryObj.saveCategory();">카테고리 저장</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
 
             <div class="category_wrap" id="fieldsObj">

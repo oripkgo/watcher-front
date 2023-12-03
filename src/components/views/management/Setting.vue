@@ -6,11 +6,20 @@
         <div class="manage_conts">
           <commMenu/>
           <div class="manage_box_wrap">
-            <div class="sub_title01">
-              댓글 설정
-              <div class="btn_tb_wrap">
-                <div class="btn_tb">
-                  <a href="javascript:;" class="on" v-on:click="settingObj.saveSettingInfo('#commentForm')">변경사항 저장</a>
+
+            <div class="new_manage_head_box">
+              <div class="new_manage_title_box">
+                <p class="new_manage_title">
+                  댓글 설정
+                </p>
+                <div class="new_manage_btn_and_search_box">
+                  <div class="new_btn_right_box">
+                    <div class="btn_tb_wrap">
+                      <div class="btn_tb">
+                        <a href="javascript:;" class="on" v-on:click="settingObj.saveSettingInfo('#commentForm')">변경사항 저장</a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

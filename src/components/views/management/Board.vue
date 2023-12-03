@@ -13,28 +13,26 @@
                 <p class="new_manage_title">
                   게시글 관리
                 </p>
-              </div>
-              <div class="new_manage_btn_and_search_box">
-                <div class="new_search_right_box">
-                  <div class="search_right_box">
-                    <select id="seachCategory" name="search_category_id"></select>
-                    <input type="text" placeholder="" name="search_keyword" id="search_keyword">
-                    <a href="javascript:;" id="search"></a>
+                <div class="new_manage_btn_and_search_box">
+                  <div class="new_search_right_box">
+                    <div class="search_right_box">
+                      <select id="seachCategory" name="search_category_id"></select>
+                      <input type="text" placeholder="" name="search_keyword" id="search_keyword">
+                      <a href="javascript:;" id="search"></a>
+                    </div>
                   </div>
                 </div>
-                <div class="new_btn_right_box"></div>
-
               </div>
-            </div>
-
-
-            <div class="sub_title01">
-              <div class="manage_title_box">
-                <p class="manage_title">
-
-                </p>
+              <div class="new_manage_btn_and_search_box">
+                <div class="new_btn_right_box">
+                  <div class="btn_tb">
+                    <a href="javascript:;" onclick="boardObj.deleteStory();">삭제</a>
+                    <a href="javascript:;" onclick="boardObj.updatePublic();">공개</a>
+                    <a href="javascript:;" onclick="boardObj.updatePrivate();">비공개</a>
+                    <a href="javascript:;" onclick="boardObj.goWritingPage();">글쓰기</a>
+                  </div>
+                </div>
               </div>
-
             </div>
 
             <div class="board_basic">
@@ -44,14 +42,7 @@
                   <th>공개여부</th>
                   <th>카테고리</th>
                   <th>회원 <br>카테고리</th>
-                  <th colspan="2">
-                    <div class="btn_tb">
-                      <a href="javascript:;" onclick="boardObj.deleteStory();">삭제</a>
-                      <a href="javascript:;" onclick="boardObj.updatePublic();">공개</a>
-                      <a href="javascript:;" onclick="boardObj.updatePrivate();">비공개</a>
-                      <a href="javascript:;" onclick="boardObj.goWritingPage();">글쓰기</a>
-                    </div>
-                  </th>
+                  <th colspan="2"></th>
                 </tbody>
                 <tbody id="storyList"></tbody>
               </table>

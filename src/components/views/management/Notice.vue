@@ -6,17 +6,35 @@
         <div class="manage_conts">
           <commMenu/>
           <div class="manage_box_wrap">
-            <div class="sub_title01">
-              공지 관리
 
-              <div class="search_right_box">
-                <select id="searchSecretYn" name="searchSecretYn">
-                  <option value="">전체</option>
-                  <option value="NN">공개</option>
-                  <option value="YY">비공개</option>
-                </select>
-                <input type="text" id="searchKeyword" name="searchKeyword" placeholder="">
-                <a href="javascript:;" id="search"></a>
+            <div class="new_manage_head_box">
+              <div class="new_manage_title_box">
+                <p class="new_manage_title">
+                  공지 관리
+                </p>
+                <div class="new_manage_btn_and_search_box">
+                  <div class="new_search_right_box">
+                    <div class="search_right_box">
+                      <select id="searchSecretYn" name="searchSecretYn">
+                        <option value="">전체</option>
+                        <option value="NN">공개</option>
+                        <option value="YY">비공개</option>
+                      </select>
+                      <input type="text" id="searchKeyword" name="searchKeyword" placeholder="">
+                      <a href="javascript:;" id="search"></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="new_manage_btn_and_search_box">
+                <div class="new_btn_right_box">
+                  <div class="btn_tb">
+                    <a href="javascript:;" onclick="vueComponent.deleteNotices(vueComponent)">삭제</a>
+                    <a href="javascript:;" onclick="vueComponent.updatePublic(vueComponent);">공개</a>
+                    <a href="javascript:;" onclick="vueComponent.updatePrivate(vueComponent);">비공개</a>
+                    <router-link :to="noticeWriteUrl">공지쓰기</router-link>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -25,14 +43,7 @@
                 <tbody class="list_header">
                   <tr>
                     <th><input type="checkbox" class="check all"></th>
-                    <th colspan="2">
-                      <div class="btn_tb">
-                        <a href="javascript:;" onclick="vueComponent.deleteNotices(vueComponent)">삭제</a>
-                        <a href="javascript:;" onclick="vueComponent.updatePublic(vueComponent);">공개</a>
-                        <a href="javascript:;" onclick="vueComponent.updatePrivate(vueComponent);">비공개</a>
-                        <router-link :to="noticeWriteUrl">공지쓰기</router-link>
-                      </div>
-                    </th>
+                    <th colspan="2"></th>
                   </tr>
                 </tbody>
                 <tbody class="noticeList"></tbody>
