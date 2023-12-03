@@ -151,6 +151,12 @@ const boardObj = {
     listCallback: function (data) {
         comm.paging.emptyList("#storyList");
 
+        if( data.dto.pageNo == 1 && data.list.length == 0 ){
+            $(".list_header").hide();
+        }else{
+            $(".list_header").show();
+        }
+
         for (let i = 0; i < data.list.length; i++) {
             let obj = data.list[i];
             let listHtml = '';

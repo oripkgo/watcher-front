@@ -22,7 +22,7 @@
 
             <div class="board_notice">
               <table>
-                <tbody>
+                <tbody class="list_header">
                   <tr>
                     <th><input type="checkbox" class="check all"></th>
                     <th colspan="2">
@@ -220,6 +220,12 @@
         const $this = this;
 
         comm.paging.emptyList(".noticeList");
+
+        if( data.dto.pageNo == 1 && data.list.length == 0 ){
+          $(".list_header").hide();
+        }else{
+          $(".list_header").show();
+        }
 
         for (let i = 0; i < data.list.length; i++) {
           let obj = data.list[i];

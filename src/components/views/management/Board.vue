@@ -39,7 +39,7 @@
 
             <div class="board_basic">
               <table>
-                <tbody>
+                <tbody class="list_header">
                   <th><input type="checkbox" class="check all"></th>
                   <th>공개여부</th>
                   <th>카테고리</th>
