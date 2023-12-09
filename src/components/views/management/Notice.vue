@@ -39,7 +39,7 @@
             </div>
 
             <div class="board_notice">
-              <table>
+              <table class="board_list_table">
                 <tbody class="list_header">
                   <tr>
                     <th><input type="checkbox" class="check all"></th>
@@ -227,6 +227,33 @@
         })
       },
 
+      getMobileRecord : function(target, arr){
+        let tempDiv = $("<div></div>");
+        let dataElement = $(document.createElement(target));
+        let rowElement = $('<div class="mobile-data-row"></div>');
+        $(dataElement).addClass("mobile-data");
+
+        for(let obj of arr){
+          const col = $('<div class="mobile-data-col"></div>');
+          if( obj.type == 'image' ){
+            $(col).addClass("image");
+            const a = $('<a></a>');
+            const img = $('<img></img>');
+            $(a).attr("href",obj.href);
+            $(img).attr("src",obj.src);
+            $(a).append(img);
+            $(col).append(a);
+          }else{
+            $(col).append('<div class="col-name"><strong>'+obj.col+'</strong></div>');
+            $(col).append('<div class="col-value">'+obj.val+'</div>');
+          }
+
+          $(rowElement).append(col);
+        }
+        $(dataElement).html(rowElement);
+        return  $(tempDiv).html(dataElement).html();
+      },
+
       listCallback : function(data){
         const $this = this;
 
@@ -251,6 +278,11 @@
           trHtml += '<td>';
           trHtml += obj['REG_DATE'];
           trHtml += '</td>';
+
+          trHtml += $this.getMobileRecord('td',[
+            {col:"제목",val:('<a href="' + window.getNoticeViewUrl(obj.ID) + '" className="subject_link">'+obj['TITLE']+'</a>')},
+            {col:"작성일",val:obj['REG_DATE']},
+          ])
 
           trHtml = $($this.getTr()).html(trHtml);
           $(trHtml).data(obj);

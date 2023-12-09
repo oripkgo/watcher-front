@@ -36,7 +36,7 @@
             </div>
 
             <div class="board_basic">
-              <table>
+              <table class="board_list_table">
                 <tbody class="list_header">
                   <th><input type="checkbox" class="check all"></th>
                   <th>공개여부</th>

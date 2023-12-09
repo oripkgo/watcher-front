@@ -148,6 +148,33 @@ const boardObj = {
         return $('<tr></tr>').clone(true);
     },
 
+    getMobileRecord : function(target, arr){
+        let tempDiv = $("<div></div>");
+        let dataElement = $(document.createElement(target));
+        let rowElement = $('<div class="mobile-data-row"></div>');
+        $(dataElement).addClass("mobile-data");
+
+        for(let obj of arr){
+            const col = $('<div class="mobile-data-col"></div>');
+            if( obj.type == 'image' ){
+                $(col).addClass("image");
+                const a = $('<a></a>');
+                const img = $('<img></img>');
+                $(a).attr("href",obj.href);
+                $(img).attr("src",obj.src);
+                $(a).append(img);
+                $(col).append(a);
+            }else{
+                $(col).append('<div class="col-name"><strong>'+obj.col+'</strong></div>');
+                $(col).append('<div class="col-value">'+obj.val+'</div>');
+            }
+
+            $(rowElement).append(col);
+        }
+        $(dataElement).html(rowElement);
+        return  $(tempDiv).html(dataElement).html();
+    },
+
     listCallback: function (data) {
         comm.paging.emptyList("#storyList");
 
@@ -200,6 +227,22 @@ const boardObj = {
 
             listHtml += '    </a>                                                                                               ';
             listHtml += '</td>                                                                                                  ';
+
+            listHtml += boardObj.getMobileRecord("td", [
+                {
+                    type: "image",
+                    href: window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']),
+                    src: obj['THUMBNAIL_IMG_PATH']
+                },
+                {col: "공개여부", val: secretStatus},
+                {col: "카테고리", val: obj['CATEGORY_NM']},
+                {col: "회원 카테고리", val: (obj['MEMBER_CATEGORY_NM'] || "")},
+                {col: "제목", val: obj['TITLE']},
+                {col: "내용", val: obj['SUMMARY']},
+                {col: "공감", val: obj['LIKE_CNT']},
+                {col: "댓글", val: obj['COMMENT_CNT']},
+                {col: "작성일", val: obj['REG_DATE']},
+            ])
 
             listHtml = $(thisObj.getTr()).html(listHtml);
             $(listHtml).data(obj);
