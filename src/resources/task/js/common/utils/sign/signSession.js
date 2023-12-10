@@ -13,11 +13,11 @@ const signSession = {
             storyCommentPublicStatus: memData.storyCommentPublicStatus,
             storyTitle: memData.storyTitle,
         }));
-        sessionStorage.setItem("apiToken", memData['apiToken']);
+        localStorage.setItem("apiToken", memData['apiToken']);
     },
 
     remove: function () {
-        sessionStorage.clear();
+        localStorage.clear();
         delete window.loginId;
         delete window.loginYn;
         delete window.loginType;
