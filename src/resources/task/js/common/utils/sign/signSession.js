@@ -1,7 +1,7 @@
 const signSession = {
     add: function (memData) {
-        sessionStorage.clear();
-        sessionStorage.setItem("sessionData", JSON.stringify({
+        localStorage.clear();
+        localStorage.setItem("sessionData", JSON.stringify({
             loginId: memData.loginId,
             loginYn: (memData["loginId"] ? true : false),
             loginType: (memData["loginType"] == '00' ? "naver" : "kakao"),

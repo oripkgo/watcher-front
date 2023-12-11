@@ -100,7 +100,7 @@ const sign = {
     },
 
     isLogin: function () {
-        return sessionStorage.getItem("sessionData") ? true : false;
+        return localStorage.getItem("sessionData") ? true : false;
     },
 
     in: function () {
@@ -112,7 +112,7 @@ const sign = {
     },
 
     getSession: function () {
-        return JSON.parse(sessionStorage.getItem("sessionData") || '{}');
+        return JSON.parse(localStorage.getItem("sessionData") || '{}');
     },
 };
 

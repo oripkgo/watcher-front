@@ -63,7 +63,7 @@ let comm = function () {
                 opt.headers = {};
             }
 
-            //opt.headers['Authorization'] = 'Bearer '+ sessionStorage.getItem("apiToken");
+            //opt.headers['Authorization'] = 'Bearer '+ localStorage.getItem("apiToken");
 
             if (opt['contentType'] != false) {
                 opt.headers['Content-type'] = "application/json";
