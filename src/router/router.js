@@ -62,4 +62,27 @@ const router = createRouter({
     ]
 });
 
+// http://watcher-bucket.s3-website.ap-northeast-2.amazonaws.com or
+// http://watcher.kr or
+// https://watcher.kr 접속시 https://www.watcher.kr 리다이렉트 처리 코드
+router.beforeEach((to, from, next) => {
+    const redirectDomains = ['watcher-bucket.s3-website.ap-northeast-2.amazonaws.com', 'watcher.kr'];
+    const targetDomain = 'https://www.watcher.kr';
+
+    // Check if the current domain is in the redirectDomains array
+    const currentDomain = window.location.hostname;
+
+    console.log(currentDomain);
+    console.log(`if : ${(redirectDomains.includes(currentDomain) ||
+        (targetDomain.includes(currentDomain) && currentDomain.indexOf('www.') !== 0))}`);
+    console.log(`${targetDomain}${to.fullPath}`);
+
+    if (redirectDomains.includes(currentDomain)) {
+        // Redirect to the target domain
+        window.location.href = `${targetDomain}${to.fullPath}`;
+    } else {
+        next();
+    }
+})
+
 export default router;
