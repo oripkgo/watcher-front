@@ -92,6 +92,10 @@ const globalObj = {
     mergeSessionStorageData : function(){
         Object.assign(globalObj, JSON.parse( ( sessionStorage.getItem("sessionData") || '{}' ) ));
     },
+
+    movePage : function(obj){
+        window.vueComponent.$router.push(obj.getAttribute('link'));
+    }
 }
 
 globalObj['nowStoryMemId'] = globalObj.getNowStoryMemId();

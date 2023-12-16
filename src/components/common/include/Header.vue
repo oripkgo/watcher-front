@@ -52,6 +52,7 @@ export default {
   },
   mounted() {
     window.comm = comm;
+    window.vueComponent = this;
     window.naverLoginSuccess = naverLoginSuccess;
     window.token = token;
     window.callbackUrl = callbackUrl;
@@ -70,6 +71,7 @@ export default {
       // comm.sign.initNaver(token, window['naver_id_login']);
       comm.visitor.save(window.nowStoryMemId, window.refererUrl);
     });
+
   }
 }
 </script>
