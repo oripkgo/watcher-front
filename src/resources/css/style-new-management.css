@@ -93,18 +93,20 @@
         border-bottom: 1px solid #ddd;
     }
 
-    .board_list_table th:not(th:first-child, .mobile-data), .board_list_table td:not(td:first-child, .mobile-data){
+    .board_list_table colgroup col {
         display: none;
     }
 
 
-    /*
-    <div class="mobile-data-row">
-                                <div class="mobile-data-col">
-                                                            <div class="col-name"></div>
-                                                                                    <div class="col-value"></div>
-                                                                                                             </div>
-                                                                                                               </div>*/
+
+    .board_list_table th:not(.not-none, .mobile-data), .board_list_table td:not(.not-none, .mobile-data){
+        display: none;
+    }
+
+    /*.board_list_table th:not(th:first-child, .mobile-data), .board_list_table td:not(td:first-child, .mobile-data){
+        display: none;
+    }*/
+
     .mobile-data-row .mobile-data-col {
         display: flex;
     }
