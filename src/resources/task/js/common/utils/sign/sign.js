@@ -57,6 +57,22 @@ const callbackLoginSuccess = function (obj) {
 }
 
 const logout = function (loginType, callback) {
+    const logoutCallback = function (res) {
+        if (callback) {
+            callback(res);
+        }
+
+        SIGN_SESSION.remove();
+
+        if (requiresLoginpageUrls.some(function (ele) {
+            return (window.location.pathname.indexOf(ele) > -1)
+        })) {
+            window.location.href = '/main';
+        } else {
+            window.location.reload();
+        }
+    };
+
     MESSAGE.confirm("로그아웃 하시겠습니까?", function (result) {
         if (result) {
             let logoutParam = {};
@@ -68,24 +84,7 @@ const logout = function (loginType, callback) {
                 logoutParam.type = 'kakao';
             }
 
-            REQUEST.send(signoutUrl, "POST", logoutParam, function (res) {
-                // document.querySelector(".logout").style.display = 'none';
-                // document.querySelector(".loginStart").style.display = 'block';
-
-                if (callback) {
-                    callback(res);
-                }
-
-                SIGN_SESSION.remove();
-
-                if (requiresLoginpageUrls.some(function (ele) {
-                    return (window.location.pathname.indexOf(ele) > -1)
-                })) {
-                    window.location.href = '/main';
-                } else {
-                    window.location.reload();
-                }
-            }, null, {'Content-type': "application/json"})
+            REQUEST.send(signoutUrl, "POST", logoutParam, logoutCallback, logoutCallback, {'Content-type': "application/json"})
         }
     });
 }
