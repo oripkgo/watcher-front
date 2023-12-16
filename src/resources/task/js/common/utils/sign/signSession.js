@@ -12,6 +12,7 @@ const signSession = {
             storyRegPermStatus: memData.storyRegPermStatus,
             storyCommentPublicStatus: memData.storyCommentPublicStatus,
             storyTitle: memData.storyTitle,
+            expiry : new Date().getTime() + (30 * 60 * 1000),   // 로그인 세션시간 30분
         }));
         localStorage.setItem("apiToken", memData['apiToken']);
     },

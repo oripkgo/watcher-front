@@ -100,8 +100,23 @@ const sign = {
     },
 
     isLogin: function () {
-        return localStorage.getItem("sessionData") ? true : false;
+        if( !localStorage.getItem("sessionData") ){
+            return false;
+        }
+
+        const sessionData = JSON.parse(localStorage.getItem("sessionData"));
+
+        if( new Date().getTime() > sessionData['expiry'] ){
+            localStorage.setItem("sessionData", null);
+            return false;
+        }
+
+        sessionData['expiry'] = new Date().getTime() + (30*60*1000);
+        localStorage.setItem("sessionData", JSON.stringify(sessionData));
+
+        return true;
     },
+
 
     in: function () {
         SIGN_POPUP.open()
