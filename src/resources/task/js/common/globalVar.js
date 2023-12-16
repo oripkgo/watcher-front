@@ -90,7 +90,7 @@ const globalObj = {
         return (path ? /*this.apiHost + */path : "");
     },
     mergeSessionStorageData : function(){
-        Object.assign(globalObj, JSON.parse( ( sessionStorage.getItem("sessionData") || '{}' ) ));
+        Object.assign(globalObj, JSON.parse( ( localStorage.getItem("sessionData") || '{}' ) ));
     },
 
     movePage : function(obj){

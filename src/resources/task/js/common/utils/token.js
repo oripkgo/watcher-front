@@ -6,11 +6,11 @@ const token = {
     init: function (callback) {
 
         REQUEST.send(tokenApiUrl, "GET", {
-            token: (sessionStorage.getItem("apiToken") || "")
+            token: (localStorage.getItem("apiToken") || "")
         }, function (resp) {
             if (resp.code == '0000') {
                 console.log('token : ' + resp['apiToken'])
-                sessionStorage.setItem("apiToken", resp['apiToken']);
+                localStorage.setItem("apiToken", resp['apiToken']);
 
                 if( callback ){
                     callback();

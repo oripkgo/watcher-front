@@ -21,7 +21,7 @@ const request = {
 
         xhr.open(method || "GET", url, async);
 
-        xhr.setRequestHeader("Authorization", 'Bearer '+ sessionStorage.getItem("apiToken"));
+        xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem("apiToken"));
 
         if( headers ){
             for (let key in headers) {

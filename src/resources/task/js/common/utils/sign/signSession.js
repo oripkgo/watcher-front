@@ -1,7 +1,7 @@
 const signSession = {
     add: function (memData) {
-        sessionStorage.clear();
-        sessionStorage.setItem("sessionData", JSON.stringify({
+        localStorage.clear();
+        localStorage.setItem("sessionData", JSON.stringify({
             loginId: memData.loginId,
             loginYn: (memData["loginId"] ? true : false),
             loginType: (memData["loginType"] == '00' ? "naver" : "kakao"),
@@ -13,11 +13,11 @@ const signSession = {
             storyCommentPublicStatus: memData.storyCommentPublicStatus,
             storyTitle: memData.storyTitle,
         }));
-        sessionStorage.setItem("apiToken", memData['apiToken']);
+        localStorage.setItem("apiToken", memData['apiToken']);
     },
 
     remove: function () {
-        sessionStorage.clear();
+        localStorage.clear();
         delete window.loginId;
         delete window.loginYn;
         delete window.loginType;
