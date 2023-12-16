@@ -106,7 +106,7 @@ const sign = {
 
         const sessionData = JSON.parse(localStorage.getItem("sessionData"));
 
-        if( new Date().getTime() > sessionData['expiry'] ){
+        if( !sessionData['expiry'] || (new Date().getTime() > sessionData['expiry']) ){
             localStorage.setItem("sessionData", null);
             return false;
         }
