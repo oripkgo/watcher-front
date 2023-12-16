@@ -26,7 +26,7 @@
       <div class="layout_02">
         <div class="ani_y layout_sub title_box_02">
           <div class="board_notice list line">
-            <table>
+            <table class="board_list_table">
               <colgroup>
                 <col width="5%"/>
                 <col width="50%"/>
@@ -133,6 +133,33 @@ export default {
       comm.paging.getList('#noticeForm', $this.noticeListUrl, $this.listCallback, 1, $this.listNo, $this.pageNoRange);
     },
 
+    getMobileRecord : function(target, arr){
+      let tempDiv = $("<div></div>");
+      let dataElement = $(document.createElement(target));
+      let rowElement = $('<div class="mobile-data-row"></div>');
+      $(dataElement).addClass("mobile-data");
+
+      for(let obj of arr){
+        const col = $('<div class="mobile-data-col"></div>');
+        if( obj.type == 'image' ){
+          $(col).addClass("image");
+          const a = $('<a></a>');
+          const img = $('<img></img>');
+          $(a).attr("href",obj.href);
+          $(img).attr("src",obj.src);
+          $(a).append(img);
+          $(col).append(a);
+        }else{
+          $(col).append('<div class="col-name"><strong>'+obj.col+'</strong></div>');
+          $(col).append('<div class="col-value">'+obj.val+'</div>');
+        }
+
+        $(rowElement).append(col);
+      }
+      $(dataElement).html(rowElement);
+      return  $(tempDiv).html(dataElement).html();
+    },
+
     listCallback(data) {
       const $this = this;
       comm.paging.emptyList("#dataList", data.dto.pageNo);
@@ -151,6 +178,15 @@ export default {
         listHtml += '    <td>' + obj.NICKNAME + '</td>';
         listHtml += '    <td>' + obj.REG_DATE.substring(2) + '</td>';
         listHtml += '    <td>' + obj.VIEW_CNT + '</td>';
+
+        listHtml += $this.getMobileRecord("td", [
+          {col: "No.", val: listNum},
+          {col: "제목", val:('<a href="' + window.getNoticeViewUrl(obj.ID, $this.searchMemId) + '" class="subject_link">' + obj['TITLE'] + '</a>')},
+          {col: "작성자", val: obj['NICKNAME']},
+          {col: "작성일", val: obj['REG_DATE'].substring(2)},
+          {col: "조회수", val: obj['VIEW_CNT']},
+        ])
+
         listHtml += '</tr>                                                                           ';
         listHtml = $(listHtml);
 

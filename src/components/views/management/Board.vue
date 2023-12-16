@@ -38,7 +38,7 @@
             <div class="board_basic">
               <table class="board_list_table">
                 <tbody class="list_header">
-                  <th><input type="checkbox" class="check all"></th>
+                  <th class="not-none"><input type="checkbox" class="check all"></th>
                   <th>공개여부</th>
                   <th>카테고리</th>
                   <th>회원 <br>카테고리</th>

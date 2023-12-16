@@ -190,7 +190,7 @@ const boardObj = {
             // let listNum = ((data.vo.pageNo - 1) * data.vo.listNo) + (i + 1);
             let secretStatus = obj['SECRET_YN'] == 'Y' ? "비공개" : "공개";
 
-            listHtml += '<td><input type="checkbox" class="check"></td>                                                         ';
+            listHtml += '<td class="not-none"><input type="checkbox" class="check"></td>                                                         ';
             listHtml += '<td>'+secretStatus+'</td>                                                                              ';
             listHtml += '<td><a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="kind_link">'+obj['CATEGORY_NM']+'</a></td>           ';
             listHtml += '<td><a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="kind_link">'+(obj['MEMBER_CATEGORY_NM']||"")+'</a></td>           ';

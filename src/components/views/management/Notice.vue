@@ -42,7 +42,7 @@
               <table class="board_list_table">
                 <tbody class="list_header">
                   <tr>
-                    <th><input type="checkbox" class="check all"></th>
+                    <th class="not-none"><input type="checkbox" class="check all"></th>
                     <th colspan="2"></th>
                   </tr>
                 </tbody>
@@ -271,7 +271,7 @@
 
           // let listNum = ((data.dto.pageNo - 1) * data.dto.listNo) + (i + 1);
 
-          trHtml += '<td><input type="checkbox" class="check"></td>';
+          trHtml += '<td class="not-none"><input type="checkbox" class="check"></td>';
           trHtml += '<td>';
           trHtml += '    <a href="' + window.getNoticeViewUrl(obj.ID) + '" class="subject_link">'+obj['TITLE']+'</a>';
           trHtml += '</td>';
