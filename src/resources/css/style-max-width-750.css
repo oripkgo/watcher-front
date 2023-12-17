@@ -37,7 +37,7 @@
     .issue_box strong {font-size:14px;padding:15px 0px 10px 0px;}
     .issue_box span.kind {font-size:12px;}
     .issue_box em {font-size:13px;margin-top:10px;}
-    .issue_box a {position:absolute;bottom:0px;left:50%;margin-left:-83px;}
+    .issue_box a {position:absolute;bottom:0px;left:75%;margin-left:-83px;}
 
     .tab_wrap {padding:40px 0px;}
     #tab_cnt a {margin:10px 15px;font-size:18px;border-bottom:5px solid transparent;}
@@ -63,9 +63,9 @@
     .footer_wrap {width:90%;margin:0px auto;}
     .footer_left {display:block;}
     .footer_right {display:block;margin-left:0%;}
-    .footer_right a {width:130px;font-size:15px;padding:10px 0px;}
+    .footer_right a {width:130px;font-size:13px;padding:10px 0px;}
 
-    .footer_logo {font-size:20px;padding:10px 10px 10px 36px;background:url('../img/ico_home.png') no-repeat left center;}
+    .footer_logo {font-size:15px;padding:10px 10px 10px 36px;background:url('../img/ico_home.png') no-repeat left center;}
     .footer_search {width:100%;height:40px;border-radius:20px;border:1px solid #ddd;overflow:hidden;background:none;}
     .footer_search input[type=text] {display:inline-block;vertical-align:middle;border:none;height:38px;font-size:16px;font-weight:400;color:#fff;padding-left:30px;width:88%;}
     .footer_search a {display:inline-block;vertical-align:middle;}
@@ -233,11 +233,19 @@
     .not_btn a {display:inline-block;vertical-align:top;padding:0px 40px;border:1px solid #ddd;text-align:center;font-size:15px;color:#878787;line-height:40px;margin:2px;}
     .not_btn a.on {border:1px solid #000;font-size:15px;color:#fff;background:#000;}
 
-    .swiper_product {height: 400px;}
+    .swiper_product {height: 300px;}
     .swiper_product .swiper-slide img {height: 100%;}
     .swiper_banner .swiper-pagination-bullet {width: 12px;height: 12px;}
     .swiper_product .swiper-pagination {bottom: 50px !important;}
     .swiper_banner .swiper-pagination {top:0px !important;bottom:auto !important;}
     .swiper_banner .swiper-pagination-bullets {width:auto !important;right:20px !important; margin-top:20px;}
-    .swiper_banner .swiper-slide .main-middel-banner{width: 100%; height: 320px;}
+    .swiper_banner .swiper-slide .main-middel-banner{width: 100%; height: 250px;}
+
+    .terms_top {font-size: 20px;}
+    .private strong {font-size: 18px;}
+    .private {font-size: 15px;}
+
+    .write_wrap textarea {
+        height: 100px;
+    }
 }
