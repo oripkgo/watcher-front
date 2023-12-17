@@ -66,6 +66,10 @@
 }
 /*게시물 화면 반응형 처리 e */
 
+.board_list_table td a span, .board_list_table td a strong{
+    word-break: break-all;
+}
+
 @media (max-width: 750px) {
     .new_manage_title_box p.new_manage_title{
         font-size: 18px;
@@ -97,8 +101,6 @@
         display: none;
     }
 
-
-
     .board_list_table th:not(.not-none, .mobile-data), .board_list_table td:not(.not-none, .mobile-data){
         display: none;
     }
@@ -124,6 +126,7 @@
     .mobile-data-row .col-value {
         flex:60%;
         padding:5px 10px;
+        word-break: break-all;
     }
 
     .board_list_table td {
@@ -140,5 +143,4 @@
     }
 
     /*게시물 화면 반응형 처리 e */
-
 }
