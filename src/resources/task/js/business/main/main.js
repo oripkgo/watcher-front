@@ -206,12 +206,11 @@ const mainObj = {
 
     swiper : {
         init : function(){
-            if( $(".swiper-wrapper", ".swiper_product").find(".swiper-slide").length <= 1 ){
+            if( $(".swiper-wrapper", ".swiper_product").find(".swiper-slide").length > 1 ){
+                this.product();
+            }else{
                 $(".swiper-pagination", ".swiper_product").hide();
             }
-
-            this.product();
-
         },
 
         setSwiper : function(target, option){
