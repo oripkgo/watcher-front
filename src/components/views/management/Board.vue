@@ -37,6 +37,13 @@
 
             <div class="board_basic">
               <table class="board_list_table">
+                <colgroup>
+                  <col width="5%">
+                  <col width="10%">
+                  <col width="15%">
+                  <col width="15%">
+                  <col>
+                </colgroup>
                 <tbody class="list_header">
                   <th class="not-none"><input type="checkbox" class="check all"></th>
                   <th>공개여부</th>
