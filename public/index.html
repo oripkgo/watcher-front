@@ -45,8 +45,8 @@
                   const parentWindow = window.opener;
                   const token = window.opener.token;
                   const callbackUrl = window.opener.callbackUrl;
-                  const naverLoginSuccess = parentWindow.naverLoginSuccess;
-                  naverLoginSuccess.init(window['naver_id_login'], token, callbackUrl);
+                  const signNaverSuccess = parentWindow.signNaverSuccess;
+                  signNaverSuccess.init(window['naver_id_login'], token, callbackUrl);
               }
           }
       </script>

@@ -16,7 +16,7 @@
                   <div class="new_btn_right_box">
                     <div class="btn_tb_wrap">
                       <div class="btn_tb">
-                        <a href="javascript:;" class="on" v-on:click="settingObj.saveSettingInfo('#commentForm')">변경사항 저장</a>
+                        <a href="javascript:;" class="on" v-on:click="this.saveSettingInfo('#commentForm')">변경사항 저장</a>
                       </div>
                     </div>
                   </div>
@@ -60,10 +60,8 @@
 import commHeader from "@/components/views/management/include/CommHeader";
 import commMenu from "@/components/views/management/include/CommMenu";
 import $ from 'jquery';
-import settingObj from "@/resources/task/js/business/management/setting";
 import comm from "@/resources/task/js/common/comm";
 
-  const managementInitUrl = '/management/setting/story';
   export default {
     name : "managementSetting",
     components: {
@@ -73,15 +71,16 @@ import comm from "@/resources/task/js/common/comm";
     data(){
       const $this = this;
       return {
+        settingUpdateUrl : "/management/setting/story",
+        managementInitUrl : '/management/setting/story',
         managementInfo : $this.getManagementSetInfo($this),
-        settingObj : settingObj,
       }
     },
 
     methods: {
       getManagementSetInfo : function(){
         let result = {};
-        comm.request({url: managementInitUrl, method: "GET", async: false}, function (resp) {
+        comm.request({url: this.managementInitUrl, method: "GET", async: false}, function (resp) {
           // 수정 성공
           if (resp.code == '0000') {
             result = JSON.parse(resp['info']);
@@ -89,7 +88,21 @@ import comm from "@/resources/task/js/common/comm";
         })
 
         return result
-      }
+      },
+
+      saveSettingInfo: function (formId) {
+        comm.request({
+          url: this.settingUpdateUrl,
+          method: "PUT",
+          form: formId,
+          // headers: {"Content-type": "application/x-www-form-urlencoded"},
+        }, function (resp) {
+          // 성공
+          if (resp.code == '0000') {
+            comm.message.alert("스토리 설정정보가 저장되었습니다.");
+          }
+        })
+      },
     },
 
     mounted() {

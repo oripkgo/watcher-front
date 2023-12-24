@@ -61,12 +61,12 @@ import commMenu from "@/components/views/management/include/CommMenu";
 import commCharts from "@/components/views/management/include/CommCharts";
 import commVisitorInfo from "@/components/views/management/include/CommVisitorInfo";
 import commPopularArticles from "@/components/views/management/include/CommPopularArticles";
-import statisticsObj from "@/resources/task/js/business/management/statistics";
 import $ from 'jquery';
+import comm from "@/resources/task/js/common/comm";
 
 export default {
-  name : "managementStatistics",
-  components : {
+  name: "managementStatistics",
+  components: {
     commHeader: commHeader,
     commMenu: commMenu,
     commCharts: commCharts,
@@ -74,25 +74,54 @@ export default {
     commPopularArticles: commPopularArticles,
   },
 
+  data() {
+    const $this = this;
+    return {
+      visitorCntSearchUrl: "/visitor/count/inflow/source",
+      managementInfo: $this.getManagementSetInfo($this),
+    }
+  },
+
+  methods: {
+    getTodayDateAndWeekday: function () {
+      const d = new Date();
+      return comm.date.getDate(d, '.') + ' ' + comm.date.getDayOfTheWeek(d);
+    },
+
+    getLocaleString: function (numStr) {
+      return (numStr * 1).toLocaleString();
+    },
+
+    setVisitorFromSearch: function (callback) {
+      comm.request({url: this.visitorCntSearchUrl, method: "GET"}, function (resp) {
+        if (resp.code == '0000' && callback) {
+          callback(resp['visitInfo']);
+        }
+      })
+    },
+  },
+
   mounted() {
+    const $this = this;
+
     //스크롤 페이드인
     window.triggerJqueryFadeIn();
 
-    $(".manager_statistics_today").text(statisticsObj.getTodayDateAndWeekday());
+    $(".manager_statistics_today").text($this.getTodayDateAndWeekday());
 
-    statisticsObj.setVisitorFromSearch(function(visitInfo){
-      $(".all",".searchVisitor").text( statisticsObj.getLocaleString(visitInfo['ALL_CNT']*1));
-      $(".naver",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['NAVER_CNT']*1));
-      $(".daum",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['DAUM_CNT']*1));
-      $(".google",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['GOOGLE_CNT']*1));
-      $(".zoom",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['ZOOM_CNT']*1));
-      $(".yahoo",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['YAHOO_CNT']*1));
-      $(".etc",".searchVisitor").text(statisticsObj.getLocaleString(visitInfo['ETC_CNT']*1));
+    $this.setVisitorFromSearch(function (visitInfo) {
+      $(".all", ".searchVisitor").text($this.getLocaleString(visitInfo['ALL_CNT'] * 1));
+      $(".naver", ".searchVisitor").text($this.getLocaleString(visitInfo['NAVER_CNT'] * 1));
+      $(".daum", ".searchVisitor").text($this.getLocaleString(visitInfo['DAUM_CNT'] * 1));
+      $(".google", ".searchVisitor").text($this.getLocaleString(visitInfo['GOOGLE_CNT'] * 1));
+      $(".zoom", ".searchVisitor").text($this.getLocaleString(visitInfo['ZOOM_CNT'] * 1));
+      $(".yahoo", ".searchVisitor").text($this.getLocaleString(visitInfo['YAHOO_CNT'] * 1));
+      $(".etc", ".searchVisitor").text($this.getLocaleString(visitInfo['ETC_CNT'] * 1));
 
     });
 
-    $('a','.btn_sort').on("click", function(){
-      $('a','.btn_sort').removeClass('on')
+    $('a', '.btn_sort').on("click", function () {
+      $('a', '.btn_sort').removeClass('on')
       $(this).addClass('on');
     })
   }

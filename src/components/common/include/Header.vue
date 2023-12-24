@@ -29,7 +29,7 @@
 import "@/resources/task/js/common/globalVar";
 import "@/resources/js/tab"
 import comm from "@/resources/task/js/common/comm.js";
-import naverLoginSuccess from "@/resources/task/js/business/login/naverLoginSuccess.js";
+import signNaverSuccess from "@/resources/task/js/common/utils/sign/signNaverSuccess";
 
 const token = process.env.VUE_APP_LOGIN_TOKEN_NAVER;
 const callbackUrl = process.env.VUE_APP_LOGIN_CALLBACK_NAVER;
@@ -53,7 +53,7 @@ export default {
   mounted() {
     window.comm = comm;
     window.vueComponent = this;
-    window.naverLoginSuccess = naverLoginSuccess;
+    window.signNaverSuccess = signNaverSuccess;
     window.token = token;
     window.callbackUrl = callbackUrl;
     comm.token.init(function(){

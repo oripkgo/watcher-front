@@ -1,14 +1,14 @@
 
-const naverLoginSuccess = {
+const signNaverSuccess = {
     init : function(naverObj, token, callbackUrl){
         const naver_id_login = new naverObj(token, callbackUrl);
-        naver_id_login.get_naver_userprofile("naverLoginSuccess.callbackNaverLogin()");
+        naver_id_login.get_naver_userprofile("signNaverSuccess.callback()");
 
         // 접근 토큰 값 출력
         localStorage.setItem("access_token",naver_id_login.oauthParams.access_token);
     },
 
-    callbackNaverLogin : function(){
+    callback : function(){
         if (!window.opener) {
             window.opener = window.open('', 'parentWindow');
         }
@@ -19,7 +19,7 @@ const naverLoginSuccess = {
 
         window.close();
     },
-}
+};
 
-window.naverLoginSuccess = naverLoginSuccess;
-export default naverLoginSuccess;
+
+export default signNaverSuccess;
