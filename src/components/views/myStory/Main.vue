@@ -14,7 +14,9 @@
     <div class="ani-in new_mystory_layout">
       <div class="new_mystory_contents_box ani_y">
         <div class="new_mystory_menu_box">
-          <div class="new_mystory_photo"><img src="http://k.kakaocdn.net/dn/bVfWYG/btro7gspxak/ZFQ1OhKUjDeTqGMp8fotUK/img_640x640.jpg"></div>
+          <div class="new_mystory_photo">
+            <img :src="memProfileImg"/>
+          </div>
           <div class="new_mystory_menu_list">
             <ul></ul>
           </div>
@@ -71,6 +73,7 @@ export default {
       storyTitle: data['policy']['STORY_TITLE'],
       policy: data['policy'],
       dto: {},
+      memProfileImg: window.memProfileImg,
     };
 
     if (dto) {
