@@ -33,7 +33,7 @@
 
               <div class="category_right">
                 <table>
-                  <tr>
+                  <tr class="mobile-data">
                     <th>카테고리 목록</th>
                     <td><select class="not_disabled" id="categoryMemberList"><option value="" selected>선택</option></select></td>
                   </tr>

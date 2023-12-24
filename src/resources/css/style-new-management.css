@@ -61,7 +61,7 @@
 }
 
 /*게시물 화면 반응형 처리 s */
-.board_list_table .mobile-data {
+.board_list_table .mobile-data, .category_right .mobile-data{
     display: none;
 }
 /*게시물 화면 반응형 처리 e */
@@ -88,10 +88,13 @@
     }
 
     /*게시물 화면 반응형 처리 s */
-    .board_list_table .mobile-data {
+    .board_list_table .mobile-data{
         display: block;
     }
 
+    .category_right .mobile-data {
+        display: table-row;
+    }
 
     .board_list_table tbody {
         border-bottom: 1px solid #ddd;
