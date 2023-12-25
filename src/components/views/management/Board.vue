@@ -237,9 +237,8 @@ export default {
             if( obj.type == 'image' ){
               $(col).addClass("image");
               const a = $('<a></a>');
-              const img = $('<img></img>');
+              const img = $(window.getImgTagStr(obj.src));
               $(a).attr("href",obj.href);
-              $(img).attr("src",obj.src);
               $(a).append(img);
               $(col).append(a);
             }else{
@@ -296,13 +295,7 @@ export default {
             listHtml += '</td>                                                                                             ';
             listHtml += '<td>                                                                                              ';
             listHtml += '    <a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '" class="pic_link">                                   ';
-
-            if( obj['THUMBNAIL_IMG_PATH'] ){
-              listHtml += '<img src="'+ window.getServerImg(obj['THUMBNAIL_IMG_PATH']) +'">';
-            }else{
-              listHtml += '<img src="">';
-            }
-
+            listHtml += window.getImgTagStr(obj['THUMBNAIL_IMG_PATH'],"management-story-pc-image");
             listHtml += '    </a>                                                                                               ';
             listHtml += '</td>                                                                                                  ';
 

@@ -49,6 +49,7 @@
     .story_wrap li a strong {display:block;font-size:20px;color:#333;font-weight:600;padding:20px 0px 15px 0px;}
     .story_wrap li a span {display:block;font-size:15px;color:#333;font-weight:400;}
     .story_wrap li a em {display:inline-block;font-size:14px;color:#7b7b7b;font-weight:300;margin-top:20px;font-style:italic;}
+    .story_wrap li a img {height: 180px;}
 
     .keyword_wrap {width:95%;margin:0px auto;}
     .keyword_tit {line-height:30px;font-size:30px;}
@@ -208,7 +209,7 @@
     .storybox_search {width:80%;}
 
     .board_list li {float:none;padding:20px 100px 20px 0px;position:relative;border-bottom:1px solid #ddd;min-height:220px;}
-    .board_list li img {position:absolute;top:40px;right:0px;width:80px;max-height:80px;}
+    .board_list li img {position:absolute;top:40px;right:0px;width:80px;height:80px;}
     .board_list li a {display:block;}
     .board_list li a strong {display:block;font-size:16px;color:#333;font-weight:600;padding:10px 0px 12px 0px;}
     .board_list li a span {display:block;font-size:13px;color:#333;font-weight:400;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:2;-webkit-box-orient:vertical;display:-webkit-box;word-wrap:break-word;}

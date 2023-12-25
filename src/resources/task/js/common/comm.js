@@ -21,13 +21,21 @@ let comm = function () {
 
     const publicObj = {
         category: CATEGORY,
+
         date: DATE,
+
         message: MESSAGE,
+
         paging: PAGING,
+
         mobile: MOBILE,
+
         visitor: VISITOR,
+
         token: TOKEN,
+
         dom : DOM,
+
         navigation : NAVIGATION,
 
         validation: function (target) {

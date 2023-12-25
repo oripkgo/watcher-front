@@ -2,24 +2,43 @@ import $ from "jquery";
 
 const globalObj = {
     apiHost : process.env.VUE_APP_API_HOST,
+
     refererUrl: document.referrer,
+
     origin: location.origin,
+
     storyUrlList: "/story/list",
+
     storyUrlView: "/story/view",
+
     storyUrlWrite: "/story/write",
+
     noticeUrlList: "/notice/list",
+
     noticeUrlView: "/notice/view",
+
     noticeUrlWrite: "/notice/write",
+
     noticeUrlUpdate: "/notice/update",
+
     managementMain: "/management/main",
+
     managementBoard: "/management/board",
+
     managementCategory: "/management/category",
+
     managementNotice: "/management/notice",
+
     managementComment: "/management/comment",
+
     managementSetting: "/management/setting",
+
     managementStatistics: "/management/statistics",
+
     nowStoryMemId: "",
+
     animateQueue :new Array(),
+
     ready :true,
 
     triggerJqueryFadeIn : function(){
@@ -83,12 +102,35 @@ const globalObj = {
     getNoticeWriteUrl: function () {
         return this.noticeUrlWrite;
     },
+
     getNoticeUpdateUrl: function (id) {
         return this.noticeUrlUpdate+"?id="+id;
     },
+
     getServerImg: function(path){
         return (path ? /*this.apiHost + */path : "");
     },
+
+    getImgTagStr : function(src, className){
+        let imgStr = '';
+
+        imgStr+= '<img ';
+        if( src ){
+            imgStr+= ` src="${this.getServerImg(src.replace(/[\\]/g, '/'))}" `;
+        }else{
+            imgStr+= ` src="${require('@/resources/img/noimage.jpg')}" `;
+        }
+
+        if( className ){
+            imgStr+= ` class="${className}"`;
+        }
+
+        imgStr+= ` onerror="this.src='${require('@/resources/img/noimage.jpg')}'" `;
+        imgStr+= '/>';
+
+        return imgStr;
+    },
+
     mergeSessionStorageData : function(){
         Object.assign(globalObj, JSON.parse( ( localStorage.getItem("sessionData") || '{}' ) ));
     },

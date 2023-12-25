@@ -195,11 +195,7 @@ export default {
 
             listHtml += '<li>';
             listHtml += '    <a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '">';
-
-            if( obj.THUMBNAIL_IMG_PATH ){
-              listHtml += '<div><img src="' + window.getServerImg(obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/')) + '"></div>';
-            }
-
+            listHtml += `<div>${window.getImgTagStr(obj.THUMBNAIL_IMG_PATH)}</div>`;
             listHtml += '        <strong>'+obj.TITLE+'</strong>';
             listHtml += '        <span>';
 
@@ -410,7 +406,7 @@ export default {
               let storyHtml = '';
 
               if( obj.THUMBNAIL_IMG_PATH ){
-                storyHtml += '<img class="main-middel-banner" src="' + window.getServerImg(obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/')) + '">';
+                storyHtml += window.getImgTagStr(obj.THUMBNAIL_IMG_PATH, "main-middel-banner");
               }else{
                 return;
               }

@@ -185,11 +185,7 @@ export default {
           }
 
           listHtml += '</span>';
-
-          if (obj.THUMBNAIL_IMG_PATH) {
-            listHtml += '        <img src="' + window.getServerImg(obj['THUMBNAIL_IMG_PATH']) + '">';
-          }
-
+          listHtml += window.getImgTagStr(obj['THUMBNAIL_IMG_PATH'])
           listHtml += '    </a>';
           listHtml += '    <div class="story_key">';
 

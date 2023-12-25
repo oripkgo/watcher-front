@@ -70,7 +70,23 @@
     word-break: break-all;
 }
 
+.articleList li a img{
+    width: 100%;
+    height: 162px;
+}
+
+
+.board_list_table .management-story-pc-image{
+    width: 100%;
+    height: 100px;
+}
+
+
 @media (max-width: 750px) {
+    .articleList li a img{
+        height: 100px;
+    }
+
     .new_manage_title_box p.new_manage_title{
         font-size: 18px;
     }
@@ -117,7 +133,16 @@
     }
 
     .mobile-data-row .mobile-data-col.image {
-        padding:20px;
+        padding:10px;
+    }
+
+    .mobile-data-row .mobile-data-col.image a {
+        width: 100%;
+    }
+
+    .mobile-data-row .mobile-data-col.image img {
+        width: 100%;
+        height: 145px;
     }
 
     .mobile-data-row .col-name {

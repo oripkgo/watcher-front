@@ -155,12 +155,8 @@ export default {
 
           listHtml += '<li>';
           listHtml += '    <a href="' + window.getStoryViewUrl(obj['ID'], obj['MEMBER_ID']) + '">';
-
-          if( obj.THUMBNAIL_IMG_PATH ){
-            listHtml += '<div><img src="' + window.getServerImg(obj.THUMBNAIL_IMG_PATH.replace(/[\\]/g, '/')) + '"></div>';
-          }
-
-          listHtml += '        <strong>'+obj.TITLE+'</strong>';
+          listHtml += `<div>${window.getImgTagStr(obj['THUMBNAIL_IMG_PATH'])}</div>`;
+          listHtml += '        <strong>'+obj['TITLE']+'</strong>';
           listHtml += '        <span>';
 
           if( !obj.SUMMARY ){
@@ -231,11 +227,7 @@ export default {
           }
 
           listHtml += '</span>';
-
-          if( obj['THUMBNAIL_IMG_PATH'] ){
-            listHtml += '        <img src="' + window.getServerImg(obj['THUMBNAIL_IMG_PATH']) + '">';
-          }
-
+          listHtml += window.getImgTagStr(obj['THUMBNAIL_IMG_PATH'])
           listHtml += '    </a>';
           listHtml += '    <div class="story_key">';
 
