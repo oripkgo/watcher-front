@@ -75,10 +75,8 @@ export default {
   },
 
   data() {
-    const $this = this;
     return {
       visitorCntSearchUrl: "/visitor/count/inflow/source",
-      managementInfo: $this.getManagementSetInfo($this),
     }
   },
 

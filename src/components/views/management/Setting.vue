@@ -69,11 +69,9 @@ import comm from "@/resources/task/js/common/comm";
       commMenu,
     },
     data(){
-      const $this = this;
       return {
         settingUpdateUrl : "/management/setting/story",
         managementInitUrl : '/management/setting/story',
-        managementInfo : $this.getManagementSetInfo($this),
       }
     },
 
@@ -110,9 +108,10 @@ import comm from "@/resources/task/js/common/comm";
       window.triggerJqueryFadeIn();
 
       const $this = this;
-      $("#storyCommentPublicStatus").val($this.managementInfo['STORY_COMMENT_PUBLIC_STATUS']);
-      $("#commentPermStatus").val($this.managementInfo['COMMENT_PERM_STATUS']);
-      $("#storyRegPermStatus").val($this.managementInfo['STORY_REG_PERM_STATUS']);
+      const managementInfo = $this.getManagementSetInfo();
+      $("#storyCommentPublicStatus").val(managementInfo['STORY_COMMENT_PUBLIC_STATUS']);
+      $("#commentPermStatus").val(managementInfo['COMMENT_PERM_STATUS']);
+      $("#storyRegPermStatus").val(managementInfo['STORY_REG_PERM_STATUS']);
     }
   }
 </script>
