@@ -68,12 +68,12 @@ export default {
       myStoryMainUrl: "/myStory/" + data['memId'],
       myStorylistDataUrl: '/myStory/list',
       noticeListDataUrl: '/notice/list/data?searchMemId=' + data['memId'],
-      noticeMoreUrl: "/" + data['memId'] + "/notice/list?myStoryTitle=" + data['policy']['STORY_TITLE'],
+      noticeMoreUrl: "/" + data['memId'] + "/notice/list?myStoryTitle=" + data['storyInfo']['STORY_TITLE'],
       categoryListYn: 'N',
-      storyTitle: data['policy']['STORY_TITLE'],
-      policy: data['policy'],
+      storyTitle: data['storyInfo']['STORY_TITLE'],
+      policy: data['storyInfo'],
       dto: {},
-      memProfileImg: window.memProfileImg,
+      memProfileImg: data['storyInfo']['MEM_PROFILE_IMG'],
     };
 
     if (dto) {
@@ -129,7 +129,7 @@ export default {
           data = {
             categoryListYn: resp['categoryListYn'],
             memberCategoryList: resp['memberCategoryList'],
-            policy: resp['policy'],
+            storyInfo: resp['storyInfo'],
             memId: resp['memId'],
             dto: resp['dto'],
           };
