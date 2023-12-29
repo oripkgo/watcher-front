@@ -2,6 +2,7 @@ import REQUEST from "@/resources/task/js/common/utils/request";
 import COMMENT_LIST from "@/resources/task/js/common/utils/comment/commentList";
 import COMMENT_ELEMENT from "@/resources/task/js/common/utils/comment/commentElement";
 import COMMENT_DOM from "@/resources/task/js/common/utils/comment/commentDom";
+import MESSAGE from "@/resources/task/js/common/utils/message";
 
 const commentInsertApiUrl = "/board/comment/insert";
 const commentDeleteApiUrl = "/board/comment/delete";
@@ -116,6 +117,12 @@ const comment = {
             refContentsId: "0",
             comment: COMMENT_DOM.replaceLineBreakWithBrReturnValue(COMMENT_ELEMENT.textArea.getInsert()),
         };
+
+
+        if( !commentInsertParam.comment ){
+            MESSAGE.alert('댓글을 입력해주세요.');
+            return;
+        }
 
         REQUEST.send(commentInsertApiUrl, "POST", commentInsertParam, function (resp) {
             // 등록성공

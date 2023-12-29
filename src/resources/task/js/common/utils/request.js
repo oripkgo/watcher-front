@@ -1,3 +1,5 @@
+import MESSAGE from "@/resources/task/js/common/utils/message";
+
 const serverhost = window.apiHost;
 const serverSuccessCheckValue = {key :"code", val : "0000"}
 const request = {
@@ -39,6 +41,10 @@ const request = {
                 } else {
                     if( errCallback ){
                         errCallback(response);
+                    }else{
+                        //에러발생
+                        console.error(response.status, response.message); //응답상태와 응답 메시지 출력
+                        MESSAGE.alert(response.message);
                     }
                 }
             }
